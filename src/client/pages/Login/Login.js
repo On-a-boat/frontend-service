@@ -3,7 +3,7 @@ import "./Styles.css";
 import CustomInput from "./Components/UserInput";
 import Button from "./Components/Button";
 
-export default class App extends Component {
+export default class Login extends Component {
     state = {
         email: "",
         password: ""

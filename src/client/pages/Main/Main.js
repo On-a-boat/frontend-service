@@ -1,5 +1,6 @@
 import React from "react";
-
+import "./Styles.css";
+import navBar from "../../shared/NavigationBar";
 export function Rate(props) {
   return (
     <div>
