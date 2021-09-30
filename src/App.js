@@ -1,26 +1,33 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import * as s from './App.styles'; // bring in all the components from app.styles.js 
+import Sidebar from './client/sidebar/Sidebar';
+import Main from './client/content/Main';
+
 
 function App() {
+
+  const bgImage = 'images/mountain.jpg'
+  // const menuItems = ['CRM', 'Groups', 'Statistics', 'Settings'];
+  const menuItems = [
+    { name: 'CRM', to: '/', icon: '' },
+    { name: 'Groups', to: '/groups', icon: 'icons/groups.svg' },
+    { name: 'Statistics', to: '/statistics', icon: '' },
+    { name: 'Settings', to: '/settings', icon: 'icons/settings.svg' }];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1> On-the-boat</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React asdfasdf
-        </a>
-      </header>
-    </div>
+    <s.App>
+      <Sidebar
+        ddd={bgImage}
+        menuItems={menuItems} />
+      <Main />
+
+    </s.App>
+
   );
+
 }
+
 
 export default App;
