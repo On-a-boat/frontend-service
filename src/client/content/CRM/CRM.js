@@ -4,7 +4,7 @@ import * as s from './CRM.styles'; // bring in all the components from app.style
 
 const CRM = () => {
 
-    return (<h1>CRM</h1>);
+    return (<h1>CRM asdf</h1>);
 }
 
 export default CRM;
