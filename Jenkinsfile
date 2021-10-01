@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  tools {yarn "yarn"}
+  tools {nodejs "yarn"}
   stages {
     stage('Build') {
       steps {
