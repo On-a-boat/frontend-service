@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 
 export const App = styled.div`
-    height: 100vh;
-    display: flex; //horizontal
+  height: 100vh;
+  //horizontal
+  display: flex; 
 
 `
 
