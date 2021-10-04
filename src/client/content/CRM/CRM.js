@@ -18,9 +18,9 @@ export default class UsersList extends Component {
     this.state = {users: []};
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/filter')
+    axios.get('http://localhost:5000/filter/')
       .then(response => {
-        this.setState({ users: response });
+        this.setState({ users: response.data });
       })
       .catch(err => {
         console.log(err);
@@ -28,8 +28,8 @@ export default class UsersList extends Component {
   }
 
   userList(){
-    return this.state.users.map((currentUser,i) => {
-      return <User user1={currentUser} key={i} />;
+    return this.state.users.map((currentUser) => {
+      return <User user={currentUser} />;
     })
   }
 
@@ -37,17 +37,17 @@ export default class UsersList extends Component {
     return(
       <div>
         <h3>Users List</h3>
-        <table className ="table table-striped" style={{ margin: 100 }} >
-        <thead>
-          <tr>
-            <th>UserId</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Keywords</th>
-          </tr>
-        </thead>
+        <table className ="table table-striped" style={{ margin: 20 }} >
+          <thead>
+            <tr>
+              <th>UserId</th>
+              <th>FirstName</th>
+              <th>LastName</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Keywords</th>
+            </tr>
+          </thead>
         <tbody>
           { this.userList() }
         </tbody>
