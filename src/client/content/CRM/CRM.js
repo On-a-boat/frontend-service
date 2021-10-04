@@ -1,36 +1,59 @@
-import React ,{ Component } from "react";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as s from './CRM.styles'; // bring in all the components from app.styles.js 
 
-class App extends Component {
-  constructor(props) {
+const User = props => (
+  <tr>
+    <td>{props.user.UserId}</td>
+    <td>{props.user.FirstName}</td>
+    <td>{props.user.LastName}</td>
+    <td>{props.user.Age}</td>
+    <td>{props.user.Gender}</td>
+    <td>{props.user.Keywords}</td>
+  </tr>
+)
+
+export default class UsersList extends Component {
+  constructor(props){
     super(props);
-    this.state = {
-      UserId: "",
-      FirstName: "",
-      LastName: "",
-      Age: "",
-      Gender: "",
-      Keywords: [],
-    };
+    this.state = {users: []};
+  }
+  componentDidMount(){
+    axios.get('http://localhost:5000/filter')
+      .then(response => {
+        this.setState({ users: response.data });
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
-  //GET Request
-  handleOnSearch(){
-    axios.get(`http://localhost:5000/filter`,{
-      params: {
-        id: this.state.id
-      }
+  userList(){
+    this.state.users.map((currentUser) => {
+      return <User user1={currentUser}/>;
     })
-    .then(res => {
-      console.log(this.state.persons);
-      this.setState({ persons: res.data });
-    });
   }
 
   render(){
-	  return (<h1>test1 </h1>);
+    return(
+      <div>
+        <h3>Users List</h3>
+        <table className ="table table-striped" style={{ margin: 100 }} >
+        <thead>
+          <tr>
+            <th>UserId</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Keywords</th>
+          </tr>
+        </thead>
+        <tbody>
+          { this.userList() }
+        </tbody>
+        </table>
+      </div>
+    )
   }
 }
-
-export default App;
