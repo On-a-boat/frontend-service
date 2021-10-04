@@ -5,7 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import Sidebar from "./client/sidebar/Sidebar";
 // Components
 import Settings from "./client/content/settings/Settings";
-import CRM from "./client/content/CRM/CRM";
+import CRM from "./client/content/crm/CRM";
 import Groups from "./client/content/groups/Groups";
 import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
