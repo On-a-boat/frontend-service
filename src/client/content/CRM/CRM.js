@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const User = props => (
@@ -21,7 +20,7 @@ export default class UsersList extends Component {
   componentDidMount(){
     axios.get('http://localhost:5000/filter')
       .then(response => {
-        this.setState({ users: response.data });
+        this.setState({ users: response });
       })
       .catch(err => {
         console.log(err);
@@ -29,8 +28,8 @@ export default class UsersList extends Component {
   }
 
   userList(){
-    this.state.users.map((currentUser) => {
-      return <User user1={currentUser}/>;
+    return this.state.users.map((currentUser,i) => {
+      return <User user1={currentUser} key={i} />;
     })
   }
 
