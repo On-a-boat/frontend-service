@@ -1,57 +1,22 @@
 import React from 'react'
 import { useTable, usePagination, useRowSelect, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import makeData from './makeData'
+import { Fragment } from 'react'
 import * as s from './CRM.styles';
+import { matchSorter } from 'match-sorter';
+import DefaultColumnFilter from './filters/DefaultColumnFilter';
+import SelectColumnFilter from './filters/SelectColumnFilter';
+import NumberRangeColumnFilter from './filters/NumberRangeColumnFilter';
+import SliderColumnFilter from './filters/SliderColumnFilter';
 
 
 
 
-// Define a default UI for filtering
-function GlobalFilter({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter,
-}) {
-    const count = preGlobalFilteredRows.length
-    const [value, setValue] = React.useState(globalFilter)
-    const onChange = useAsyncDebounce(value => {
-        setGlobalFilter(value || undefined)
-    }, 200)
-
-    return (
-        <span>
-            Search:{' '}
-            <input
-                value={value || ""}
-                onChange={e => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                }}
-                placeholder={`${count} records...`}
-                style={{
-                    fontSize: '1.1rem',
-                    border: '0',
-                }}
-            />
-        </span>
-    )
+function fuzzyTextFilterFn(rows, id, filterValue) {
+    return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
 }
-
-function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter },
-}) {
-    const count = preFilteredRows.length
-
-    return (
-        <input
-            value={filterValue || ''}
-            onChange={e => {
-                setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
-            }}
-            placeholder={`Search ${count} records...`}
-        />
-    )
-}
+// Let the table remove the filter if the string is empty
+fuzzyTextFilterFn.autoRemove = val => !val
 
 /////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
@@ -72,16 +37,44 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 export const Table = function ({ columns, data }) {
+    const filterTypes = React.useMemo(
+        () => ({
+            // Add a new fuzzyTextFilterFn filter type.
+            fuzzyText: fuzzyTextFilterFn,
+            // Or, override the default text filter to use
+            // "startWith"
+            text: (rows, id, filterValue) => {
+                return rows.filter(row => {
+                    const rowValue = row.values[id]
+                    return rowValue !== undefined
+                        ? String(rowValue)
+                            .toLowerCase()
+                            .startsWith(String(filterValue).toLowerCase())
+                        : true
+                })
+            },
+        }),
+        []
+    )
+    const defaultColumn = React.useMemo(
+        () => ({
+            // Let's set up our default Filter UI
+            Filter: DefaultColumnFilter,
+        }),
+        []
+    )
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         prepareRow,
-        page, // Instead of using 'rows', we'll use page,
-        // which has only the rows for the active page
-
-        // The rest of these things are super handy, too ;)
+        page,
+        rows,
+        state,
+        visibleColumns,
+        preGlobalFilteredRows,
+        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -96,10 +89,15 @@ export const Table = function ({ columns, data }) {
         {
             columns,
             data,
+            defaultColumn,
+            filterTypes,
         },
+        useFilters, // useFilters!
+        useGlobalFilter, // useGlobalFilter!
         useSortBy,
         usePagination,
         useRowSelect,
+
         hooks => {
             hooks.visibleColumns.push(columns => [
                 // Let's make a column for selection
@@ -131,25 +129,38 @@ export const Table = function ({ columns, data }) {
             <table {...getTableProps()}>
                 <thead >
 
+
                     {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                // Add the sorting props to control sorting. For this example
-                                // we can add them into the header props
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                    {column.render('Header')}
-                                    {/* Add a sort direction indicator */}
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
-                                            : '{click to sort (temp)}'}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
+                        <Fragment>
+                            <tr >
+                                {headerGroup.headers.map(column => (
+                                    <th >
+                                        {column.render('Header')}
+                                        {/* Render the columns filter UI */}
+                                        <div>{column.canFilter ? column.render('Filter') : null}</div>
+                                    </th>
+                                ))}
+                            </tr>
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                                {headerGroup.headers.map(column => (
+                                    // Add the sorting props to control sorting. For this example
+                                    // we can add them into the header props
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+
+                                        <span>
+                                            {column.isSorted
+                                                ? column.isSortedDesc
+                                                    ? ' 🔽'
+                                                    : ' 🔼'
+                                                : '{click to sort (temp)}'}
+                                        </span>
+                                    </th>
+                                ))}
+                            </tr>
+
+                        </Fragment>
                     ))}
+
 
                 </thead>
                 <tbody {...getTableBodyProps()}>
@@ -203,6 +214,7 @@ export const Table = function ({ columns, data }) {
         </>
     )
 }
+
 
 function CRM() {
     const columns = React.useMemo(
