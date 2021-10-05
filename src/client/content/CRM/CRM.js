@@ -4,7 +4,7 @@ import { useTable, usePagination, useRowSelect, useSortBy } from 'react-table'
 
 import makeData from './makeData'
 
-const Styles = styled.div`
+export const TableStyles = styled.div`
   padding: 1rem;
 
   table {
@@ -54,7 +54,7 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 )
 
-function Table({ columns, data }) {
+export const Table = function({ columns, data }) {
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -254,9 +254,9 @@ function CRM() {
     const data = React.useMemo(() => makeData(100), [])
 
     return (
-        <Styles>
+        <TableStyles>
             <Table columns={columns} data={data} />
-        </Styles>
+        </TableStyles>
     )
 }
 
