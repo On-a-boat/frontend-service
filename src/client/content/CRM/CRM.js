@@ -1,42 +1,59 @@
 import React from 'react'
-import styled from 'styled-components'
-import { useTable, usePagination, useRowSelect, useSortBy } from 'react-table'
-
+import { useTable, usePagination, useRowSelect, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import makeData from './makeData'
+import * as s from './CRM.styles';
 
-export const TableStyles = styled.div`
-  padding: 1rem;
 
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
 
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
 
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+// Define a default UI for filtering
+function GlobalFilter({
+    preGlobalFilteredRows,
+    globalFilter,
+    setGlobalFilter,
+}) {
+    const count = preGlobalFilteredRows.length
+    const [value, setValue] = React.useState(globalFilter)
+    const onChange = useAsyncDebounce(value => {
+        setGlobalFilter(value || undefined)
+    }, 200)
 
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
+    return (
+        <span>
+            Search:{' '}
+            <input
+                value={value || ""}
+                onChange={e => {
+                    setValue(e.target.value);
+                    onChange(e.target.value);
+                }}
+                placeholder={`${count} records...`}
+                style={{
+                    fontSize: '1.1rem',
+                    border: '0',
+                }}
+            />
+        </span>
+    )
+}
 
-  .pagination {
-    padding: 0.5rem;
-  }
-`
+function DefaultColumnFilter({
+    column: { filterValue, preFilteredRows, setFilter },
+}) {
+    const count = preFilteredRows.length
 
+    return (
+        <input
+            value={filterValue || ''}
+            onChange={e => {
+                setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+            }}
+            placeholder={`Search ${count} records...`}
+        />
+    )
+}
+
+/////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef()
@@ -54,7 +71,7 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 )
 
-export const Table = function({ columns, data }) {
+export const Table = function ({ columns, data }) {
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -72,8 +89,9 @@ export const Table = function({ columns, data }) {
         gotoPage,
         nextPage,
         previousPage,
+        selectedFlatRows,
+        state: { pageIndex, pageSize, selectedRowIds },
 
-        state: { pageIndex },
     } = useTable(
         {
             columns,
@@ -89,9 +107,9 @@ export const Table = function({ columns, data }) {
                     id: 'selection',
                     // The header can use the table's getToggleAllRowsSelectedProps method
                     // to render a checkbox
-                    Header: ({ getToggleAllPageRowsSelectedProps }) => (
+                    Header: ({ getToggleAllRowsSelectedProps }) => (
                         <div>
-                            <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+                            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
                         </div>
                     ),
                     // The cell can use the individual row's getToggleRowSelectedProps method
@@ -107,51 +125,6 @@ export const Table = function({ columns, data }) {
         }
     )
 
-    // Render the UI for your table
-
-    // <div>
-    //         <table className="table" {...getTableProps()}>
-    //             <thead>
-    //                 {headerGroups.map(headerGroup => (
-    //                     <tr {...headerGroup.getHeaderGroupProps()}>
-    //                         {headerGroup.headers.map(column => (
-    //                             // Add the sorting props to control sorting. For this example
-    //                             // we can add them into the header props
-    //                             <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-    //                                 {column.render('Header')}
-    //                                 {/* Add a sort direction indicator */}
-    //                                 <span>
-    //                                     {column.isSorted
-    //                                         ? column.isSortedDesc
-    //                                             ? ' 🔽'
-    //                                             : ' 🔼'
-    //                                         : ''}
-    //                                 </span>
-    //                             </th>
-    //                         ))}
-    //                     </tr>
-    //                 ))}
-    //             </thead>
-    //             <tbody {...getTableBodyProps()}>
-    //                 {rows.map(
-    //                     (row, i) => {
-    //                         prepareRow(row);
-    //                         return (
-    //                             <tr {...row.getRowProps()}>
-    //                                 {row.cells.map(cell => {
-    //                                     return (
-    //                                         <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-    //                                     )
-    //                                 })}
-    //                             </tr>
-    //                         )
-    //                     }
-    //                 )}
-    //             </tbody>
-    //         </table>
-    //         <br />
-    //         <div>Showing the first 20 results of {rows.length} rows</div>
-    //     </div >
     return (
         <>
 
@@ -171,12 +144,13 @@ export const Table = function({ columns, data }) {
                                             ? column.isSortedDesc
                                                 ? ' 🔽'
                                                 : ' 🔼'
-                                            : ''}
+                                            : '{click to sort (temp)}'}
                                     </span>
                                 </th>
                             ))}
                         </tr>
                     ))}
+
                 </thead>
                 <tbody {...getTableBodyProps()}>
                     {page.map((row, i) => {
@@ -191,10 +165,7 @@ export const Table = function({ columns, data }) {
                     })}
                 </tbody>
             </table>
-            {/* 
-        Pagination can be built however you'd like. 
-        This is just a very basic UI implementation:
-      */}
+
             <div className="pagination">
                 <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
@@ -215,6 +186,20 @@ export const Table = function({ columns, data }) {
                     </strong>{' '}
                 </span>
             </div>
+            <pre>
+                <code>
+                    {JSON.stringify(
+                        {
+                            selectedRowIds: selectedRowIds,
+                            'selectedFlatRows[].original': selectedFlatRows.map(
+                                d => d.original
+                            ),
+                        },
+                        null,
+                        2
+                    )}
+                </code>
+            </pre>
         </>
     )
 }
@@ -254,9 +239,9 @@ function CRM() {
     const data = React.useMemo(() => makeData(100), [])
 
     return (
-        <TableStyles>
+        <s.TableStyles>
             <Table columns={columns} data={data} />
-        </TableStyles>
+        </s.TableStyles>
     )
 }
 

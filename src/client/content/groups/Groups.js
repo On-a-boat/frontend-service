@@ -1,84 +1,84 @@
-import React from 'react';
-import {Table, TableStyles} from '../crm/CRM';
+// import React from 'react';
+// import {Table, TableStyles} from '../crm/CRM';
 
 
-import namor from 'namor'
+// import namor from 'namor'
 
-const range = len => {
-    const arr = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
+// const range = len => {
+//     const arr = []
+//     for (let i = 0; i < len; i++) {
+//         arr.push(i)
+//     }
+//     return arr
+// }
 
-const newGroup = () => {
-    const statusChance = Math.random()
-    return {
-        num:1, 
-        groupName: namor.generate({ words: 1, numbers: 0 }),
-        users: Math.floor(Math.random() * 100),
-        dataCreated: Math.floor(Math.random() * 100),
-        emailSent: Math.floor(Math.random() * 100),
+// const newGroup = () => {
+//     const statusChance = Math.random()
+//     return {
+//         num:1, 
+//         groupName: namor.generate({ words: 1, numbers: 0 }),
+//         users: Math.floor(Math.random() * 100),
+//         dataCreated: Math.floor(Math.random() * 100),
+//         emailSent: Math.floor(Math.random() * 100),
 
-    }
-}
+//     }
+// }
 
-function makeData(...lens) {
-    const makeDataLevel = (depth = 0) => {
-        const len = lens[depth]
-        return range(len).map(d => {
-            return {
-                ...newGroup(),
-                subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
-            }
-        })
-    }
+// function makeData(...lens) {
+//     const makeDataLevel = (depth = 0) => {
+//         const len = lens[depth]
+//         return range(len).map(d => {
+//             return {
+//                 ...newGroup(),
+//                 subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
+//             }
+//         })
+//     }
 
-    return makeDataLevel()
-}
-
-
+//     return makeDataLevel()
+// }
 
 
-const Groups = () => {
-
-    const columns = React.useMemo(
-        () => [
-
-            {
-                Header: 'No.',
-                accessor: 'num',
-            },
-            {
-                Header: 'Group Name',
-                accessor: 'groupName',
-            },
-            {
-                Header: 'Users',
-                accessor: 'users',
-            },
-            {
-                Header: 'Date Created',
-                accessor: 'dateCreated',
-            },
-            {
-                Header: 'Emails sent',
-                accessor: 'emailSent',
-            },
-        ]
-    )
-
-    const data = React.useMemo(() => makeData(100), [])
 
 
-    return (
-        <TableStyles>
-            <Table columns={columns} data={data} />
-        </TableStyles>
-    )
+// const Groups = () => {
 
-    //return (<h1>Groups </h1>);
-}
+//     const columns = React.useMemo(
+//         () => [
 
-export default Groups;
+//             {
+//                 Header: 'No.',
+//                 accessor: 'num',
+//             },
+//             {
+//                 Header: 'Group Name',
+//                 accessor: 'groupName',
+//             },
+//             {
+//                 Header: 'Users',
+//                 accessor: 'users',
+//             },
+//             {
+//                 Header: 'Date Created',
+//                 accessor: 'dateCreated',
+//             },
+//             {
+//                 Header: 'Emails sent',
+//                 accessor: 'emailSent',
+//             },
+//         ]
+//     )
+
+//     const data = React.useMemo(() => makeData(100), [])
+
+
+//     return (
+//         <TableStyles>
+//             <Table columns={columns} data={data} />
+//         </TableStyles>
+//     )
+
+//     //return (<h1>Groups </h1>);
+// }
+
+// export default Groups;
