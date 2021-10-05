@@ -11,10 +11,11 @@ import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { MyContainer, LeftDiv, RightDiv, Header } from "./Login.style.js";
 
 // login component for both customer and vendor app
 export default function SignIn() {
-  // const history = useHistory();
+  const history = useHistory();
 
   // get the url's pathname
   const pathname = useLocation().pathname;
@@ -49,8 +50,8 @@ export default function SignIn() {
     textFieldProps["label"] = "Email Address";
     textFieldProps["id"] = "email";
   } else {
-    textFieldProps["id"] = "van name";
-    textFieldProps["label"] = "Van name";
+    textFieldProps["id"] = "Username";
+    textFieldProps["label"] = "Username";
   }
 
   const onChange = (e) => {
@@ -131,18 +132,6 @@ export default function SignIn() {
   //   }
   // };
 
-  const renderRegisterRedirect = () => {
-    let linkText = "Don't have an account? Sign Up";
-    let linkPath = "/customer/register";
-
-    if (pathname.includes("vendor")) {
-      linkText = "New vendor? Sign Up";
-      linkPath = "/vendor/register";
-    }
-
-    return <Link to={linkPath}>{linkText}</Link>;
-  };
-
   // handleclose template from materialUI docs
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -158,18 +147,10 @@ export default function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={open}
-        autoHideDuration={duration}
-        onClose={handleClose}
-      >
-        <Alert severity={snackbar.severity} onClose={handleClose}>
-          {snackbar.data}
-        </Alert>
-      </Snackbar>
-      <div>
+    <>
+      <LeftDiv />
+      <RightDiv>
+        <Header>Login</Header>
         <form noValidate>
           <TextField
             variant="outlined"
@@ -211,17 +192,15 @@ export default function SignIn() {
               fullWidth
               style={{ fontSize: "16px" }}
               onClick={() => {
+                history.push("/CRM");
                 // sendData();
               }}
             >
               Sign In
             </Button>
           </ThemeProvider>
-          <Grid container>
-            <Grid item>{renderRegisterRedirect()}</Grid>
-          </Grid>
         </form>
-      </div>
-    </Container>
+      </RightDiv>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 //Sidebar
 import Sidebar from "./client/sidebar/Sidebar";
@@ -21,9 +21,13 @@ const menuItems = [
 ];
 
 const RootSPA = () => {
+  const location = useLocation();
+
   return (
     <>
-      <Sidebar ddd={bgImage} menuItems={menuItems} />
+      {!location.pathname.includes("login") && (
+        <Sidebar ddd={bgImage} menuItems={menuItems} />
+      )}
       <Switch>
         <Route exact path="/" component={CRM} />
         <Route exact path="/login" component={Login} />
