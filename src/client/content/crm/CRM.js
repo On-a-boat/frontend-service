@@ -223,8 +223,8 @@ export const Table = function ({ columns, data }) {
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [data1, setData] = useState(null);
-    const data = React.useMemo(() => makeData(100), []);
+    const [data, setData] = useState([]);
+    // const data = React.useMemo(() => makeData(100), []);
 
     const columns = React.useMemo(() => [
         {
@@ -244,15 +244,15 @@ function CRM() {
         },
         {
             Header: "Gender",
-            accessor: "visits",
+            accessor: "Gender",
         },
         {
             Header: "Keywords",
-            accessor: "progress",
+            accessor: "Keywords",
         },
         {
             Header: "User ID",
-            accessor: "status",
+            accessor: "UserId",
         },
     ]);
 
@@ -262,13 +262,16 @@ function CRM() {
         try {
             const response = await axios.get('http://localhost:5000/filter/');
             console.log(response);
-            setData(JSON.parse(response.data));
+            setData(JSON.parse(response));
+
+
         } catch (error) {
             console.error(error);
         }
     }
     getUser();
-    console.log(data1);
+
+    console.log(data);
 
     const makeGroup = () => {
         const selectedRows = localStorage.getItem("selectedRows");
@@ -285,6 +288,7 @@ function CRM() {
     };
 
     return (
+
         <div>
             <s.TableStyles>
                 <Table columns={columns} data={data} />
