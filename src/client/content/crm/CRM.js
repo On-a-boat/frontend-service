@@ -224,7 +224,6 @@ function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [data, setData] = useState([]);
-    // const data = React.useMemo(() => makeData(100), []);
 
     const columns = React.useMemo(() => [
         {
@@ -260,18 +259,15 @@ function CRM() {
 
     const getUser = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/filter/');
+            const response = await axios.get('http://13.54.19.72:5000/filter');
             console.log(response);
-            setData(JSON.parse(response));
-
+            setData(response.data);
 
         } catch (error) {
             console.error(error);
         }
     }
     getUser();
-
-    console.log(data);
 
     const makeGroup = () => {
         const selectedRows = localStorage.getItem("selectedRows");
