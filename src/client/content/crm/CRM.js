@@ -9,6 +9,7 @@ import {
   useAsyncDebounce,
 } from "react-table";
 import makeData from "./makeData";
+import axios from 'axios';
 import { useState, Fragment } from "react";
 import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
@@ -222,6 +223,9 @@ export const Table = function ({ columns, data }) {
 function CRM() {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [groupName, setGroupName] = useState("");
+  const [data, setData] = useState(null);
+  //const data = React.useMemo(() => makeData(100), []);
+
 
   const columns = React.useMemo(() => [
     {
@@ -253,16 +257,19 @@ function CRM() {
     },
   ]);
 
-  const [data, setData] = useState(null);
-  async function getUser() {
+  
+
+  const getUser = async() => {
     try {
       const response = await axios.get('http://localhost:5000/filter/');
+      console.log(response);
       setData(JSON.parse(response));
     } catch (error) {
       console.error(error);
     }
   }
-  
+  getUser();
+  console.log(data);
 
   const makeGroup = () => {
     const selectedRows = localStorage.getItem("selectedRows");
