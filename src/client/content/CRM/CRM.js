@@ -9,13 +9,6 @@ import NumberRangeColumnFilter from './filters/NumberRangeColumnFilter';
 import SliderColumnFilter from './filters/SliderColumnFilter';
 import Popup from '../../components/Popup';
 
-
-function fuzzyTextFilterFn(rows, id, filterValue) {
-    return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
-}
-// Let the table remove the filter if the string is empty
-fuzzyTextFilterFn.autoRemove = val => !val
-
 /////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -37,7 +30,7 @@ const IndeterminateCheckbox = React.forwardRef(
 export const Table = function ({ columns, data }) {
     const filterTypes = React.useMemo(
         () => ({
-           
+
             // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter(row => {
@@ -59,7 +52,7 @@ export const Table = function ({ columns, data }) {
         }),
         []
     )
-   
+
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -119,7 +112,7 @@ export const Table = function ({ columns, data }) {
         }
     )
 
-    
+
     return (
         <>
             <table {...getTableProps()}>
@@ -144,12 +137,12 @@ export const Table = function ({ columns, data }) {
                                         <span>
                                             {/* no sorting for selection row */}
                                             {/* I know it's a hardcoding, leave it for now  */}
-                                            {column.Header.length > 1 ?column.isSorted
+                                            {column.Header.length > 1 ? column.isSorted
                                                 ? column.isSortedDesc
                                                     ? ' 🔽'
                                                     : ' 🔼'
-                                                : '{click to sort (temp)': null}
-                                           
+                                                : '{click to sort (temp)' : null}
+
                                         </span>
                                     </th>
                                 ))}
@@ -197,16 +190,16 @@ export const Table = function ({ columns, data }) {
             <pre>
                 <code>
                     {localStorage.setItem('selectedRows', Object.keys(selectedRowIds).length)
-                    // JSON.stringify(
-                    //     {
-                    //         selectedRowIds: selectedRowIds,
-                    //         'selectedFlatRows[].original': selectedFlatRows.map(
-                    //             d => d.original
-                    //         ),
-                    //     },
-                    //     null,
-                    //     2
-                    // )
+                        // JSON.stringify(
+                        //     {
+                        //         selectedRowIds: selectedRowIds,
+                        //         'selectedFlatRows[].original': selectedFlatRows.map(
+                        //             d => d.original
+                        //         ),
+                        //     },
+                        //     null,
+                        //     2
+                        // )
                     }
                 </code>
             </pre>
@@ -219,7 +212,7 @@ export const Table = function ({ columns, data }) {
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    
+
     const columns = React.useMemo(
         () => [
 
@@ -261,7 +254,7 @@ function CRM() {
         if ((selectedRows) > 0 && groupName != "") {
             const newGroup = {
                 name: groupName,
-                userCount: selectedRows,  
+                userCount: selectedRows,
                 dateCreated: new Date().toLocaleDateString(),
             };
             // axios.post this JSON to db later
@@ -278,23 +271,23 @@ function CRM() {
             </s.TableStyles>
 
 
-            
+
             <button onClick={() => setButtonPopup(true)}>
                 {'Create Group'}
             </button>
             <Popup trigger={buttonPopup}>
                 <input
-                value={groupName || ''}
-                onChange={e => {
-                    setGroupName(e.target.value || "") // Set undefined to remove the filter entirely
-                }}
-                placeholder={"Enter group name"}
+                    value={groupName || ''}
+                    onChange={e => {
+                        setGroupName(e.target.value || "") // Set undefined to remove the filter entirely
+                    }}
+                    placeholder={"Enter group name"}
                 />
                 <button onClick={() => makeGroup()}> Create </button>
                 <button onClick={() => setButtonPopup(false)}> Cancel </button>
             </Popup>
         </div>
-        
+
     )
 }
 
