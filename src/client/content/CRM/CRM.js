@@ -1,15 +1,14 @@
 import React from 'react'
 import { useTable, usePagination, useRowSelect, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import makeData from './makeData'
-import { Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import * as s from './CRM.styles';
 import { matchSorter } from 'match-sorter';
 import DefaultColumnFilter from './filters/DefaultColumnFilter';
 import SelectColumnFilter from './filters/SelectColumnFilter';
 import NumberRangeColumnFilter from './filters/NumberRangeColumnFilter';
 import SliderColumnFilter from './filters/SliderColumnFilter';
-
-
+import Popup from '../../components/Popup';
 
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
@@ -123,13 +122,11 @@ export const Table = function ({ columns, data }) {
         }
     )
 
+    
     return (
         <>
-
             <table {...getTableProps()}>
                 <thead >
-
-
                     {headerGroups.map(headerGroup => (
                         <Fragment>
                             <tr >
@@ -160,9 +157,8 @@ export const Table = function ({ columns, data }) {
 
                         </Fragment>
                     ))}
-
-
                 </thead>
+
                 <tbody {...getTableBodyProps()}>
                     {page.map((row, i) => {
                         prepareRow(row)
@@ -197,18 +193,21 @@ export const Table = function ({ columns, data }) {
                     </strong>{' '}
                 </span>
             </div>
+
             <pre>
                 <code>
-                    {JSON.stringify(
-                        {
-                            selectedRowIds: selectedRowIds,
-                            'selectedFlatRows[].original': selectedFlatRows.map(
-                                d => d.original
-                            ),
-                        },
-                        null,
-                        2
-                    )}
+                    {localStorage.setItem('selectedRows', Object.keys(selectedRowIds).length)
+                    // JSON.stringify(
+                    //     {
+                    //         selectedRowIds: selectedRowIds,
+                    //         'selectedFlatRows[].original': selectedFlatRows.map(
+                    //             d => d.original
+                    //         ),
+                    //     },
+                    //     null,
+                    //     2
+                    // )
+                    }
                 </code>
             </pre>
         </>
@@ -216,7 +215,11 @@ export const Table = function ({ columns, data }) {
 }
 
 
+
 function CRM() {
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [groupName, setGroupName] = useState("");
+    
     const columns = React.useMemo(
         () => [
 
@@ -250,11 +253,47 @@ function CRM() {
 
     const data = React.useMemo(() => makeData(100), [])
 
+    const makeGroup = () => {
+        const selectedRows = localStorage.getItem('selectedRows');
+        if ((selectedRows) > 0 && groupName != "") {
+            const newGroup = {
+                name: groupName,
+                userCount: selectedRows,  
+                dateCreated: new Date().toLocaleDateString(),
+            };
+            // axios.post this JSON to db later
+            console.log(JSON.stringify(newGroup));
+            // display that group was created here.
+        }
+    }
+
+
     return (
-        <s.TableStyles>
-            <Table columns={columns} data={data} />
-        </s.TableStyles>
+        <div>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+
+
+            
+            <button onClick={() => setButtonPopup(true)}>
+                {'Create Group'}
+            </button>
+            <Popup trigger={buttonPopup}>
+                <input
+                value={groupName || ''}
+                onChange={e => {
+                    setGroupName(e.target.value || "") // Set undefined to remove the filter entirely
+                }}
+                placeholder={"Enter group name"}
+                />
+                <button onClick={() => makeGroup()}> Create </button>
+                <button onClick={() => setButtonPopup(false)}> Cancel </button>
+            </Popup>
+        </div>
+        
     )
 }
 
 export default CRM
+
