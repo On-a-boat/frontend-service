@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 //Sidebar
 import Sidebar from "./client/sidebar/Sidebar";
@@ -9,6 +9,7 @@ import CRM from "./client/content/crm/CRM";
 import Groups from "./client/content/groups/Groups";
 import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
+import Login from "./client/content/login/Login.js";
 
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
@@ -22,11 +23,16 @@ const menuItems = [
 ];
 
 const RootSPA = () => {
+  const location = useLocation();
+
   return (
     <>
-      <Sidebar ddd={bgImage} menuItems={menuItems} />
+      {!location.pathname.includes("login") && (
+        <Sidebar ddd={bgImage} menuItems={menuItems} />
+      )}
       <Switch>
         <Route exact path="/" component={CRM} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/groups" component={Groups} />
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/email" component={Email} />
