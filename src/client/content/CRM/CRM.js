@@ -3,22 +3,12 @@ import { useTable, usePagination, useRowSelect, useSortBy, useFilters, useGlobal
 import makeData from './makeData'
 import { Fragment } from 'react'
 import * as s from './CRM.styles';
-import { matchSorter } from 'match-sorter';
 import DefaultColumnFilter from './filters/DefaultColumnFilter';
 import SelectColumnFilter from './filters/SelectColumnFilter';
 import NumberRangeColumnFilter from './filters/NumberRangeColumnFilter';
 import SliderColumnFilter from './filters/SliderColumnFilter';
 
 
-
-
-function fuzzyTextFilterFn(rows, id, filterValue) {
-    return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
-}
-// Let the table remove the filter if the string is empty
-fuzzyTextFilterFn.autoRemove = val => !val
-
-/////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef()
@@ -39,10 +29,8 @@ const IndeterminateCheckbox = React.forwardRef(
 export const Table = function ({ columns, data }) {
     const filterTypes = React.useMemo(
         () => ({
-            // Add a new fuzzyTextFilterFn filter type.
-            fuzzyText: fuzzyTextFilterFn,
-            // Or, override the default text filter to use
-            // "startWith"
+           
+            // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter(row => {
                     const rowValue = row.values[id]
@@ -63,6 +51,7 @@ export const Table = function ({ columns, data }) {
         }),
         []
     )
+   
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -92,8 +81,7 @@ export const Table = function ({ columns, data }) {
             defaultColumn,
             filterTypes,
         },
-        useFilters, // useFilters!
-        useGlobalFilter, // useGlobalFilter!
+        useFilters,
         useSortBy,
         usePagination,
         useRowSelect,
@@ -232,6 +220,9 @@ function CRM() {
             {
                 Header: 'Age',
                 accessor: 'age',
+                Filter: NumberRangeColumnFilter,
+                filter: 'between',
+
             },
             {
                 Header: 'Visits',
