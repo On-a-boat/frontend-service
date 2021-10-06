@@ -253,7 +253,16 @@ function CRM() {
     },
   ]);
 
-  const data = React.useMemo(() => makeData(100), []);
+  const [data, setData] = useState(null);
+  async function getUser() {
+    try {
+      const response = await axios.get('http://localhost:5000/filter/');
+      setData(JSON.parse(response));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   const makeGroup = () => {
     const selectedRows = localStorage.getItem("selectedRows");
