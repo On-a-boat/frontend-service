@@ -136,11 +136,14 @@ export const Table = function ({ columns, data }) {
                                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
 
                                         <span>
-                                            {column.isSorted
+                                            {/* no sorting for selection row */}
+                                            {/* I know it's a hardcoding, leave it for now  */}
+                                            {column.Header.length > 1 ?column.isSorted
                                                 ? column.isSortedDesc
                                                     ? ' 🔽'
                                                     : ' 🔼'
-                                                : '{click to sort (temp)}'}
+                                                : '{click to sort (temp)': null}
+                                           
                                         </span>
                                     </th>
                                 ))}
