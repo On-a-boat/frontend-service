@@ -3,7 +3,6 @@ import { useTable, usePagination, useRowSelect, useSortBy, useFilters, useGlobal
 import makeData from './makeData'
 import { useState, Fragment } from 'react'
 import * as s from './CRM.styles';
-import { matchSorter } from 'match-sorter';
 import DefaultColumnFilter from './filters/DefaultColumnFilter';
 import SelectColumnFilter from './filters/SelectColumnFilter';
 import NumberRangeColumnFilter from './filters/NumberRangeColumnFilter';
@@ -38,10 +37,8 @@ const IndeterminateCheckbox = React.forwardRef(
 export const Table = function ({ columns, data }) {
     const filterTypes = React.useMemo(
         () => ({
-            // Add a new fuzzyTextFilterFn filter type.
-            fuzzyText: fuzzyTextFilterFn,
-            // Or, override the default text filter to use
-            // "startWith"
+           
+            // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter(row => {
                     const rowValue = row.values[id]
@@ -62,6 +59,7 @@ export const Table = function ({ columns, data }) {
         }),
         []
     )
+   
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -91,8 +89,7 @@ export const Table = function ({ columns, data }) {
             defaultColumn,
             filterTypes,
         },
-        useFilters, // useFilters!
-        useGlobalFilter, // useGlobalFilter!
+        useFilters,
         useSortBy,
         usePagination,
         useRowSelect,
@@ -145,11 +142,14 @@ export const Table = function ({ columns, data }) {
                                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
 
                                         <span>
-                                            {column.isSorted
+                                            {/* no sorting for selection row */}
+                                            {/* I know it's a hardcoding, leave it for now  */}
+                                            {column.Header.length > 1 ?column.isSorted
                                                 ? column.isSortedDesc
                                                     ? ' 🔽'
                                                     : ' 🔼'
-                                                : '{click to sort (temp)}'}
+                                                : '{click to sort (temp)': null}
+                                           
                                         </span>
                                     </th>
                                 ))}
@@ -235,6 +235,9 @@ function CRM() {
             {
                 Header: 'Age',
                 accessor: 'age',
+                Filter: NumberRangeColumnFilter,
+                filter: 'between',
+
             },
             {
                 Header: 'Visits',
