@@ -6,14 +6,14 @@ export const SideBarContainer = styled.div`
   max-width: 280px;
   min-width: 80px;
   color: black;
-  background-color: #24303f;
   // gradation // angle, proportion, proportion
-  // weey colour #df9080 rgb: 223,144,128
-  /* background-image: linear-gradient(
+  /* // weey colour #df9080 rgb: 223,144,128
+    background-image: linear-gradient(
         315deg,
         rgba(252,82,150,0.8) 0%,
         rgba(223,144,128,0.8) 74%), // weey colour with 74% clarity 
         url(${(props) => props.backgroundImage}); */
+  background-color: #24303f;
 
   // center and render the image
   background-size: cover;
