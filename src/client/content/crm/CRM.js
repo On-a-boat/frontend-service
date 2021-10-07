@@ -211,15 +211,15 @@ export const Table = function ({ columns, data }) {
 };
 
 // JSON.stringify(
-                        //     {
-                        //         selectedRowIds: selectedRowIds,
-                        //         'selectedFlatRows[].original': selectedFlatRows.map(
-                        //             d => d.original
-                        //         ),
-                        //     },
-                        //     null,
-                        //     2
-                        // )
+//     {
+//         selectedRowIds: selectedRowIds,
+//         'selectedFlatRows[].original': selectedFlatRows.map(
+//             d => d.original
+//         ),
+//     },
+//     null,
+//     2
+// )
 
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
@@ -265,6 +265,11 @@ function CRM() {
             accessor: "Keywords",
             //accessor: "status",
         },
+        // {
+        //     Header: "blah",
+        //     accessor: "UserId",
+        //     Cell: e => <a href={e.value}> {e.value} </a>
+        // },
     ]);
 
 
@@ -279,9 +284,9 @@ function CRM() {
                 if (isMounted) {
                     setData(users.data);
                 }
-                                
+
                 console.log(users);
-    
+
             } catch (error) {
                 console.error(error);
             }
@@ -291,7 +296,7 @@ function CRM() {
             isMounted = false;
         };
     }, []);
-    
+
 
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
@@ -312,8 +317,8 @@ function CRM() {
             // display that group was created to the admin here. NEED FIX!
         }
     };
-    
-    
+
+
 
     return (
         <div>
