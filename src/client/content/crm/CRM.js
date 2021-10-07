@@ -201,9 +201,16 @@ export const Table = function ({ columns, data }) {
                     {
                         localStorage.setItem(
                             "selectedRows",
-                            Object.keys(selectedRowIds).length
+                            JSON.stringify(selectedFlatRows.map(d => d.original))
                         )
-                        // JSON.stringify(
+                    }
+                </code>
+            </pre>
+        </>
+    );
+};
+
+// JSON.stringify(
                         //     {
                         //         selectedRowIds: selectedRowIds,
                         //         'selectedFlatRows[].original': selectedFlatRows.map(
@@ -213,19 +220,21 @@ export const Table = function ({ columns, data }) {
                         //     null,
                         //     2
                         // )
-                    }
-                </code>
-            </pre>
-        </>
-    );
-};
 
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [data, setData] = useState([]);
+    const [userId, setUserId] = useState([]);
 
+
+    // Table columns hard coded. NEED FIX!
     const columns = React.useMemo(() => [
+        {
+            Header: "User ID",
+            accessor: "UserId",
+            //accessor: "visits",
+        },
         {
             Header: "First Name",
             accessor: "FirstName",
@@ -256,18 +265,17 @@ function CRM() {
             accessor: "Keywords",
             //accessor: "status",
         },
-        {
-            Header: "User ID",
-            accessor: "UserId",
-            //accessor: "visits",
-        },
     ]);
 
+
+    // Fetch users data from the Database.
     useEffect(() => {
         let isMounted = true;
         const getUser = async () => {
             try {
-                const users = await axios.get('http://localhost:5000/filter');
+                //const users = await axios.get('http://localhost:5000/filter');
+                const users = await axios.get('http://13.54.19.72:5000/filter');
+
                 if (isMounted) {
                     setData(users.data);
                 }
@@ -285,24 +293,30 @@ function CRM() {
     }, []);
     
 
+    // Create new group JSON and post to the Database.
     const makeGroup = () => {
-        const selectedRows = localStorage.getItem("selectedRows");
-        if (selectedRows > 0 && groupName != "") {
+        const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
+        var updateId = userId;
+        selectedRows.forEach(row => { updateId.push(row.UserId); });
+        setUserId(updateId);
+
+        if (userId.length > 0 && groupName != "") {
             const newGroup = {
                 name: groupName,
-                userCount: selectedRows,
+                users: userId,
+                userCount: userId.length,
                 dateCreated: new Date().toLocaleDateString(),
             };
-            // axios.post this JSON to db later
+            setUserId([]);
+            // axios.post this JSON to db later. NEED FIX!
             console.log(JSON.stringify(newGroup));
-            // display that group was created here.
+            // display that group was created to the admin here. NEED FIX!
         }
     };
     
     
 
     return (
-
         <div>
             <s.TableStyles>
                 <Table columns={columns} data={data} />
