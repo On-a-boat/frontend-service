@@ -10,7 +10,7 @@ import {
 } from "react-table";
 import makeData from "./makeData";
 import axios from 'axios';
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
 import SelectColumnFilter from "./filters/SelectColumnFilter";
@@ -229,45 +229,61 @@ function CRM() {
         {
             Header: "First Name",
             accessor: "FirstName",
+            //accessor: "firstName",
+
         },
         {
             Header: "Last Name",
             accessor: "LastName",
+            //accessor: "lastName",
         },
 
         {
             Header: "Age",
             accessor: "Age",
+            //accessor: "age",
             Filter: NumberRangeColumnFilter,
             filter: "between",
         },
         {
             Header: "Gender",
             accessor: "Gender",
+            //accessor: "progress",
+
         },
         {
             Header: "Keywords",
             accessor: "Keywords",
+            //accessor: "status",
         },
         {
             Header: "User ID",
             accessor: "UserId",
+            //accessor: "visits",
         },
     ]);
 
-
-
-    const getUser = async () => {
-        try {
-            const response = await axios.get('http://13.54.19.72:5000/filter');
-            console.log(response);
-            setData(response.data);
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    getUser();
+    useEffect(() => {
+        let isMounted = true;
+        const getUser = async () => {
+            try {
+                const users = await axios.get('http://localhost:5000/filter');
+                if (isMounted) {
+                    setData(users.data);
+                }
+                                
+                console.log(users);
+    
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        getUser();
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+    
 
     const makeGroup = () => {
         const selectedRows = localStorage.getItem("selectedRows");
@@ -282,6 +298,8 @@ function CRM() {
             // display that group was created here.
         }
     };
+    
+    
 
     return (
 
