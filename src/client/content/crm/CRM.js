@@ -1,4 +1,5 @@
 import React from "react";
+// import DropDown from "./filters/DropDown";
 import {
     useTable,
     usePagination,
@@ -17,6 +18,15 @@ import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
 import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
+import { styled, alpha } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+
+
+
+
 
 /////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
@@ -37,6 +47,7 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 export const Table = function ({ columns, data }) {
+
     const filterTypes = React.useMemo(
         () => ({
             // override the default text filter to use"
@@ -119,31 +130,114 @@ export const Table = function ({ columns, data }) {
         }
     );
 
+    const StyledMenu = styled((props) => (
+        <Menu
+            elevation={0}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            {...props}
+        />
+    ))(({ theme }) => ({
+        // '& .MuiPaper-root': {
+        //     borderRadius: 6,
+        //     marginTop: theme.spacing(1),
+        //     minWidth: 180,
+        //     color:
+        //         theme.palette.mode === 'light' ? 'rgb(155, 165, 81)' : theme.palette.grey[240],
+        //     boxShadow:
+        //         'rgb(150, 13, 55) 0px 0px 0px 0px, rgba(25, 0, 13, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        //     '& .MuiMenu-list': {
+        //         padding: '4px 0',
+        //     },
+        //     '& .MuiMenuItem-root': {
+        //         '& .MuiSvgIcon-root': {
+        //             fontSize: 18,
+        //             color: theme.palette.text.secondary,
+        //             marginRight: theme.spacing(1.5),
+        //         },
+        //         '&:active': {
+        //             backgroundColor: alpha(
+        //                 theme.palette.primary.main,
+        //                 theme.palette.action.selectedOpacity,
+        //             ),
+        //         },
+        //     },
+        // },
+    }));
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
+
+
     return (
         <>
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => (
-                        <Fragment>
-                            <tr>
-                                {headerGroup.headers.map((column) => (
+
+                        <tr>
+                            {headerGroup.headers.map((column) => (
+                                <Fragment>
                                     <th>
-                                        {column.render("Header")}
-                                        {/* Render the columns filter UI */}
+                                        <span>
+                                            {column.render("Header")}
+                                        </span>
+                                        <span>
+                                            <button
+
+                                                onClick={handleClick}
+
+                                            >
+                                                ...
+                                            </button>
+                                            <StyledMenu
+                                                // id="demo-customized-menu"
+                                                // MenuListProps={{
+                                                //     'aria-labelledby': 'demo-customized-button',
+                                                // }}
+                                                anchorEl={anchorEl}
+                                                open={open}
+                                                onClose={handleClose}
+                                            >
+                                                <MenuItem disableRipple>
+                                                    Edit
+                                                </MenuItem>
+                                                <MenuItem {...column.getHeaderProps(column.getSortByToggleProps())}>
+
+
+                                                    {column.Header.length > 1
+                                                        ? column.isSorted
+                                                            ? column.isSortedDesc
+                                                                ? " 🔽"
+                                                                : " 🔼"
+                                                            : "{click to sort (temp)"
+                                                        : null}
+
+                                                </MenuItem>
+                                            </StyledMenu>
+                                        </span>
+
+
                                         <div>
                                             {column.canFilter ? column.render("Filter") : null}
                                         </div>
-                                    </th>
-                                ))}
-                            </tr>
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    // Add the sorting props to control sorting. For this example
-                                    // we can add them into the header props
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                        <span>
-                                            {/* no sorting for selection row */}
-                                            {/* I know it's a hardcoding, leave it for now  */}
+
+
+                                        {/* <div {...column.getHeaderProps(column.getSortByToggleProps())}>
+
                                             {column.Header.length > 1
                                                 ? column.isSorted
                                                     ? column.isSortedDesc
@@ -151,11 +245,12 @@ export const Table = function ({ columns, data }) {
                                                         : " 🔼"
                                                     : "{click to sort (temp)"
                                                 : null}
-                                        </span>
+                                        </div> */}
                                     </th>
-                                ))}
-                            </tr>
-                        </Fragment>
+                                </Fragment>
+
+                            ))}
+                        </tr>
                     ))}
                 </thead>
 
@@ -230,46 +325,46 @@ function CRM() {
 
     // Table columns hard coded. NEED FIX!
     const columns = React.useMemo(() => [
-        {
-            Header: "User ID",
-            accessor: "UserId",
-            //accessor: "visits",
-        },
+        // {
+        //     Header: "User ID",
+        //     accessor: "UserId",
+        //     //accessor: "visits",
+        // },
         {
             Header: "First Name",
-            accessor: "FirstName",
+            accessor: "firstName",
             //accessor: "firstName",
 
         },
         {
             Header: "Last Name",
-            accessor: "LastName",
+            accessor: "lastName",
             //accessor: "lastName",
         },
 
         {
             Header: "Age",
-            accessor: "Age",
+            accessor: "age",
             //accessor: "age",
             Filter: NumberRangeColumnFilter,
             filter: "between",
         },
         {
             Header: "Gender",
-            accessor: "Gender",
+            accessor: "gender",
             //accessor: "progress",
 
         },
         {
             Header: "Keywords",
-            accessor: "Keywords",
+            accessor: "keywords",
             //accessor: "status",
         },
-        // {
-        //     Header: "blah",
-        //     accessor: "UserId",
-        //     Cell: e => <a href={e.value}> {e.value} </a>
-        // },
+        {
+            Header: "blah",
+            accessor: "UserId",
+            Cell: e => <a href={e.value}> {e.value} </a>
+        },
     ]);
 
 
@@ -279,7 +374,7 @@ function CRM() {
         const getUser = async () => {
             try {
                 //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('http://13.54.19.72:5000/filter');
+                const users = await axios.get('http://13.54.19.72:5000/filter/show');
 
                 if (isMounted) {
                     setData(users.data);
