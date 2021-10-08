@@ -288,11 +288,11 @@ function CRM() {
 
     // Table columns hard coded. NEED FIX!
     const columns = React.useMemo(() => [
-        // {
-        //     Header: "User ID",
-        //     accessor: "UserId",
-        //     //accessor: "visits",
-        // },
+        {
+            Header: "User ID",
+            accessor: "UserId",
+            //accessor: "visits",
+        },
         {
             Header: "First Name",
             accessor: "firstName",

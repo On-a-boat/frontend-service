@@ -11,6 +11,10 @@ import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
 import Login from "./client/content/login/Login.js";
 
+
+// temp
+import UserProfile from "./client/content/crm/UserProfile";
+
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
 // const menuItems = ['CRM', 'Groups', 'Statistics', 'Settings'];
@@ -20,6 +24,7 @@ const menuItems = [
   { name: "Email", to: "/email", icon: "icons/email.svg" },
   { name: "Statistics", to: "/statistics", icon: "" },
   { name: "Settings", to: "/settings", icon: "icons/settings.svg" },
+
 ];
 
 const RootSPA = () => {
@@ -37,6 +42,11 @@ const RootSPA = () => {
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/email" component={Email} />
         <Route exact path="/statistics" component={Statistics} />
+
+
+        {/* temp */}
+        <Route exact path="/userprofile" component={UserProfile} />
+
       </Switch>
     </>
   );
