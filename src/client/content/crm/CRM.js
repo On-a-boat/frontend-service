@@ -9,7 +9,6 @@ import {
     useGlobalFilter,
     useAsyncDebounce,
 } from "react-table";
-import makeData from "./makeData";
 import axios from 'axios';
 import { useState, useEffect, Fragment } from "react";
 import * as s from "./CRM.styles";
@@ -18,10 +17,6 @@ import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
 import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 
 //toggle dropdown menu open/close
@@ -324,13 +319,13 @@ function CRM() {
 
         },
         {
-            Header: "Keywords",
-            accessor: "keywords",
+            Header: "Email",
+            accessor: "email",
             //accessor: "status",
         },
         {
-            Header: "blah",
-            accessor: "UserId",
+            Header: "",
+            accessor: "Link",
             Cell: e => <a href={e.value}> {e.value} </a>
         },
     ]);
