@@ -56,6 +56,16 @@ window.addEventListener("DOMContentLoaded",function(){
   });
 });
 
+// window.onclick=function(event){
+//   if (toClose){
+//     closeAll.call(event.target);
+//   }
+// };
+
+
+
+
+
 /////////////////////////////////////////////////
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -180,11 +190,10 @@ export const Table = function ({ columns, data }) {
                             {headerGroup.headers.map((column) => (
                                 <Fragment>
                                     <th>
-                                    <span>{column.render("Header")}</span>
-
-<span>
-{column.Header.length > 1 ?
-<span class="product-price-box">
+                                    <span>
+                                            {column.render("Header")}
+                                        </span>
+                                    <span class="product-price-box">
   <div class="buy">
     <button class="btn-buy-list" id="dropBtn1">...<span class="btn-arrow"></span></button>
     <ul class="dropdown-menu" style={{display: "none"}}>
@@ -210,11 +219,7 @@ export const Table = function ({ columns, data }) {
   </div>
 
 
-</span>  : null}
-
-</span>
-
-  </th>
+</span>                                    </th>
                                 </Fragment>
 
                             ))}
