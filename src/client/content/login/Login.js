@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +19,8 @@ export default function SignIn() {
   const history = useHistory();
 
   // get the url's pathname
-  const pathname = useLocation().pathname;
+  const pathname = "http://13.54.19.72:5000/admin/login";
+  const redirectTo = "/";
 
   const [username, setUsername] = useState("");
   const [emailHelper, setEmailHelper] = useState("");
@@ -43,16 +45,8 @@ export default function SignIn() {
     helperText: emailHelper,
   };
 
-  // conditionally define the properties of the text field
-  // depending on which user is using the app, either
-  // the vendor or customer
-  if (pathname.includes("customer")) {
-    textFieldProps["label"] = "Email Address";
-    textFieldProps["id"] = "email";
-  } else {
-    textFieldProps["id"] = "Username";
-    textFieldProps["label"] = "Username";
-  }
+  textFieldProps["id"] = "Username";
+  textFieldProps["label"] = "Username";
 
   const onChange = (e) => {
     let valid;
@@ -82,55 +76,40 @@ export default function SignIn() {
   const duration = 3000;
 
   // send username and password on form submission
-  // const sendData = async () => {
-  //   // create a data object for axios post
-  //   const data = { password: password };
-  //   if (pathname.includes("customer")) {
-  //     data["email"] = username;
-  //   } else {
-  //     data["name"] = username;
-  //   }
+  const sendData = async () => {
+    // create a data object for axios post
+    const data = { password: password };
+    data["username"] = username;
+    try {
+      const res = await axios.post(pathname, data, {
+        headers: { "Content-Type": "application/json" },
+      });
+      // set snackbar details
+      setOpen(true);
+      setSnackbar({
+        data: "Login successful",
+        severity: "success",
+      });
 
-  //   try {
-  //     const res = await axios.post(pathname, data, {
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //     // set snackbar details
-  //     setOpen(true);
-  //     setSnackbar({
-  //       data: "Login successful",
-  //       severity: "success",
-  //     });
+      console.log(res);
 
-  //     console.log(res);
+      // store token
+      // localStorage.setItem("token", res.data.token);
 
-  //     // store token
-  //     // localStorage.setItem("token", res.data.token);
+      // auth.login(res.data.token, user);
 
-  //     let redirectPath = "/customer/vans";
-  //     let user = "customer";
+      history.push(redirectTo);
+    } catch (error) {
+      console.log(error);
 
-  //     // decide the redirect path depending on
-  //     // which "app" is being used
-  //     if (pathname.includes("vendor")) {
-  //       redirectPath = "/vendor/address";
-  //       user = "vendor";
-  //     }
-
-  //     auth.login(res.data.token, user);
-
-  //     history.push(redirectPath);
-  //   } catch (error) {
-  //     console.log(error);
-
-  //     // set snackbar details
-  //     setOpen(true);
-  //     setSnackbar({
-  //       data: error.response.data,
-  //       severity: "error",
-  //     });
-  //   }
-  // };
+      // set snackbar details
+      setOpen(true);
+      setSnackbar({
+        data: error.response.data,
+        severity: "error",
+      });
+    }
+  };
 
   // handleclose template from materialUI docs
   const handleClose = (event, reason) => {
@@ -142,7 +121,7 @@ export default function SignIn() {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      // sendData();
+      sendData();
     }
   };
 
@@ -192,8 +171,7 @@ export default function SignIn() {
               fullWidth
               style={{ fontSize: "16px" }}
               onClick={() => {
-                history.push("/CRM");
-                // sendData();
+                sendData();
               }}
             >
               Sign In
