@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { MyContainer, LeftDiv, RightDiv, Header } from "./Login.style.js";
+import { LeftDiv, RightDiv, Header } from "./Login.style.js";
 
 // login component for both customer and vendor app
 export default function SignIn() {
