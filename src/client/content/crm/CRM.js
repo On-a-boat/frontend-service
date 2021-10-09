@@ -1,57 +1,49 @@
 import React from "react";
-// import DropDown from "./filters/DropDown";
 import {
     useTable,
     usePagination,
     useRowSelect,
     useSortBy,
     useFilters,
-    useGlobalFilter,
-    useAsyncDebounce,
 } from "react-table";
 import axios from 'axios';
 import { useState, useEffect, Fragment } from "react";
 import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
-import SelectColumnFilter from "./filters/SelectColumnFilter";
+// import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import SliderColumnFilter from "./filters/SliderColumnFilter";
+// import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
-import Divider from '@mui/material/Divider';
 
 //toggle dropdown menu open/close
 var toClose = false
-
 function toggle(e) {
-  e.stopPropagation();
-  var btn=this;
-  var menu = btn.nextSibling;
-  
-  while(menu && menu.nodeType != 1) {
-     menu = menu.nextSibling
-  }
-  if(!menu) return;
-  if (menu.style.display !== 'block') {
-    menu.style.display = 'block';
-    if(toClose) toClose.style.display="none";
-    toClose  = menu;
-  }  else {
-    menu.style.display = 'none';
-    toClose=false;
-  }
+    e.stopPropagation();
+    var btn = this;
+    var menu = btn.nextSibling;
+
+    while (menu && menu.nodeType !== 1) {
+        menu = menu.nextSibling
+    }
+    if (!menu) return;
+    if (menu.style.display !== 'block') {
+        menu.style.display = 'block';
+        if (toClose) toClose.style.display = "none";
+        toClose = menu;
+    } else {
+        menu.style.display = 'none';
+        toClose = false;
+    }
 
 };
-function closeAll() {
-    toClose.style.display='none';
-};
 
-window.addEventListener("DOMContentLoaded",function(){
-  document.querySelectorAll(".btn-buy-list").forEach(function(btn){
-     btn.addEventListener("click",toggle,true);
-  });
+window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
+        btn.addEventListener("click", toggle, true);
+    });
 });
 
-/////////////////////////////////////////////////
+//A checkbox for each row in the table 
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef();
@@ -68,6 +60,7 @@ const IndeterminateCheckbox = React.forwardRef(
         );
     }
 );
+
 
 export const Table = function ({ columns, data }) {
 
@@ -87,9 +80,10 @@ export const Table = function ({ columns, data }) {
         }),
         []
     );
+    // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
-            // Let's set up our default Filter UI
+
             Filter: DefaultColumnFilter,
         }),
         []
@@ -102,11 +96,6 @@ export const Table = function ({ columns, data }) {
         headerGroups,
         prepareRow,
         page,
-        rows,
-        state,
-        visibleColumns,
-        preGlobalFilteredRows,
-        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -115,7 +104,7 @@ export const Table = function ({ columns, data }) {
         nextPage,
         previousPage,
         selectedFlatRows,
-        state: { pageIndex, pageSize, selectedRowIds },
+        state: { pageIndex },
     } = useTable(
         {
             columns,
@@ -130,7 +119,7 @@ export const Table = function ({ columns, data }) {
 
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
-                // Let's make a column for selection
+                //  make a column for selection
                 {
                     id: "selection",
                     // The header can use the table's getToggleAllRowsSelectedProps method
@@ -153,65 +142,38 @@ export const Table = function ({ columns, data }) {
         }
     );
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
-
-
     return (
         <>
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => (
-
                         <tr>
                             {headerGroup.headers.map((column) => (
-                                <Fragment>
-                                    <th>
+                                <th>
                                     <span>{column.render("Header")}</span>
-
-<span>
-{column.Header.length > 1 ?
-<span class="product-price-box">
-  <div class="buy">
-    <button class="btn-buy-list" id="dropBtn1">...<span class="btn-arrow"></span></button>
-    <ul class="dropdown-menu" style={{display: "none"}}>
-    <li >
-   
-                                            {column.canFilter ? column.render("Filter") : null}
-                                       
-
-</li>
-      <li  {...column.getHeaderProps(column.getSortByToggleProps())}>
-
-{column.Header.length > 1
-    ? column.isSorted
-        ? column.isSortedDesc
-            ? " 🔽"
-            : " 🔼"
-        : "{click to sort (temp)"
-    : null}
-</li>
-
-
-    </ul>
-  </div>
-
-
-</span>  : null}
-
-</span>
-
-  </th>
-                                </Fragment>
-
+                                    <span>
+                                        {column.Header.length > 1 ?
+                                            <span class="product-price-box">
+                                                <div class="buy">
+                                                    <button class="btn-buy-list" id="dropBtn1">...<span class="btn-arrow"></span></button>
+                                                    <ul class="dropdown-menu" style={{ display: "none" }}>
+                                                        <li >
+                                                            {column.canFilter ? column.render("Filter") : null}
+                                                        </li>
+                                                        <li  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                                            {column.Header.length > 1
+                                                                ? column.isSorted
+                                                                    ? column.isSortedDesc
+                                                                        ? "Default"
+                                                                        : "Sort in Desc"
+                                                                    : "Sort in Asc"
+                                                                : null}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </span> : null}
+                                    </span>
+                                </th>
                             ))}
                         </tr>
                     ))}
@@ -264,72 +226,18 @@ export const Table = function ({ columns, data }) {
                     }
                 </code>
             </pre>
+
         </>
     );
 };
 
-// JSON.stringify(
-//     {
-//         selectedRowIds: selectedRowIds,
-//         'selectedFlatRows[].original': selectedFlatRows.map(
-//             d => d.original
-//         ),
-//     },
-//     null,
-//     2
-// )
+
 
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [data, setData] = useState([]);
     const [userId, setUserId] = useState([]);
-
-
-    // Table columns hard coded. NEED FIX!
-    const columns = React.useMemo(() => [
-        {
-            Header: "User ID",
-            accessor: "UserId",
-            //accessor: "visits",
-        },
-        {
-            Header: "First Name",
-            accessor: "firstName",
-            //accessor: "firstName",
-
-        },
-        {
-            Header: "Last Name",
-            accessor: "lastName",
-            //accessor: "lastName",
-        },
-
-        {
-            Header: "Age",
-            accessor: "age",
-            //accessor: "age",
-            Filter: NumberRangeColumnFilter,
-            filter: "between",
-        },
-        {
-            Header: "Gender",
-            accessor: "gender",
-            //accessor: "progress",
-
-        },
-        {
-            Header: "Email",
-            accessor: "email",
-            //accessor: "status",
-        },
-        {
-            Header: "",
-            accessor: "Link",
-            Cell: e => <a href={e.value}> {e.value} </a>
-        },
-    ]);
-
+    const [data, setData] = useState([]);
 
     // Fetch users data from the Database.
     useEffect(() => {
@@ -356,6 +264,45 @@ function CRM() {
     }, []);
 
 
+    // Table columns hard coded. NEED FIX!
+    const columns = [
+        {
+            Header: "User ID",
+            accessor: "UserId",
+        },
+        {
+            Header: "First Name",
+            accessor: "firstName",
+
+        },
+        {
+            Header: "Last Name",
+            accessor: "lastName",
+        },
+
+        {
+            Header: "Age",
+            accessor: "age",
+            Filter: NumberRangeColumnFilter,
+            filter: "between",
+        },
+        {
+            Header: "Gender",
+            accessor: "gender",
+
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+        },
+        {
+            Header: "",
+            accessor: "Link",
+            Cell: e => <a href={"userprofile/" + e.value}>Link</a >
+        },
+    ];
+
+
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
         const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
@@ -363,7 +310,7 @@ function CRM() {
         selectedRows.forEach(row => { updateId.push(row.UserId); });
         setUserId(updateId);
 
-        if (userId.length > 0 && groupName != "") {
+        if (userId.length > 0 && groupName !== "") {
             const newGroup = {
                 name: groupName,
                 users: userId,

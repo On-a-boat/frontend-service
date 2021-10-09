@@ -11,8 +11,6 @@ import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
 import Login from "./client/content/login/Login.js";
 
-
-// temp
 import UserProfile from "./client/content/crm/UserProfile";
 
 //Sidebar Details
@@ -43,9 +41,7 @@ const RootSPA = () => {
         <Route exact path="/email" component={Email} />
         <Route exact path="/statistics" component={Statistics} />
 
-
-        {/* temp */}
-        <Route exact path="/userprofile" component={UserProfile} />
+        <Route exact path="/userprofile/:a([0-9]+)" component={UserProfile}></Route>
 
       </Switch>
     </>
