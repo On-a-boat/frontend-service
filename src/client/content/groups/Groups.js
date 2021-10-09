@@ -1,5 +1,4 @@
 import React from 'react';
-import Table from '../crm/CRM';
 import * as s from '../crm/CRM.styles';
 
 
@@ -72,13 +71,9 @@ const Groups = () => {
     const data = React.useMemo(() => makeData(100), []) // Fetch groups data from DB using axios later.
 
 
-    return (
-        <s.TableStyles>
-            <Table columns={columns} data={data} />
-        </s.TableStyles>
-    )
+    
 
-    //return (<h1>Groups </h1>);
+    return (<h1>Groups </h1>);
 }
 
 export default Groups;

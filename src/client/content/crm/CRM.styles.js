@@ -13,7 +13,6 @@ export const TableStyles = styled.div`
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
 
     tr {
       :last-child {
@@ -23,20 +22,30 @@ export const TableStyles = styled.div`
       }
     }
 
-    th,
+    th {
+        background: rgba(250,241,239);
+    }
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      border-bottom: 1px solid #ededed;
 
       :last-child {
-        border-right: 0;
+        
+        border-right: 1px solid #ededed;
+
+      }
+      :first-child {
+        border-left: 1px solid #ededed;
+
+
       }
     }
   }
 
   .pagination {
     padding: 0.5rem;
+            background: rgba(250,241,239);
+
   }
 `;

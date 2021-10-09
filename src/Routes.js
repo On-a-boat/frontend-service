@@ -11,6 +11,7 @@ import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
 import Login from "./client/content/login/Login.js";
 
+import UserProfile from "./client/content/crm/UserProfile";
 import { menuItems } from "./client/constants/pathname";
 
 //Sidebar Details
@@ -32,6 +33,12 @@ const RootSPA = () => {
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/email" component={Email} />
         <Route exact path="/statistics" component={Statistics} />
+
+        <Route
+          exact
+          path="/userprofile/:a([0-9]+)"
+          component={UserProfile}
+        ></Route>
       </Switch>
     </>
   );
