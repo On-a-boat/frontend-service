@@ -238,7 +238,6 @@ function CRM() {
   const [groupName, setGroupName] = useState("");
   const [userId, setUserId] = useState([]);
   const [data, setData] = useState([]);
-  const [userId, setUserId] = useState([]);
 
   // Fetch users data from the Database.
   useEffect(() => {
@@ -265,10 +264,6 @@ function CRM() {
 
   // Table columns hard coded. NEED FIX!
   const columns = [
-    {
-      Header: "User ID",
-      accessor: "UserId",
-    },
     {
       Header: "User ID",
       accessor: "UserId",
