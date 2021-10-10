@@ -7,7 +7,7 @@ import {
     useFilters,
 } from "react-table";
 import axios from "axios";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
 // import SelectColumnFilter from "./filters/SelectColumnFilter";
@@ -60,7 +60,7 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-export const Table = function ({ columns, data }) {
+const Table = function ({ columns, data }) {
     const filterTypes = React.useMemo(
         () => ({
             // override the default text filter to use"
@@ -261,6 +261,8 @@ function CRM() {
             isMounted = false;
         };
     }, []);
+
+
 
     // Table columns hard coded. NEED FIX!
     const columns = [
