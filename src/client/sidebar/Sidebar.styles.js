@@ -28,7 +28,7 @@ export const MenuItemContainer = styled.div``;
 
 export const SidebarFooterWrapper = styled.div`
   background-color: #131a28;
-  width: 15%;
+  /* width: 15%; */
   position: fixed;
   bottom: 0;
   left: 0;
