@@ -1,5 +1,5 @@
 import styled from "../../../node_modules/@emotion/styled";
-require("typeface-nunito-sans");
+// require("typeface-nunito-sans");
 
 export const SideBarContainer = styled.div`
   width: 15%;

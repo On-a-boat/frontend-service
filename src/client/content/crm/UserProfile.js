@@ -5,7 +5,7 @@
 import axios from 'axios';
 import { useState, useEffect } from "react";
 import React from "react";
-
+import { useParams } from 'react-router-dom'
 
 // const useStyles = makeStyles({
 //     table: {
@@ -18,16 +18,14 @@ import React from "react";
 function UserProfile() {
 
     const [data, setData] = useState([]);
-    var pathArray = window.location.pathname.split('/');
-    var userIdCode = pathArray[2];
-
+    const { a } = useParams();
     // Fetch users data from the Database.
     useEffect(() => {
         let isMounted = true;
         const getUser = async () => {
             try {
                 //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('http://13.54.19.72:5000/filter/show');
+                const users = await axios.get('http://13.54.19.72:5000/filter/user?userId=' + a);
 
                 if (isMounted) {
                     setData(users.data);
@@ -44,7 +42,7 @@ function UserProfile() {
             isMounted = false;
         };
     }, []);
-    return (<div>{JSON.stringify(data[userIdCode - 1])}
+    return (<div>{JSON.stringify(data)}
 
 
     </div>);
