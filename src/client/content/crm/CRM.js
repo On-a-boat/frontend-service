@@ -245,7 +245,7 @@ function CRM() {
         const getUser = async () => {
             try {
                 //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get("http://13.54.19.72:5000/filter/show");
+                const users = await axios.get("https://backend.weeyapp-crm-on-a-boat.com/filter/show/");
 
                 if (isMounted) {
                     setData(users.data);
