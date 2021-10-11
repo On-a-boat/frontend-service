@@ -245,7 +245,7 @@ const Groups = () => {
         let isMounted = true;
         const getGroup = async () => {
             try {
-                const groups = await axios.get('http://13.54.19.72:5000/group');
+                const groups = await axios.get('https://backend.weeyapp-crm-on-a-boat.com/group');
 
                 if (isMounted) {
                     setData(groups.data);
