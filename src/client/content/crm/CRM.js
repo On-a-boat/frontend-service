@@ -5,20 +5,44 @@ import {
     useRowSelect,
     useSortBy,
     useFilters,
-    useGlobalFilter,
-    useAsyncDebounce,
 } from "react-table";
-import makeData from "./makeData";
-import axios from 'axios';
-import { useState, useEffect, Fragment } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
-import SelectColumnFilter from "./filters/SelectColumnFilter";
+// import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import SliderColumnFilter from "./filters/SliderColumnFilter";
+// import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
 
-/////////////////////////////////////////////////
+//toggle dropdown menu open/close
+var toClose = false;
+function toggle(e) {
+    e.stopPropagation();
+    var btn = this;
+    var menu = btn.nextSibling;
+
+    while (menu && menu.nodeType !== 1) {
+        menu = menu.nextSibling;
+    }
+    if (!menu) return;
+    if (menu.style.display !== "block") {
+        menu.style.display = "block";
+        if (toClose) toClose.style.display = "none";
+        toClose = menu;
+    } else {
+        menu.style.display = "none";
+        toClose = false;
+    }
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
+        btn.addEventListener("click", toggle, true);
+    });
+});
+
+//A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef();
@@ -36,7 +60,7 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-export const Table = function ({ columns, data }) {
+const Table = function ({ columns, data }) {
     const filterTypes = React.useMemo(
         () => ({
             // override the default text filter to use"
@@ -53,9 +77,9 @@ export const Table = function ({ columns, data }) {
         }),
         []
     );
+    // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
-            // Let's set up our default Filter UI
             Filter: DefaultColumnFilter,
         }),
         []
@@ -68,11 +92,6 @@ export const Table = function ({ columns, data }) {
         headerGroups,
         prepareRow,
         page,
-        rows,
-        state,
-        visibleColumns,
-        preGlobalFilteredRows,
-        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -81,7 +100,7 @@ export const Table = function ({ columns, data }) {
         nextPage,
         previousPage,
         selectedFlatRows,
-        state: { pageIndex, pageSize, selectedRowIds },
+        state: { pageIndex },
     } = useTable(
         {
             columns,
@@ -96,7 +115,7 @@ export const Table = function ({ columns, data }) {
 
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
-                // Let's make a column for selection
+                //  make a column for selection
                 {
                     id: "selection",
                     // The header can use the table's getToggleAllRowsSelectedProps method
@@ -124,38 +143,44 @@ export const Table = function ({ columns, data }) {
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => (
-                        <Fragment>
-                            <tr>
-                                {headerGroup.headers.map((column) => (
-                                    <th>
-                                        {column.render("Header")}
-                                        {/* Render the columns filter UI */}
-                                        <div>
-                                            {column.canFilter ? column.render("Filter") : null}
-                                        </div>
-                                    </th>
-                                ))}
-                            </tr>
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    // Add the sorting props to control sorting. For this example
-                                    // we can add them into the header props
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                        <span>
-                                            {/* no sorting for selection row */}
-                                            {/* I know it's a hardcoding, leave it for now  */}
-                                            {column.Header.length > 1
-                                                ? column.isSorted
-                                                    ? column.isSortedDesc
-                                                        ? " 🔽"
-                                                        : " 🔼"
-                                                    : "{click to sort (temp)"
-                                                : null}
-                                        </span>
-                                    </th>
-                                ))}
-                            </tr>
-                        </Fragment>
+                        <tr>
+                            {headerGroup.headers.map((column) => (
+                                <th>
+                                    <span>{column.render("Header")}</span>
+                                    <span>
+                                        {column.Header.length > 1 ? (
+                                            <span class="product-price-box">
+                                                <div class="buy">
+                                                    <button class="btn-buy-list" id="dropBtn1">
+                                                        ...<span class="btn-arrow"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" style={{ display: "none" }}>
+                                                        <li>
+                                                            {column.canFilter
+                                                                ? column.render("Filter")
+                                                                : null}
+                                                        </li>
+                                                        <li
+                                                            {...column.getHeaderProps(
+                                                                column.getSortByToggleProps()
+                                                            )}
+                                                        >
+                                                            {column.Header.length > 1
+                                                                ? column.isSorted
+                                                                    ? column.isSortedDesc
+                                                                        ? "Default"
+                                                                        : "Sort in Desc"
+                                                                    : "Sort in Asc"
+                                                                : null}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </span>
+                                        ) : null}
+                                    </span>
+                                </th>
+                            ))}
+                        </tr>
                     ))}
                 </thead>
 
@@ -198,75 +223,21 @@ export const Table = function ({ columns, data }) {
 
             <pre>
                 <code>
-                    {
-                        localStorage.setItem(
-                            "selectedRows",
-                            JSON.stringify(selectedFlatRows.map(d => d.original))
-                        )
-                    }
+                    {localStorage.setItem(
+                        "selectedRows",
+                        JSON.stringify(selectedFlatRows.map((d) => d.original))
+                    )}
                 </code>
             </pre>
         </>
     );
 };
 
-// JSON.stringify(
-                        //     {
-                        //         selectedRowIds: selectedRowIds,
-                        //         'selectedFlatRows[].original': selectedFlatRows.map(
-                        //             d => d.original
-                        //         ),
-                        //     },
-                        //     null,
-                        //     2
-                        // )
-
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [data, setData] = useState([]);
     const [userId, setUserId] = useState([]);
-
-
-    // Table columns hard coded. NEED FIX!
-    const columns = React.useMemo(() => [
-        {
-            Header: "User ID",
-            accessor: "UserId",
-            //accessor: "visits",
-        },
-        {
-            Header: "First Name",
-            accessor: "FirstName",
-            //accessor: "firstName",
-
-        },
-        {
-            Header: "Last Name",
-            accessor: "LastName",
-            //accessor: "lastName",
-        },
-
-        {
-            Header: "Age",
-            accessor: "Age",
-            //accessor: "age",
-            Filter: NumberRangeColumnFilter,
-            filter: "between",
-        },
-        {
-            Header: "Gender",
-            accessor: "Gender",
-            //accessor: "progress",
-
-        },
-        {
-            Header: "Keywords",
-            accessor: "Keywords",
-            //accessor: "status",
-        },
-    ]);
-
+    const [data, setData] = useState([]);
 
     // Fetch users data from the Database.
     useEffect(() => {
@@ -274,14 +245,13 @@ function CRM() {
         const getUser = async () => {
             try {
                 //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('http://13.54.19.72:5000/filter');
+                const users = await axios.get("https://backend.weeyapp-crm-on-a-boat.com/filter/show/");
 
                 if (isMounted) {
                     setData(users.data);
                 }
-                                
+
                 console.log(users);
-    
             } catch (error) {
                 console.error(error);
             }
@@ -291,16 +261,56 @@ function CRM() {
             isMounted = false;
         };
     }, []);
-    
+
+
+
+    // Table columns hard coded. NEED FIX!
+    const columns = [
+        {
+            Header: "User ID",
+            accessor: "UserId",
+            //accessor: "visits",
+        },
+        {
+            Header: "First Name",
+            accessor: "firstName",
+        },
+        {
+            Header: "Last Name",
+            accessor: "lastName",
+        },
+
+        {
+            Header: "Age",
+            accessor: "age",
+            Filter: NumberRangeColumnFilter,
+            filter: "between",
+        },
+        {
+            Header: "Gender",
+            accessor: "gender",
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+        },
+        {
+            Header: "",
+            accessor: "Link",
+            Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
+        },
+    ];
 
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
         const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
         var updateId = [];
-        selectedRows.forEach(row => { updateId.push(row.UserId); });
+        selectedRows.forEach((row) => {
+            updateId.push(row.UserId);
+        });
         setUserId(updateId);
 
-        if (userId.length > 0 && groupName != "") {
+        if (userId.length > 0 && groupName !== "") {
             const newGroup = {
                 name: groupName,
                 users: userId,
@@ -312,15 +322,9 @@ function CRM() {
             // display that group was created to the admin here. NEED FIX!
         }
     };
-    
-    
 
     return (
         <div>
-            <s.TableStyles>
-                <Table columns={columns} data={data} />
-            </s.TableStyles>
-
             <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
             <Popup trigger={buttonPopup}>
                 <input
@@ -333,6 +337,11 @@ function CRM() {
                 <button onClick={() => makeGroup()}> Create </button>
                 <button onClick={() => setButtonPopup(false)}> Cancel </button>
             </Popup>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+
+
         </div>
     );
 }
