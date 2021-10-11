@@ -325,10 +325,6 @@ function CRM() {
 
     return (
         <div>
-            <s.TableStyles>
-                <Table columns={columns} data={data} />
-            </s.TableStyles>
-
             <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
             <Popup trigger={buttonPopup}>
                 <input
@@ -341,6 +337,11 @@ function CRM() {
                 <button onClick={() => makeGroup()}> Create </button>
                 <button onClick={() => setButtonPopup(false)}> Cancel </button>
             </Popup>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+
+
         </div>
     );
 }

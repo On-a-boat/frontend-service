@@ -8,29 +8,28 @@ import React from "react";
 import { useParams } from 'react-router-dom'
 
 
-
 const useStyles = makeStyles({
     table: {
-        width: 650,
+        width: 550,
+        position: 'absolute',
+        right: 70,
+        top: 20,
     },
 });
 
 const DetailTable = function ({ data }) {
-    return (<div className="App">
-        <div className='table-container'>
-            <Table >
+    const classes = useStyles();
+
+    return (
+        <div className='table-container' style={{
+
+
+        }}>
+            <Table className={classes.table} >
                 <TableRow>
                     <TableCell>User ID</TableCell>
                     <TableCell>
                         {data.map(d => <span>{d.userId}</span>)}
-                    </TableCell>
-                </TableRow>
-
-
-                <TableRow>
-                    <TableCell>User Name</TableCell>
-                    <TableCell>
-                        {data.map(d => <span>{d.username}</span>)}
                     </TableCell>
                 </TableRow>
 
@@ -83,12 +82,19 @@ const DetailTable = function ({ data }) {
                     </TableCell>
                 </TableRow>
 
+                <TableRow >
+                    <br />
+                    <br />
+
+                </TableRow>
 
 
-
-
-
-
+                <TableRow>
+                    <TableCell>User Name</TableCell>
+                    <TableCell>
+                        {data.map(d => <span>{d.username}</span>)}
+                    </TableCell>
+                </TableRow>
 
                 <TableRow >
                     <TableCell>Sign Up Date</TableCell>
@@ -120,21 +126,28 @@ const DetailTable = function ({ data }) {
 
             </Table>
         </div>
-    </div >);
-
+    );
 
 }
 
+// const useStyles = makeStyles({
+//     table: {
+//         width: 500,
 
-function UserProfile() {
+//     },
+// });
 
+
+export default function UserProfile() {
+
+    const [data, setData] = useState([]);
     const { a } = useParams();
+
     // Fetch users data from the Database.
     useEffect(() => {
         let isMounted = true;
         const getUser = async () => {
             try {
-                //const users = await axios.get('http://localhost:5000/filter');
                 const users = await axios.get('http://13.54.19.72:5000/filter/user?userId=' + a);
 
                 if (isMounted) {
@@ -152,22 +165,9 @@ function UserProfile() {
             isMounted = false;
         };
     }, []);
-    const [data, setData] = useState([]);
-    console.log(data.length);
-
-
-
     return (<DetailTable data={data} />);
 
-
-
-
 }
-
-
-export default UserProfile;
-
-
 
 
 
