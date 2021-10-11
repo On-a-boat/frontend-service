@@ -244,8 +244,8 @@ function CRM() {
         let isMounted = true;
         const getUser = async () => {
             try {
-                //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('http://13.54.19.72:5000/filter/show');
+
+                const users = await axios.get("http://13.54.19.72:5000/filter/show");
 
                 if (isMounted) {
                     setData(users.data);
@@ -326,11 +326,7 @@ function CRM() {
 
 
     return (
-        <div>
-            <s.TableStyles>
-                <Table columns={columns} data={data} />
-            </s.TableStyles>
-
+        <div style={{ margin: "auto", marginTop: "50px" }}>
             <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
             <Popup trigger={buttonPopup}>
                 <input
@@ -343,6 +339,11 @@ function CRM() {
                 <button onClick={() => makeGroup()}> Create </button>
                 <button onClick={() => setButtonPopup(false)}> Cancel </button>
             </Popup>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+
+
         </div>
     );
 }

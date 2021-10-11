@@ -13,6 +13,7 @@ export const TableStyles = styled.div`
 
   table {
     border-spacing: 0;
+    height: 80vh;
 
     tr {
       :last-child {
@@ -24,7 +25,9 @@ export const TableStyles = styled.div`
 
     th {
         background: rgba(250,241,239);
+        width: 120px;
     }
+
     td {
       margin: 0;
       padding: 0.5rem;
