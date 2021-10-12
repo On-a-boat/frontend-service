@@ -128,33 +128,11 @@ const Table = function ({ columns, data }) {
                             <tr>
                                 {headerGroup.headers.map((column) => (
                                     <th>
-                                        {column.render("Header")}
-                                        {/* Render the columns filter UI */}
-                                        <div>
-                                            {column.canFilter ? column.render("Filter") : null}
-                                        </div>
+                                        {column.render("Header")}                                        
                                     </th>
                                 ))}
                             </tr>
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    // Add the sorting props to control sorting. For this example
-                                    // we can add them into the header props
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                        <span>
-                                            {/* no sorting for selection row */}
-                                            {/* I know it's a hardcoding, leave it for now  */}
-                                            {column.Header.length > 1
-                                                ? column.isSorted
-                                                    ? column.isSortedDesc
-                                                        ? " 🔽"
-                                                        : " 🔼"
-                                                    : "{click to sort (temp)"
-                                                : null}
-                                        </span>
-                                    </th>
-                                ))}
-                            </tr>
+                           
                         </Fragment>
                     ))}
                 </thead>
