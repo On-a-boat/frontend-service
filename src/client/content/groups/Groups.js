@@ -11,6 +11,7 @@ import {
     useAsyncDebounce,
 } from "react-table";
 import DefaultColumnFilter from "../crm/filters/DefaultColumnFilter";
+import Popup from '../../components/Popup';
 import NumberRangeColumnFilter from "../crm/filters/NumberRangeColumnFilter";
 
 import * as s from '../crm/CRM.styles';
@@ -213,6 +214,8 @@ const Table = function ({ columns, data }) {
 
 const Groups = () => {
     const [data, setData] = useState([]);
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [email, setEmail] = useState("");
 
     const columns = React.useMemo(
         () => [
@@ -223,19 +226,24 @@ const Groups = () => {
             },
             {
                 Header: 'Group Name',
-                accessor: 'GroupName',
+                accessor: 'groupName',
             },
             {
                 Header: 'Users',
-                accessor: 'users',
+                accessor: 'userNum',
             },
             {
                 Header: 'Date Created',
-                accessor: 'Date',
+                accessor: 'dateCreated',
             },
             {
-                Header: 'Keywords',
-                accessor: 'GroupDescription',
+                Header: 'Emails Sent',
+                accessor: 'emailSent',
+            },
+            {
+                Header: "",
+                accessor: "none",
+                Cell: (e) => <button onClick={() => setButtonPopup(true)}>{"Send email"}</button>,
             },
         ]
     )
@@ -267,12 +275,25 @@ const Groups = () => {
 
 
     return (
-        
-        <s.TableStyles>
-            <Table columns={columns} data={data} />
-        </s.TableStyles>
-            
-        
+        <div>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+                
+            <Popup trigger={buttonPopup}>
+                <input
+                    value={email || ""}
+                    onChange={(e) => {
+                        setEmail(e.target.value || ""); // Set undefined to remove the filter entirely
+                    }}
+                    placeholder={"Enter email"}
+                />
+
+                {/* onClick, send email */}
+                <button> Send </button>
+                <button onClick={() => setButtonPopup(false)}> Cancel </button>
+            </Popup>
+        </div>
     );
 
 

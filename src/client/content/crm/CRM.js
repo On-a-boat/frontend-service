@@ -312,12 +312,13 @@ function CRM() {
 
         if (userId.length > 0 && groupName !== "") {
             const newGroup = {
-                name: groupName,
+                groupName: groupName,
                 users: userId,
-                userCount: userId.length,
-                dateCreated: new Date().toLocaleDateString(),
+                userNum: userId.length,
+                //dateCreated: new Date().toLocaleDateString(),
             };
             // axios.post this JSON to db later. NEED FIX!
+
             console.log(JSON.stringify(newGroup));
             // display that group was created to the admin here. NEED FIX!
         }
