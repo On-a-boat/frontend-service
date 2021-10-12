@@ -337,7 +337,7 @@ function CRM() {
         const getUser = async () => {
             try {
                 //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('http://13.54.19.72:5000/filter/show');
+                const users = await axios.get('https://backend.weeyapp-crm-on-a-boat.com/filter/show');
 
                 if (isMounted) {
                     setData(users.data);
@@ -364,14 +364,26 @@ function CRM() {
         setUserId(updateId);
 
         if (userId.length > 0 && groupName != "") {
-            const newGroup = {
-                name: groupName,
+            axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', {
+                groupName: groupName,
                 users: userId,
                 userCount: userId.length,
                 dateCreated: new Date().toLocaleDateString(),
-            };
+            }).then((response) => {
+                console.log(response);
+            });
+
+
+            // const newGroup = {
+            //     name: groupName,
+            //     users: userId,
+            //     userCount: userId.length,
+            //     //dateCreated: new Date().toLocaleDateString(),
+            // };
+            // axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', newGroup);
+
             // axios.post this JSON to db later. NEED FIX!
-            console.log(JSON.stringify(newGroup));
+            // console.log(JSON.stringify(newGroup));
             // display that group was created to the admin here. NEED FIX!
         }
     };

@@ -267,7 +267,7 @@ const Groups = () => {
                     placeholder={"Enter email"}
                 />
 
-                {/* onClick, send email */}
+                {/* onClick, send email and update emails sent of table*/}
                 <button> Send </button>
                 <button onClick={() => setButtonPopup(false)}> Cancel </button>
             </Popup>
