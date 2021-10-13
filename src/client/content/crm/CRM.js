@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import {
     useTable,
     usePagination,
@@ -7,15 +7,13 @@ import {
     useFilters,
 } from "react-table";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import * as s from "./CRM.styles";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
-// import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-// import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
+import * as s from "./CRM.styles";
 
-//toggle dropdown menu open/close
+
+//toggle dropdown menu open/close filter and sort
 var toClose = false;
 function toggle(e) {
     e.stopPropagation();
@@ -42,6 +40,7 @@ window.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
 //A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -60,10 +59,12 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
+// CRM table
 const Table = function ({ columns, data }) {
+
+    // Define filtering options; case insensitive 
     const filterTypes = React.useMemo(
         () => ({
-            // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter((row) => {
                     const rowValue = row.values[id];
@@ -77,6 +78,7 @@ const Table = function ({ columns, data }) {
         }),
         []
     );
+
     // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
@@ -85,7 +87,7 @@ const Table = function ({ columns, data }) {
         []
     );
 
-    // Use the state and functions returned from useTable to build your UI
+    // States and functions returned from useTable
     const {
         getTableProps,
         getTableBodyProps,
@@ -112,7 +114,8 @@ const Table = function ({ columns, data }) {
         useSortBy,
         usePagination,
         useRowSelect,
-
+        
+        // define functionalities for checkbox
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
                 //  make a column for selection
@@ -136,22 +139,26 @@ const Table = function ({ columns, data }) {
                 ...columns,
             ]);
         }
+
     );
 
     return (
         <>
-            <table {...getTableProps()}>
-                <thead>
+            <s.CRMTable {...getTableProps()}>
+                <s.CRMTableHead>
                     {headerGroups.map((headerGroup) => (
                         <tr>
                             {headerGroup.headers.map((column) => (
                                 <th>
+                                    {/* header */}
                                     <span>{column.render("Header")}</span>
+
+                                    {/* drop down bar, contians filter and sort */}
                                     <span>
                                         {column.Header.length > 1 ? (
-                                            <span class="product-price-box">
-                                                <div class="buy">
-                                                    <button class="btn-buy-list" id="dropBtn1">
+                                            <span>
+                                                <div>
+                                                <button class="btn-buy-list" id="dropBtn1">
                                                         ...<span class="btn-arrow"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" style={{ display: "none" }}>
@@ -178,13 +185,14 @@ const Table = function ({ columns, data }) {
                                             </span>
                                         ) : null}
                                     </span>
+
                                 </th>
                             ))}
                         </tr>
                     ))}
-                </thead>
+                </s.CRMTableHead>
 
-                <tbody {...getTableBodyProps()}>
+                <s.CRMTableBody {...getTableBodyProps()}>
                     {page.map((row, i) => {
                         prepareRow(row);
                         return (
@@ -197,30 +205,35 @@ const Table = function ({ columns, data }) {
                             </tr>
                         );
                     })}
-                </tbody>
-            </table>
+                </s.CRMTableBody>
+            </s.CRMTable>
 
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {/*  define pagination of the table,  */}
+            <s.Pagination>
+                <s.PaginationArrowButton onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {"<<"}
-                </button>{" "}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => previousPage()} disabled={!canPreviousPage}>
                     {"<"}
-                </button>{" "}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => nextPage()} disabled={!canNextPage}>
                     {">"}
-                </button>{" "}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {">>"}
-                </button>{" "}
-                <span>
-                    Page{" "}
-                    <strong>
+                </s.PaginationArrowButton>{" "}
+                <s.CurrPage>
+                    Page
+                    {" "}
                         {pageIndex + 1} of {pageOptions.length}
-                    </strong>{" "}
-                </span>
-            </div>
+                    {" "}
+                </s.CurrPage>
+            </s.Pagination>
 
+
+            
+            
+            {/* Create a JSON file for checked rows */}
             <pre>
                 <code>
                     {localStorage.setItem(
@@ -244,7 +257,6 @@ function CRM() {
         let isMounted = true;
         const getUser = async () => {
             try {
-                //const users = await axios.get('http://localhost:5000/filter');
                 const users = await axios.get("https://backend.weeyapp-crm-on-a-boat.com/filter/show/");
 
                 if (isMounted) {
@@ -264,12 +276,11 @@ function CRM() {
 
 
 
-    // Table columns hard coded. NEED FIX!
+    // Table columns
     const columns = [
         {
             Header: "User ID",
             accessor: "UserId",
-            //accessor: "visits",
         },
         {
             Header: "First Name",
@@ -324,25 +335,30 @@ function CRM() {
     };
 
     return (
-        <div>
-            <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
+        
+        <s.CRMContainer>
+
+            {/* Modal */}
+            <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>{"Create Group"}</s.CreateGroupModalButton>
             <Popup trigger={buttonPopup}>
-                <input
+                <s.GroupNameInput
                     value={groupName || ""}
                     onChange={(e) => {
                         setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
                     }}
                     placeholder={"Enter group name"}
                 />
-                <button onClick={() => makeGroup()}> Create </button>
-                <button onClick={() => setButtonPopup(false)}> Cancel </button>
+                <s.CreateGroupButton onClick={() => makeGroup()}> Create </s.CreateGroupButton>
+                <s.CancelGroupButton onClick={() => setButtonPopup(false)}> Cancel </s.CancelGroupButton>
             </Popup>
-            <s.TableStyles>
+            
+            {/* Table */}
+            {/* <s.TableStyles> */}
                 <Table columns={columns} data={data} />
-            </s.TableStyles>
-
-
-        </div>
+            {/* </s.TableStyles> */}
+            
+        </s.CRMContainer>
+       
     );
 }
 

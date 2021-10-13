@@ -4,8 +4,7 @@ import styled from "../../../node_modules/@emotion/styled";
 export const SideBarContainer = styled.div`
   width: 15%;
   // responsive , max width and min width of the sidebar
-  max-width: 280px;
-  min-width: 80px;
+
   background-color: #24303f;
 `;
 
