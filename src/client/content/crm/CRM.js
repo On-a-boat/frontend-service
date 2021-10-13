@@ -147,49 +147,47 @@ const Table = function ({ columns, data }) {
             <s.CRMTable {...getTableProps()}>
                 <s.CRMTableHead>
                     {headerGroups.map((headerGroup) => (
-                        <tr>
+                        <tr style={{position:"relative"}}>
                             {headerGroup.headers.map((column) => (
                                 <th>
                                     {/* header */}
                                     <span>{column.render("Header")}</span>
 
                                     {/* drop down bar, contians filter and sort */}
-                                    <span>
+                                    <span >
                                         {column.Header.length > 1 ? (
-                                            <span>
+                                            <span >
                                                 
-                                                <button class="btn-buy-list">...</button>
+                                                <button class="btn-buy-list"  style={{ border: "none",backgroundColor: "transparent" }}> •••</button>
 
-                                                    <ul style={{ display: "none" }}>
+                                                <ul style={{ display: "none" }}>
 
-                                                        {/* filter */}
-                                                        <li>
-                                                            {column.canFilter
-                                                                ? column.render("Filter")
-                                                                : null}
-                                                        </li>
+                                                    {/* filter */}
+                                                    <li  style={{backgroundColor: "white" }}>
+                                                        {column.canFilter
+                                                            ? column.render("Filter")
+                                                            : null}
+                                                    </li>
 
-
-                                                        {/* sort */}
-                                                        <li
-                                                            {...column.getHeaderProps(
-                                                                column.getSortByToggleProps()
-                                                            )}
-                                                        >
-                                                            {column.Header.length > 1
-                                                                ? column.isSorted
-                                                                    ? column.isSortedDesc
-                                                                        ? "Default"
-                                                                        : "Sort in Desc"
-                                                                    : "Sort in Asc"
-                                                                : null}
-                                                        </li>
-
-                                                    </ul>
+                                                    {/* sort */}
+                                                    <li
+                                                        {...column.getHeaderProps(
+                                                            column.getSortByToggleProps()
+                                                        )}
+                                                        style={{backgroundColor: "white" }}
+                                                    >
+                                                        {column.Header.length > 1
+                                                            ? column.isSorted
+                                                                ? column.isSortedDesc
+                                                                    ? "Default"
+                                                                    : "Sort in Desc"
+                                                                : "Sort in Asc"
+                                                            : null}
+                                                    </li>
+                                                </ul>
                                             </span>
                                         ) : null}
                                     </span>
-
                                 </th>
                             ))}
                         </tr>
