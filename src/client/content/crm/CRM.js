@@ -1,43 +1,54 @@
-import React,{ useState, useEffect } from "react";
+import React from "react";
+// import DropDown from "./filters/DropDown";
 import {
     useTable,
     usePagination,
     useRowSelect,
     useSortBy,
     useFilters,
+    useGlobalFilter,
+    useAsyncDebounce,
 } from "react-table";
-import axios from "axios";
-import DefaultColumnFilter from "./filters/DefaultColumnFilter";
-import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import Popup from "../../components/Popup";
+import axios from 'axios';
+import { useState, useEffect, Fragment } from "react";
 import * as s from "./CRM.styles";
+import DefaultColumnFilter from "./filters/DefaultColumnFilter";
+import SelectColumnFilter from "./filters/SelectColumnFilter";
+import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
+import SliderColumnFilter from "./filters/SliderColumnFilter";
+import Popup from "../../components/Popup";
+import Divider from '@mui/material/Divider';
 
+//toggle dropdown menu open/close
+var toClose = false
 
-//toggle dropdown menu open/close filter and sort
-var toClose = false;
 function toggle(e) {
-    e.stopPropagation();
-    var btn = this;
-    var menu = btn.nextSibling;
+  e.stopPropagation();
+  var btn=this;
+  var menu = btn.nextSibling;
+  
+  while(menu && menu.nodeType != 1) {
+     menu = menu.nextSibling
+  }
+  if(!menu) return;
+  if (menu.style.display !== 'block') {
+    menu.style.display = 'block';
+    if(toClose) toClose.style.display="none";
+    toClose  = menu;
+  }  else {
+    menu.style.display = 'none';
+    toClose=false;
+  }
 
-    while (menu && menu.nodeType !== 1) {
-        menu = menu.nextSibling;
-    }
-    if (!menu) return;
-    if (menu.style.display !== "block") {
-        menu.style.display = "block";
-        if (toClose) toClose.style.display = "none";
-        toClose = menu;
-    } else {
-        menu.style.display = "none";
-        toClose = false;
-    }
-}
+};
+function closeAll() {
+    toClose.style.display='none';
+};
 
-window.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
-        btn.addEventListener("click", toggle, true);
-    });
+window.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll(".btn-buy-list").forEach(function(btn){
+     btn.addEventListener("click",toggle,true);
+  });
 });
 
 
@@ -59,7 +70,6 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-// CRM table
 const Table = function ({ columns, data }) {
 
     // Define filtering options; case insensitive 
@@ -82,6 +92,7 @@ const Table = function ({ columns, data }) {
     // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
+            // Let's set up our default Filter UI
             Filter: DefaultColumnFilter,
         }),
         []
@@ -94,6 +105,11 @@ const Table = function ({ columns, data }) {
         headerGroups,
         prepareRow,
         page,
+        rows,
+        state,
+        visibleColumns,
+        preGlobalFilteredRows,
+        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -102,7 +118,7 @@ const Table = function ({ columns, data }) {
         nextPage,
         previousPage,
         selectedFlatRows,
-        state: { pageIndex },
+        state: { pageIndex, pageSize, selectedRowIds },
     } = useTable(
         {
             columns,
@@ -118,7 +134,7 @@ const Table = function ({ columns, data }) {
         // define functionalities for checkbox
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
-                //  make a column for selection
+                // Let's make a column for selection
                 {
                     id: "selection",
                     // The header can use the table's getToggleAllRowsSelectedProps method
@@ -142,55 +158,65 @@ const Table = function ({ columns, data }) {
 
     );
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
+
+
     return (
         <>
             <s.CRMTable {...getTableProps()}>
                 <s.CRMTableHead>
                     {headerGroups.map((headerGroup) => (
+
                         <tr>
                             {headerGroup.headers.map((column) => (
-                                <th>
-                                    {/* header */}
+                                <Fragment>
+                                    <th>
                                     <span>{column.render("Header")}</span>
 
-                                    {/* drop down bar, contians filter and sort */}
-                                    <span>
-                                        {column.Header.length > 1 ? (
-                                            <span>
-                                                
-                                                <button class="btn-buy-list">...</button>
+<span>
+{column.Header.length > 1 ?
+<span class="product-price-box">
+  <div class="buy">
+    <button class="btn-buy-list" id="dropBtn1">...<span class="btn-arrow"></span></button>
+    <ul class="dropdown-menu" style={{display: "none"}}>
+    <li >
+   
+                                            {column.canFilter ? column.render("Filter") : null}
+                                       
 
-                                                    <ul style={{ display: "none" }}>
+</li>
+      <li  {...column.getHeaderProps(column.getSortByToggleProps())}>
 
-                                                        {/* filter */}
-                                                        <li>
-                                                            {column.canFilter
-                                                                ? column.render("Filter")
-                                                                : null}
-                                                        </li>
+{column.Header.length > 1
+    ? column.isSorted
+        ? column.isSortedDesc
+            ? " 🔽"
+            : " 🔼"
+        : "{click to sort (temp)"
+    : null}
+</li>
 
 
-                                                        {/* sort */}
-                                                        <li
-                                                            {...column.getHeaderProps(
-                                                                column.getSortByToggleProps()
-                                                            )}
-                                                        >
-                                                            {column.Header.length > 1
-                                                                ? column.isSorted
-                                                                    ? column.isSortedDesc
-                                                                        ? "Default"
-                                                                        : "Sort in Desc"
-                                                                    : "Sort in Asc"
-                                                                : null}
-                                                        </li>
+    </ul>
+  </div>
 
-                                                    </ul>
-                                            </span>
-                                        ) : null}
-                                    </span>
 
-                                </th>
+</span>  : null}
+
+</span>
+
+  </th>
+                                </Fragment>
+
                             ))}
                         </tr>
                     ))}
@@ -238,10 +264,12 @@ const Table = function ({ columns, data }) {
             {/* Create a JSON file for checked rows */}
             <pre>
                 <code>
-                    {localStorage.setItem(
-                        "selectedRows",
-                        JSON.stringify(selectedFlatRows.map((d) => d.original))
-                    )}
+                    {
+                        localStorage.setItem(
+                            "selectedRows",
+                            JSON.stringify(selectedFlatRows.map(d => d.original))
+                        )
+                    }
                 </code>
             </pre>
 
@@ -249,24 +277,82 @@ const Table = function ({ columns, data }) {
     );
 };
 
+// JSON.stringify(
+//     {
+//         selectedRowIds: selectedRowIds,
+//         'selectedFlatRows[].original': selectedFlatRows.map(
+//             d => d.original
+//         ),
+//     },
+//     null,
+//     2
+// )
+
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [userId, setUserId] = useState([]);
     const [data, setData] = useState([]);
+    const [userId, setUserId] = useState([]);
+
+
+    // Table columns hard coded. NEED FIX!
+    const columns = React.useMemo(() => [
+        {
+            Header: "User ID",
+            accessor: "UserId",
+        },
+        {
+            Header: "First Name",
+            accessor: "firstName",
+            //accessor: "firstName",
+
+        },
+        {
+            Header: "Last Name",
+            accessor: "lastName",
+            //accessor: "lastName",
+        },
+
+        {
+            Header: "Age",
+            accessor: "age",
+            //accessor: "age",
+            Filter: NumberRangeColumnFilter,
+            filter: "between",
+        },
+        {
+            Header: "Gender",
+            accessor: "gender",
+            //accessor: "progress",
+
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+            //accessor: "status",
+        },
+        {
+            Header: "",
+            accessor: "Link",
+            Cell: e => <a href={e.value}> {e.value} </a>
+        },
+    ]);
+
 
     // Fetch users data from the Database.
     useEffect(() => {
         let isMounted = true;
         const getUser = async () => {
             try {
-                const users = await axios.get("https://backend.weeyapp-crm-on-a-boat.com/filter/show/");
+                //const users = await axios.get('http://localhost:5000/filter');
+                const users = await axios.get('https://backend.weeyapp-crm-on-a-boat.com/filter/show');
 
                 if (isMounted) {
                     setData(users.data);
                 }
 
                 console.log(users);
+
             } catch (error) {
                 console.error(error);
             }
@@ -278,71 +364,52 @@ function CRM() {
     }, []);
 
 
-
-    // Table columns
-    const columns = [
-        {
-            Header: "User ID",
-            accessor: "UserId",
-        },
-        {
-            Header: "First Name",
-            accessor: "firstName",
-        },
-        {
-            Header: "Last Name",
-            accessor: "lastName",
-        },
-
-        {
-            Header: "Age",
-            accessor: "age",
-            Filter: NumberRangeColumnFilter,
-            filter: "between",
-        },
-        {
-            Header: "Gender",
-            accessor: "gender",
-        },
-        {
-            Header: "Email",
-            accessor: "email",
-        },
-        {
-            Header: "",
-            accessor: "Link",
-            Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
-        },
-    ];
-
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
+        const Ymd = date => date.toISOString().slice(0, 10);
         const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
         var updateId = [];
-        selectedRows.forEach((row) => {
-            updateId.push(row.UserId);
-        });
+        selectedRows.forEach(row => { updateId.push(row.UserId); });
         setUserId(updateId);
 
-        if (userId.length > 0 && groupName !== "") {
+
+
+        if (userId.length > 0 && groupName != "") {
+            axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', {
+                groupName: groupName,
+                users: "" + userId,
+                userCount: userId.length,
+                dateCreated: Ymd(new Date()),
+            }).then((response) => {
+                console.log(response);
+            });
+
+
             const newGroup = {
                 name: groupName,
                 users: userId,
                 userCount: userId.length,
-                dateCreated: new Date().toLocaleDateString(),
+                dateCreated: Ymd(new Date()),
             };
+
+            console.log(newGroup);
+            // axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', newGroup);
+
             // axios.post this JSON to db later. NEED FIX!
-            console.log(JSON.stringify(newGroup));
+            // console.log(JSON.stringify(newGroup));
             // display that group was created to the admin here. NEED FIX!
         }
     };
 
-    return (
-        
-        <s.CRMContainer>
 
-            {/* Modal */}
-            <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>{"Create Group"}</s.CreateGroupModalButton>
+
+    return (
+        <div>
+            <s.TableStyles>
+                <Table columns={columns} data={data} />
+            </s.TableStyles>
+
+            <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
             <Popup trigger={buttonPopup}>
                 <s.GroupNameInput
                     value={groupName || ""}
@@ -354,14 +421,7 @@ function CRM() {
                 <s.CreateGroupButton onClick={() => makeGroup()}> Create </s.CreateGroupButton>
                 <s.CancelGroupButton onClick={() => setButtonPopup(false)}> Cancel </s.CancelGroupButton>
             </Popup>
-            
-            {/* Table */}
-            {/* <s.TableStyles> */}
-                <Table columns={columns} data={data} />
-            {/* </s.TableStyles> */}
-            
-        </s.CRMContainer>
-       
+        </div>
     );
 }
 
