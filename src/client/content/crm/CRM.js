@@ -51,7 +51,8 @@ window.addEventListener("DOMContentLoaded",function(){
   });
 });
 
-/////////////////////////////////////////////////
+
+//A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef();
@@ -69,11 +70,11 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-export const Table = function ({ columns, data }) {
+const Table = function ({ columns, data }) {
 
+    // Define filtering options; case insensitive 
     const filterTypes = React.useMemo(
         () => ({
-            // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter((row) => {
                     const rowValue = row.values[id];
@@ -87,6 +88,8 @@ export const Table = function ({ columns, data }) {
         }),
         []
     );
+
+    // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
@@ -95,7 +98,7 @@ export const Table = function ({ columns, data }) {
         []
     );
 
-    // Use the state and functions returned from useTable to build your UI
+    // States and functions returned from useTable
     const {
         getTableProps,
         getTableBodyProps,
@@ -127,7 +130,8 @@ export const Table = function ({ columns, data }) {
         useSortBy,
         usePagination,
         useRowSelect,
-
+        
+        // define functionalities for checkbox
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
                 // Let's make a column for selection
@@ -151,6 +155,7 @@ export const Table = function ({ columns, data }) {
                 ...columns,
             ]);
         }
+
     );
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -167,8 +172,8 @@ export const Table = function ({ columns, data }) {
 
     return (
         <>
-            <table {...getTableProps()}>
-                <thead>
+            <s.CRMTable {...getTableProps()}>
+                <s.CRMTableHead>
                     {headerGroups.map((headerGroup) => (
 
                         <tr>
@@ -215,9 +220,9 @@ export const Table = function ({ columns, data }) {
                             ))}
                         </tr>
                     ))}
-                </thead>
+                </s.CRMTableHead>
 
-                <tbody {...getTableBodyProps()}>
+                <s.CRMTableBody {...getTableBodyProps()}>
                     {page.map((row, i) => {
                         prepareRow(row);
                         return (
@@ -230,30 +235,33 @@ export const Table = function ({ columns, data }) {
                             </tr>
                         );
                     })}
-                </tbody>
-            </table>
+                </s.CRMTableBody>
+            </s.CRMTable>
 
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {/*  define pagination of the table,  */}
+            <s.Pagination>
+                <s.PaginationArrowButton onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {"<<"}
-                </button>{" "}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => previousPage()} disabled={!canPreviousPage}>
                     {"<"}
-                </button>{" "}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => nextPage()} disabled={!canNextPage}>
                     {">"}
-                </button>{" "}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {">>"}
-                </button>{" "}
-                <span>
-                    Page{" "}
-                    <strong>
+                </s.PaginationArrowButton>{" "}
+                <s.CurrPage>
+                    Page
+                    {" "}
                         {pageIndex + 1} of {pageOptions.length}
-                    </strong>{" "}
-                </span>
-            </div>
+                    {" "}
+                </s.CurrPage>
+            </s.Pagination>
 
+
+            {/* Create a JSON file for checked rows */}
             <pre>
                 <code>
                     {
@@ -264,6 +272,7 @@ export const Table = function ({ columns, data }) {
                     }
                 </code>
             </pre>
+
         </>
     );
 };
@@ -291,7 +300,6 @@ function CRM() {
         {
             Header: "User ID",
             accessor: "UserId",
-            //accessor: "visits",
         },
         {
             Header: "First Name",
@@ -403,15 +411,15 @@ function CRM() {
 
             <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
             <Popup trigger={buttonPopup}>
-                <input
+                <s.GroupNameInput
                     value={groupName || ""}
                     onChange={(e) => {
                         setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
                     }}
                     placeholder={"Enter group name"}
                 />
-                <button onClick={() => makeGroup()}> Create </button>
-                <button onClick={() => setButtonPopup(false)}> Cancel </button>
+                <s.CreateGroupButton onClick={() => makeGroup()}> Create </s.CreateGroupButton>
+                <s.CancelGroupButton onClick={() => setButtonPopup(false)}> Cancel </s.CancelGroupButton>
             </Popup>
         </div>
     );
