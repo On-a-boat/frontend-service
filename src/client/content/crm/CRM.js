@@ -358,28 +358,33 @@ function CRM() {
 
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
+        const Ymd = date => date.toISOString().slice(0, 10);
         const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
         var updateId = [];
         selectedRows.forEach(row => { updateId.push(row.UserId); });
         setUserId(updateId);
 
+
+
         if (userId.length > 0 && groupName != "") {
             axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', {
                 groupName: groupName,
-                users: userId,
+                users: "" + userId,
                 userCount: userId.length,
-                dateCreated: new Date().toLocaleDateString(),
+                dateCreated: Ymd(new Date()),
             }).then((response) => {
                 console.log(response);
             });
 
 
-            // const newGroup = {
-            //     name: groupName,
-            //     users: userId,
-            //     userCount: userId.length,
-            //     //dateCreated: new Date().toLocaleDateString(),
-            // };
+            const newGroup = {
+                name: groupName,
+                users: userId,
+                userCount: userId.length,
+                dateCreated: Ymd(new Date()),
+            };
+
+            console.log(newGroup);
             // axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', newGroup);
 
             // axios.post this JSON to db later. NEED FIX!

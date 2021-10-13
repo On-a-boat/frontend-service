@@ -208,7 +208,7 @@ const Groups = () => {
             },
             {
                 Header: 'Users',
-                accessor: 'userNum',
+                accessor: 'userCount',
             },
             {
                 Header: 'Date Created',
