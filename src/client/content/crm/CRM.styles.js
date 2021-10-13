@@ -38,6 +38,11 @@ export const CRMTableHead = styled.thead`
   background: rgba(250, 241, 239);
 `;
 
+export const CRMHeadFilter = styled.ul`
+  list-style: none;
+  background-color: transparent;
+`;
+
 export const CRMTableBody = styled.tbody``;
 
 export const DropDownButton = styled.button``;
