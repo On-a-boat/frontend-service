@@ -1,57 +1,47 @@
-import React from "react";
-// import DropDown from "./filters/DropDown";
+import React,{ useState, useEffect } from "react";
 import {
     useTable,
     usePagination,
     useRowSelect,
     useSortBy,
     useFilters,
-    useGlobalFilter,
-    useAsyncDebounce,
 } from "react-table";
-import axios from 'axios';
-import { useState, useEffect, Fragment } from "react";
-import * as s from "./CRM.styles";
+import axios from "axios";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
-import SelectColumnFilter from "./filters/SelectColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import SliderColumnFilter from "./filters/SliderColumnFilter";
 import Popup from "../../components/Popup";
-import Divider from '@mui/material/Divider';
+import * as s from "./CRM.styles";
 
-//toggle dropdown menu open/close
-var toClose = false
 
+//toggle dropdown menu open/close filter and sort
+var toClose = false;
 function toggle(e) {
-  e.stopPropagation();
-  var btn=this;
-  var menu = btn.nextSibling;
-  
-  while(menu && menu.nodeType != 1) {
-     menu = menu.nextSibling
-  }
-  if(!menu) return;
-  if (menu.style.display !== 'block') {
-    menu.style.display = 'block';
-    if(toClose) toClose.style.display="none";
-    toClose  = menu;
-  }  else {
-    menu.style.display = 'none';
-    toClose=false;
-  }
+    e.stopPropagation();
+    var btn = this;
+    var menu = btn.nextSibling;
 
-};
-function closeAll() {
-    toClose.style.display='none';
-};
+    while (menu && menu.nodeType !== 1) {
+        menu = menu.nextSibling;
+    }
+    if (!menu) return;
+    if (menu.style.display !== "block") {
+        menu.style.display = "block";
+        if (toClose) toClose.style.display = "none";
+        toClose = menu;
+    } else {
+        menu.style.display = "none";
+        toClose = false;
+    }
+}
 
-window.addEventListener("DOMContentLoaded",function(){
-  document.querySelectorAll(".btn-buy-list").forEach(function(btn){
-     btn.addEventListener("click",toggle,true);
-  });
+window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
+        btn.addEventListener("click", toggle, true);
+    });
 });
 
-/////////////////////////////////////////////////
+
+//A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef();
@@ -69,11 +59,12 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-export const Table = function ({ columns, data }) {
+// CRM table
+const Table = function ({ columns, data }) {
 
+    // Define filtering options; case insensitive 
     const filterTypes = React.useMemo(
         () => ({
-            // override the default text filter to use"
             text: (rows, id, filterValue) => {
                 return rows.filter((row) => {
                     const rowValue = row.values[id];
@@ -87,26 +78,22 @@ export const Table = function ({ columns, data }) {
         }),
         []
     );
+
+    // default filter for each column
     const defaultColumn = React.useMemo(
         () => ({
-            // Let's set up our default Filter UI
             Filter: DefaultColumnFilter,
         }),
         []
     );
 
-    // Use the state and functions returned from useTable to build your UI
+    // States and functions returned from useTable
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         prepareRow,
         page,
-        rows,
-        state,
-        visibleColumns,
-        preGlobalFilteredRows,
-        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -115,7 +102,7 @@ export const Table = function ({ columns, data }) {
         nextPage,
         previousPage,
         selectedFlatRows,
-        state: { pageIndex, pageSize, selectedRowIds },
+        state: { pageIndex },
     } = useTable(
         {
             columns,
@@ -127,10 +114,11 @@ export const Table = function ({ columns, data }) {
         useSortBy,
         usePagination,
         useRowSelect,
-
+        
+        // define functionalities for checkbox
         (hooks) => {
             hooks.visibleColumns.push((columns) => [
-                // Let's make a column for selection
+                //  make a column for selection
                 {
                     id: "selection",
                     // The header can use the table's getToggleAllRowsSelectedProps method
@@ -151,73 +139,62 @@ export const Table = function ({ columns, data }) {
                 ...columns,
             ]);
         }
+
     );
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
-
 
     return (
         <>
-            <table {...getTableProps()}>
-                <thead>
+            <s.CRMTable {...getTableProps()}>
+                <s.CRMTableHead>
                     {headerGroups.map((headerGroup) => (
-
-                        <tr>
+                        <tr style={{position:"relative"}}>
                             {headerGroup.headers.map((column) => (
-                                <Fragment>
-                                    <th>
+                                <th>
+                                    {/* header */}
                                     <span>{column.render("Header")}</span>
 
-<span>
-{column.Header.length > 1 ?
-<span class="product-price-box">
-  <div class="buy">
-    <button class="btn-buy-list" id="dropBtn1">...<span class="btn-arrow"></span></button>
-    <ul class="dropdown-menu" style={{display: "none"}}>
-    <li >
-   
-                                            {column.canFilter ? column.render("Filter") : null}
-                                       
+                                    {/* drop down bar, contians filter and sort */}
+                                    <span >
+                                        {column.Header.length > 1 ? (
+                                            <span >
+                                                
+                                                <button class="btn-buy-list"  style={{ border: "none",backgroundColor: "transparent" }}> •••</button>
 
-</li>
-      <li  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                                <ul style={{ display: "none" }}>
 
-{column.Header.length > 1
-    ? column.isSorted
-        ? column.isSortedDesc
-            ? " 🔽"
-            : " 🔼"
-        : "{click to sort (temp)"
-    : null}
-</li>
+                                                    {/* filter */}
+                                                    <li  style={{backgroundColor: "white" }}>
+                                                        {column.canFilter
+                                                            ? column.render("Filter")
+                                                            : null}
+                                                    </li>
 
-
-    </ul>
-  </div>
-
-
-</span>  : null}
-
-</span>
-
-  </th>
-                                </Fragment>
-
+                                                    {/* sort */}
+                                                    <li
+                                                        {...column.getHeaderProps(
+                                                            column.getSortByToggleProps()
+                                                        )}
+                                                        style={{backgroundColor: "white" }}
+                                                    >
+                                                        {column.Header.length > 1
+                                                            ? column.isSorted
+                                                                ? column.isSortedDesc
+                                                                    ? "Default"
+                                                                    : "Sort in Desc"
+                                                                : "Sort in Asc"
+                                                            : null}
+                                                    </li>
+                                                </ul>
+                                            </span>
+                                        ) : null}
+                                    </span>
+                                </th>
                             ))}
                         </tr>
                     ))}
-                </thead>
+                </s.CRMTableHead>
 
-                <tbody {...getTableBodyProps()}>
+                <s.CRMTableBody {...getTableBodyProps()}>
                     {page.map((row, i) => {
                         prepareRow(row);
                         return (
@@ -230,121 +207,64 @@ export const Table = function ({ columns, data }) {
                             </tr>
                         );
                     })}
-                </tbody>
-            </table>
+                </s.CRMTableBody>
+            </s.CRMTable>
 
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {/*  define pagination of the table,  */}
+            <s.Pagination>
+                <s.PaginationArrowButton onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {"<<"}
-                </button>{" "}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => previousPage()} disabled={!canPreviousPage}>
                     {"<"}
-                </button>{" "}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => nextPage()} disabled={!canNextPage}>
                     {">"}
-                </button>{" "}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                </s.PaginationArrowButton>{" "}
+                <s.PaginationArrowButton onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {">>"}
-                </button>{" "}
-                <span>
-                    Page{" "}
-                    <strong>
+                </s.PaginationArrowButton>{" "}
+                <s.CurrPage>
+                    Page
+                    {" "}
                         {pageIndex + 1} of {pageOptions.length}
-                    </strong>{" "}
-                </span>
-            </div>
+                    {" "}
+                </s.CurrPage>
+            </s.Pagination>
 
+
+            {/* Create a JSON file for checked rows */}
             <pre>
                 <code>
-                    {
-                        localStorage.setItem(
-                            "selectedRows",
-                            JSON.stringify(selectedFlatRows.map(d => d.original))
-                        )
-                    }
+                    {localStorage.setItem(
+                        "selectedRows",
+                        JSON.stringify(selectedFlatRows.map((d) => d.original))
+                    )}
                 </code>
             </pre>
+
         </>
     );
 };
 
-// JSON.stringify(
-//     {
-//         selectedRowIds: selectedRowIds,
-//         'selectedFlatRows[].original': selectedFlatRows.map(
-//             d => d.original
-//         ),
-//     },
-//     null,
-//     2
-// )
-
 function CRM() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [data, setData] = useState([]);
     const [userId, setUserId] = useState([]);
-
-
-    // Table columns hard coded. NEED FIX!
-    const columns = React.useMemo(() => [
-        {
-            Header: "User ID",
-            accessor: "UserId",
-            //accessor: "visits",
-        },
-        {
-            Header: "First Name",
-            accessor: "firstName",
-            //accessor: "firstName",
-
-        },
-        {
-            Header: "Last Name",
-            accessor: "lastName",
-            //accessor: "lastName",
-        },
-
-        {
-            Header: "Age",
-            accessor: "age",
-            //accessor: "age",
-            Filter: NumberRangeColumnFilter,
-            filter: "between",
-        },
-        {
-            Header: "Gender",
-            accessor: "gender",
-            //accessor: "progress",
-
-        },
-        {
-            Header: "Email",
-            accessor: "email",
-            //accessor: "status",
-        },
-        {
-            Header: "",
-            accessor: "Link",
-            Cell: e => <a href={e.value}> {e.value} </a>
-        },
-    ]);
-
+    const [data, setData] = useState([]);
 
     // Fetch users data from the Database.
     useEffect(() => {
         let isMounted = true;
         const getUser = async () => {
             try {
-                //const users = await axios.get('http://localhost:5000/filter');
-                const users = await axios.get('https://backend.weeyapp-crm-on-a-boat.com/filter/show');
+                const users = await axios.get("https://backend.weeyapp-crm-on-a-boat.com/filter/show/");
 
                 if (isMounted) {
                     setData(users.data);
                 }
 
                 console.log(users);
-
             } catch (error) {
                 console.error(error);
             }
@@ -356,64 +276,90 @@ function CRM() {
     }, []);
 
 
+
+    // Table columns
+    const columns = [
+        {
+            Header: "User ID",
+            accessor: "UserId",
+        },
+        {
+            Header: "First Name",
+            accessor: "firstName",
+        },
+        {
+            Header: "Last Name",
+            accessor: "lastName",
+        },
+
+        {
+            Header: "Age",
+            accessor: "age",
+            Filter: NumberRangeColumnFilter,
+            filter: "between",
+        },
+        {
+            Header: "Gender",
+            accessor: "gender",
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+        },
+        {
+            Header: "",
+            accessor: "Link",
+            Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
+        },
+    ];
+
     // Create new group JSON and post to the Database.
     const makeGroup = () => {
-        const Ymd = date => date.toISOString().slice(0, 10);
         const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
         var updateId = [];
-        selectedRows.forEach(row => { updateId.push(row.UserId); });
+        selectedRows.forEach((row) => {
+            updateId.push(row.UserId);
+        });
         setUserId(updateId);
 
-
-
-        if (userId.length > 0 && groupName != "") {
-            axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', {
-                groupName: groupName,
-                users: "" + userId,
-                userCount: userId.length,
-                dateCreated: Ymd(new Date()),
-            }).then((response) => {
-                console.log(response);
-            });
-
-
+        if (userId.length > 0 && groupName !== "") {
             const newGroup = {
                 name: groupName,
                 users: userId,
                 userCount: userId.length,
-                dateCreated: Ymd(new Date()),
+                dateCreated: new Date().toLocaleDateString(),
             };
-
-            console.log(newGroup);
-            // axios.post('https://backend.weeyapp-crm-on-a-boat.com/group', newGroup);
-
             // axios.post this JSON to db later. NEED FIX!
-            // console.log(JSON.stringify(newGroup));
+            console.log(JSON.stringify(newGroup));
             // display that group was created to the admin here. NEED FIX!
         }
     };
 
-
-
     return (
-        <div>
-            <s.TableStyles>
-                <Table columns={columns} data={data} />
-            </s.TableStyles>
+        
+        <s.CRMContainer>
 
-            <button onClick={() => setButtonPopup(true)}>{"Create Group"}</button>
+            {/* Modal */}
+            <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>{"Create Group"}</s.CreateGroupModalButton>
             <Popup trigger={buttonPopup}>
-                <input
+                <s.GroupNameInput
                     value={groupName || ""}
                     onChange={(e) => {
                         setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
                     }}
                     placeholder={"Enter group name"}
                 />
-                <button onClick={() => makeGroup()}> Create </button>
-                <button onClick={() => setButtonPopup(false)}> Cancel </button>
+                <s.CreateGroupButton onClick={() => makeGroup()}> Create </s.CreateGroupButton>
+                <s.CancelGroupButton onClick={() => setButtonPopup(false)}> Cancel </s.CancelGroupButton>
             </Popup>
-        </div>
+            
+            {/* Table */}
+            {/* <s.TableStyles> */}
+                <Table columns={columns} data={data} />
+            {/* </s.TableStyles> */}
+            
+        </s.CRMContainer>
+       
     );
 }
 

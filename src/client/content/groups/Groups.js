@@ -230,7 +230,6 @@ const Groups = () => {
         if (isMounted) {
           setData(groups.data);
         }
-
         console.log(groups);
       } catch (error) {
         console.error(error);

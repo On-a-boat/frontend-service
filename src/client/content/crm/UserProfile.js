@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useState, useEffect } from "react";
 import React from "react";
 import { useParams } from 'react-router-dom'
+import Avatar from '@mui/material/Avatar';
+
 
 
 const useStyles = makeStyles({
@@ -20,12 +22,13 @@ const useStyles = makeStyles({
 const DetailTable = function ({ data }) {
     const classes = useStyles();
 
-    return (
-        <div className='table-container' style={{
+        return (<>
+        <div style={{  borderRadius: "50%",height: "300px",width: "300px",position: "relative",margin:"100px",marginLeft:"80px",marginTop:"70px",background: "rgb(255,145,131)",background: "linear-gradient(90deg, rgba(255,145,131,1) 0%, rgba(244,244,244,1) 100%)"}}>
+            <Avatar alt="Remy" src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" sx={{ width: 275, height: 275}} style={{position: "absolute",margin: "13px"}} />
+        </div>
 
-
-        }}>
-            <Table className={classes.table} >
+        <Table className={classes.table} style={{}} >
+            
                 <TableRow>
                     <TableCell>User ID</TableCell>
                     <TableCell>
@@ -125,7 +128,7 @@ const DetailTable = function ({ data }) {
 
 
             </Table>
-        </div>
+            </>
     );
 
 }
