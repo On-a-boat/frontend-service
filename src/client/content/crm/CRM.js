@@ -157,16 +157,20 @@ const Table = function ({ columns, data }) {
                                     <span>
                                         {column.Header.length > 1 ? (
                                             <span>
-                                                <div>
-                                                <button class="btn-buy-list" id="dropBtn1">
-                                                        ...<span class="btn-arrow"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" style={{ display: "none" }}>
+                                                
+                                                <button class="btn-buy-list">...</button>
+
+                                                    <ul style={{ display: "none" }}>
+
+                                                        {/* filter */}
                                                         <li>
                                                             {column.canFilter
                                                                 ? column.render("Filter")
                                                                 : null}
                                                         </li>
+
+
+                                                        {/* sort */}
                                                         <li
                                                             {...column.getHeaderProps(
                                                                 column.getSortByToggleProps()
@@ -180,8 +184,8 @@ const Table = function ({ columns, data }) {
                                                                     : "Sort in Asc"
                                                                 : null}
                                                         </li>
+
                                                     </ul>
-                                                </div>
                                             </span>
                                         ) : null}
                                     </span>
@@ -231,8 +235,6 @@ const Table = function ({ columns, data }) {
             </s.Pagination>
 
 
-            
-            
             {/* Create a JSON file for checked rows */}
             <pre>
                 <code>
@@ -242,6 +244,7 @@ const Table = function ({ columns, data }) {
                     )}
                 </code>
             </pre>
+
         </>
     );
 };
