@@ -13,6 +13,7 @@ import {
 import DefaultColumnFilter from "../crm/filters/DefaultColumnFilter";
 import Popup from "../../components/Popup";
 import NumberRangeColumnFilter from "../crm/filters/NumberRangeColumnFilter";
+
 import * as s from "../crm/CRM.styles";
 
 // Copied from CRM.js
