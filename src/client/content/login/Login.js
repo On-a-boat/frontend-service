@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { LeftDiv, RightDiv, Header } from "./Login.style.js";
+import { UserContext } from "../../../Context";
 
 // login component for both customer and vendor app
 export default function SignIn() {
   const history = useHistory();
-
+  const auth = useContext(UserContext);
   // get the url's pathname
-  const pathname = "http://13.54.19.72:5000/admin/login";
+  const pathname = "https://backend.weeyapp-crm-on-a-boat.com/admin/login";
   const redirectTo = "/";
 
   const [username, setUsername] = useState("");
@@ -88,10 +91,7 @@ export default function SignIn() {
 
       console.log(res);
 
-      // store token
-      // localStorage.setItem("token", res.data.token);
-
-      // auth.login(res.data.token, user);
+      auth.login(res.data);
 
       history.push(redirectTo);
     } catch (error) {
@@ -100,7 +100,7 @@ export default function SignIn() {
       // set snackbar details
       setOpen(true);
       setSnackbar({
-        data: error.response.data,
+        data: "Failed to Login. Check your username and password again",
         severity: "error",
       });
     }
@@ -122,9 +122,19 @@ export default function SignIn() {
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        autoHideDuration={duration}
+        onClose={handleClose}
+      >
+        <Alert severity={snackbar.severity} onClose={handleClose}>
+          {snackbar.data}
+        </Alert>
+      </Snackbar>
       <LeftDiv />
       <RightDiv>
-        <Header>Login</Header>
+        <Header>Login, username: abc123, password: abc123</Header>
         <form noValidate>
           <TextField
             variant="outlined"
