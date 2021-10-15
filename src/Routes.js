@@ -33,7 +33,6 @@ const RootSPA = () => {
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/email" component={Email} />
         <Route exact path="/statistics" component={Statistics} />
-
         <Route
           exact
           path="/userprofile/:a([0-9]+)"
