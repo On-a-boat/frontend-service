@@ -303,7 +303,7 @@ function CRM() {
     {
       Header: "",
       accessor: "Link",
-      Cell: (e) => <a href={"statistics/" + e.value}>Link</a>,
+      Cell: (e) => <a href={"statistics/email/" + e.value}>Link</a>,
     },
   ];
 

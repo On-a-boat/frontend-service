@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
 export const CRMContainer = styled.div`
-width:80%;
-
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 // CRM table

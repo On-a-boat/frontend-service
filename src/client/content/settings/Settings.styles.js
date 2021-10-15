@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const SettingsContainer = styled.div`
-    width: 80% ;
-
-`
+  margin-left: auto;
+  margin-right: auto;
+`;
