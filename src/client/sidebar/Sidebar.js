@@ -1,66 +1,69 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import * as s from './Sidebar.styles';
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import * as s from "./Sidebar.styles";
 
-const Sidebar = props => {
+const Sidebar = (props) => {
   const {
-    backgroundImage = '',
+    backgroundImage = "",
     sidebarHeader = {
-      fullName: '',
-      shortName: ''
+      fullName: "",
+      shortName: "",
     },
     menuItems = [],
     fonts = {
-      header: '',
-      menu: ''
+      header: "",
+      menu: "",
     },
     colorPalette = {
-      bgColor1: 'rgba(36,48,63)',
-      bgColor2: 'rgba(36,48,63)',
-      fontColor: 'rgba(158,167,178)',
-      fontColorSelected: 'white',
-      selectedBackgroundCollapsedMode: 'dark'
-    }
+      bgColor1: "rgba(36,48,63)",
+      bgColor2: "rgba(36,48,63)",
+      fontColor: "rgba(158,167,178)",
+      fontColorSelected: "white",
+      selectedBackgroundCollapsedMode: "dark",
+    },
   } = props;
 
   // State
   const [selected, setSelectedMenuItem] = useState(menuItems[0].name);
   const [isSidebarOpen, setSidebarState] = useState(true);
   const [header, setHeader] = useState(sidebarHeader.fullName);
-  const [subMenusStates, setSubmenus] = useState({})
+  const [subMenusStates, setSubmenus] = useState({});
 
   // Effects
 
   // Set selected menu item based on URL pathname
   useLayoutEffect(() => {
     const path = window.location.pathname;
-    const parts = path.split('/');
+    const parts = path.split("/");
 
-    if (path !== '/' && parts[1].charAt(0).toUpperCase() !== menuItems[0].name) {
+    if (
+      path !== "/" &&
+      parts[1].charAt(0).toUpperCase() !== menuItems[0].name
+    ) {
       const selectedItem = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-      setSelectedMenuItem(selectedItem)
+      setSelectedMenuItem(selectedItem);
     }
-  }, [menuItems])
+  }, [menuItems]);
 
   // Update of header state
   useEffect(() => {
-    isSidebarOpen ? setTimeout(() => setHeader(sidebarHeader.fullName), 200) : setHeader(sidebarHeader.shortName);
-  }, [isSidebarOpen, sidebarHeader])
-
+    isSidebarOpen
+      ? setTimeout(() => setHeader(sidebarHeader.fullName), 200)
+      : setHeader(sidebarHeader.shortName);
+  }, [isSidebarOpen, sidebarHeader]);
 
   // Update of sidebar state
   useEffect(() => {
     const updateWindowWidth = () => {
       if (window.innerWidth < 1280) setSidebarState(false);
-      else setSidebarState(true)
-    }
+      else setSidebarState(true);
+    };
 
-    window.addEventListener('resize', updateWindowWidth);
+    window.addEventListener("resize", updateWindowWidth);
 
-    return () => window.removeEventListener('resize', updateWindowWidth);
+    return () => window.removeEventListener("resize", updateWindowWidth);
   }, [isSidebarOpen]);
-
 
   // Add index of items that contain sub menu items
   useEffect(() => {
@@ -71,24 +74,31 @@ const Sidebar = props => {
 
       if (hasSubmenus) {
         newSubmenus[index] = {};
-        newSubmenus[index]['isOpen'] = false;
-        newSubmenus[index]['selected'] = null;
+        newSubmenus[index]["isOpen"] = false;
+        newSubmenus[index]["selected"] = null;
       }
-    })
-
+    });
 
     // Set selected submenu if user landed on one
     const path = window.location.pathname;
-    const parts = path.split('/');
+    const parts = path.split("/");
 
     if (parts.length === 3) {
       const selectedItem = parts[1].toLowerCase();
-      const selectedSubItem = parts[2].toLowerCase()
-      const selectedItemIndex = menuItems.findIndex(item => item.name.toLowerCase() === selectedItem);
-      const selectedSubItemIndex = menuItems[selectedItemIndex]?.subMenuItems.findIndex(subItem => subItem.name.toLowerCase() === selectedSubItem);
+      const selectedSubItem = parts[2].toLowerCase();
+      const selectedItemIndex = menuItems.findIndex(
+        (item) => item.name.toLowerCase() === selectedItem
+      );
+      const selectedSubItemIndex = menuItems[
+        selectedItemIndex
+      ]?.subMenuItems.findIndex(
+        (subItem) => subItem.name.toLowerCase() === selectedSubItem
+      );
 
-      if (selectedItemIndex !== -1) newSubmenus[selectedItemIndex]['isOpen'] = true;
-      if (selectedItemIndex !== -1 && selectedSubItemIndex !== -1) newSubmenus[selectedItemIndex]['selected'] = selectedSubItemIndex;
+      if (selectedItemIndex !== -1)
+        newSubmenus[selectedItemIndex]["isOpen"] = true;
+      if (selectedItemIndex !== -1 && selectedSubItemIndex !== -1)
+        newSubmenus[selectedItemIndex]["selected"] = selectedSubItemIndex;
     }
 
     Object.keys(subMenusStates).length === 0 && setSubmenus(newSubmenus);
@@ -100,25 +110,23 @@ const Sidebar = props => {
     const subMenusCopy = JSON.parse(JSON.stringify(subMenusStates));
 
     if (subMenusStates.hasOwnProperty(index)) {
-      subMenusCopy[index]['isOpen'] = !subMenusStates[index]['isOpen']
-      setSubmenus(subMenusCopy)
-    }
-    else {
+      subMenusCopy[index]["isOpen"] = !subMenusStates[index]["isOpen"];
+      setSubmenus(subMenusCopy);
+    } else {
       for (let item in subMenusStates) {
-        subMenusCopy[item]['isOpen'] = false;
-        subMenusCopy[item]['selected'] = null
+        subMenusCopy[item]["isOpen"] = false;
+        subMenusCopy[item]["selected"] = null;
       }
       setSubmenus(subMenusCopy);
     }
-  }
+  };
 
   const handleSubMenuItemClick = (menuItemIdx, subMenuItemIdx) => {
     const subMenusCopy = JSON.parse(JSON.stringify(subMenusStates));
 
-    subMenusCopy[menuItemIdx]['selected'] = subMenuItemIdx;
+    subMenusCopy[menuItemIdx]["selected"] = subMenuItemIdx;
     setSubmenus(subMenusCopy);
-  }
-
+  };
 
   const menuItemsJSX = menuItems.map((item, index) => {
     const isItemSelected = selected === item.name;
@@ -126,25 +134,32 @@ const Sidebar = props => {
     const hasSubmenus = !!item.subMenuItems.length;
     const isOpen = subMenusStates[index]?.isOpen;
 
-    const subMenusJSX = item.subMenuItems.map((subMenuItem, subMenuItemIndex) => {
-      const isSubmenuItemSelected = subMenusStates[index]?.selected === subMenuItemIndex;
+    const subMenusJSX = item.subMenuItems.map(
+      (subMenuItem, subMenuItemIndex) => {
+        const isSubmenuItemSelected =
+          subMenusStates[index]?.selected === subMenuItemIndex;
 
-      return (
-        <Link to={`${item.to}${subMenuItem.to}`} style={{ textDecoration: 'none' }} key={subMenuItemIndex}>
-          <s.SubMenuItem
-            onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
-            selected={isSubmenuItemSelected}
-            colorPalette={colorPalette}
+        return (
+          <Link
+            to={`${item.to}${subMenuItem.to}`}
+            style={{ textDecoration: "none" }}
+            key={subMenuItemIndex}
           >
-            {subMenuItem.name}
-          </s.SubMenuItem>
-        </Link>
-      )
-    })
+            <s.SubMenuItem
+              onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
+              selected={isSubmenuItemSelected}
+              colorPalette={colorPalette}
+            >
+              {subMenuItem.name}
+            </s.SubMenuItem>
+          </Link>
+        );
+      }
+    );
 
     return (
       <s.ItemContainer key={index}>
-        <Link to={item.to} style={{ textDecoration: 'none' }}>
+        <Link to={item.to}>
           <s.MenuItem
             font={fonts.menu}
             selected={isItemSelected}
@@ -156,7 +171,11 @@ const Sidebar = props => {
             <s.Icon isSidebarOpen={isSidebarOpen} src={item.icon} />
             <s.Text isSidebarOpen={isSidebarOpen}>{item.name}</s.Text>
             {hasSubmenus && isSidebarOpen && (
-              <s.DropdownIcon selected={isItemSelected} isOpen={isOpen} colorPalette={colorPalette} />
+              <s.DropdownIcon
+                selected={isItemSelected}
+                isOpen={isOpen}
+                colorPalette={colorPalette}
+              />
             )}
           </s.MenuItem>
         </Link>
@@ -170,105 +189,29 @@ const Sidebar = props => {
               transition={{ duration: 0.35 }}
               exit={{ opacity: 0, x: -30 }}
             >
-              <s.SubMenuItemContainer isSidebarOpen={isSidebarOpen} colorPalette={colorPalette}>{subMenusJSX}</s.SubMenuItemContainer>
+              <s.SubMenuItemContainer
+                isSidebarOpen={isSidebarOpen}
+                colorPalette={colorPalette}
+              >
+                {subMenusJSX}
+              </s.SubMenuItemContainer>
             </motion.nav>
           )}
         </AnimatePresence>
       </s.ItemContainer>
-    )
+    );
   });
 
   return (
-    <s.SidebarContainer backgroundImage={backgroundImage} isSidebarOpen={isSidebarOpen} colorPalette={colorPalette}>
+    <s.SidebarContainer
+      backgroundImage={backgroundImage}
+      isSidebarOpen={isSidebarOpen}
+      colorPalette={colorPalette}
+    >
       <s.SidebarHeader font={fonts.header}>{header}</s.SidebarHeader>
       <s.MenuItemContainer>{menuItemsJSX}</s.MenuItemContainer>
-
     </s.SidebarContainer>
-  )
-}
+  );
+};
 
-export default Sidebar
-
-
-
-// old code 
-
-// import React, { useState } from "react";
-// import { useLocation } from "react-router-dom";
-// import * as s from "./Sidebar.styles"; // bring in all the components from app.styles.js
-// import { Link } from "react-router-dom";
-// import { pathToName } from "../constants/pathname";
-// import HomeIcon from "@material-ui/icons/Home";
-// import GroupIcon from "@material-ui/icons/Group";
-// import EqualizerIcon from "@material-ui/icons/Equalizer";
-// import EmailIcon from "@material-ui/icons/Email";
-// import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-// import PersonIcon from "@material-ui/icons/Person";
-// import useMediaQuery from "@mui/material/useMediaQuery";
-
-// const IconComponents = {
-//   CRM: HomeIcon,
-//   Groups: GroupIcon,
-//   Email: EmailIcon,
-//   Statistics: EqualizerIcon,
-//   Settings: SettingsInputComponentIcon,
-// };
-
-// const Sidebar = (props) => {
-//   const location = useLocation();
-//   // always initialise
-//   const { ddd = "", menuItems = [] } = props;
-//   const header = "On a Boat";
-//   const matches = useMediaQuery("(min-width:600px)");
-
-//   //used constants pathToName to change to name
-//   const [selected, setSelectedMenuItem] = useState(
-//     pathToName[location.pathname]
-//   );
-
-//   const handleMenuItemClick = (name) => {
-//     setSelectedMenuItem(name);
-//   };
-
-//   const MenuItemsJSX = menuItems.map((item, index) => {
-//     const isItemSelected = selected === item.name;
-//     const IconComponent = IconComponents[item.name];
-
-//     return (
-//       <Link to={item.to} style={{ textDecoration: "none" }}>
-//         <s.MenuItem
-//           key={index}
-//           selected={isItemSelected}
-//           onClick={() => handleMenuItemClick(item.name)}
-//         >
-//           <s.Icon>
-//             <IconComponent style={{ color: "#9EA7B2" }} />
-//           </s.Icon>
-//           {matches && <s.Text>{item.name}</s.Text>}
-//         </s.MenuItem>
-//       </Link>
-//     );
-//   });
-
-//   return (
-//     <s.SideBarContainer backgroundImage={ddd}>
-//       <s.SidebarHeaderWrapper>
-//         <s.SidebarHeader>{header}</s.SidebarHeader>
-//       </s.SidebarHeaderWrapper>
-//       <s.MenuItemContainer>{MenuItemsJSX}</s.MenuItemContainer>
-//       {/* <s.SidebarFooterWrapper>
-//         <s.SidebarFooter>
-//           <s.Icon>
-//             <PersonIcon />
-//           </s.Icon>
-//           {matches && <s.Name>John Doe</s.Name>}
-//         </s.SidebarFooter>
-//       </s.SidebarFooterWrapper> */}
-//     </s.SideBarContainer>
-//   );
-// };
-
-// export default Sidebar;
-
-
-
+export default Sidebar;
