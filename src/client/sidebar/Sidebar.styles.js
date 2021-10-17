@@ -4,7 +4,6 @@ import styled from "../../../node_modules/@emotion/styled";
 export const SideBarContainer = styled.div`
   width: 15%;
   // responsive , max width and min width of the sidebar
-
   background-color: #24303f;
 `;
 
@@ -20,7 +19,7 @@ export const SidebarHeader = styled.h3`
 `;
 
 export const SidebarHeaderWrapper = styled.div`
-  background-color: #131a28;
+  background-color: #131a28;x 
   margin-bottom: 48px;
 `;
 
@@ -89,15 +88,17 @@ export const Text = styled.p`
 
 export const DropdownIcon = styled.span`
   margin-left: 3vw;
-  font-family: Arial, Helvetica, sans-serif;
-  top: ${(p) => (p.isOpen ? "16px" : "12px")};
+  /* font-family: Arial, Helvetica, sans-serif; */
+  /* top: ${(p) => (p.isOpen ? "16px" : "12px")}; */
   right: 24px;
-  border: solid
+  /* border: solid
     ${(p) =>
-      p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
-  border-width: 0 1px 1px 0;
+    p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
+  border-width: 0 1px 1px 0; */
   padding: 3px;
-  transform: ${(p) => (p.isOpen ? "rotate(-135deg)" : "rotate(45deg)")};
+  color: rgba(158, 167, 178);
+
+  transform: ${(p) => (p.isOpen ? "rotate(-180deg)" : "rotate(0deg)")};
   transition: 0.4s;
 `;
 

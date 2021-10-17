@@ -141,7 +141,7 @@ const Sidebar = (props) => {
 
         return (
           <Link
-            to={`${item.to}${subMenuItem.to}`}
+            to={`${subMenuItem.to}`}
             style={{ textDecoration: "none" }}
             key={subMenuItemIndex}
           >
@@ -175,7 +175,7 @@ const Sidebar = (props) => {
                 selected={isItemSelected}
                 isOpen={isOpen}
                 colorPalette={colorPalette}
-              />
+              >^</s.DropdownIcon>
             )}
           </s.MenuItem>
         </Link>

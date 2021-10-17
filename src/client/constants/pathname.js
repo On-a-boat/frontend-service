@@ -3,9 +3,9 @@ export const menuItems = [
   { name: "Groups", to: "/groups", icon: "icons/groups.svg", subMenuItems: [] },
   { name: "Email", to: "/email", icon: "icons/email.svg", subMenuItems: [] },
   {
-    name: "Statistics", to: "/statistics", icon: "", subMenuItems: [
-      { name: 'Users ', to: '/users' },
-      { name: 'Email', to: '/email' },
+    name: "Statistics", to: '#', icon: "", subMenuItems: [
+      { name: 'Users ', to: '/statistics/users' },
+      { name: 'Email', to: '/statistics/email' },
 
     ]
   },
