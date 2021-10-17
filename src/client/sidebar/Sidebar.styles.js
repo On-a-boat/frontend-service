@@ -66,7 +66,6 @@ export const MenuItem = styled.div`
 `;
 
 export const Icon = styled.div`
-  padding-left: 10px;
   padding-right: 20px;
 `;
 

@@ -2,6 +2,20 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import * as s from "./Sidebar.styles";
+import HomeIcon from "@material-ui/icons/Home";
+import GroupIcon from "@material-ui/icons/Group";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
+import EmailIcon from "@material-ui/icons/Email";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
+import PersonIcon from "@material-ui/icons/Person";
+
+const IconComponents = {
+  CRM: HomeIcon,
+  Groups: GroupIcon,
+  Email: EmailIcon,
+  Statistics: EqualizerIcon,
+  Settings: SettingsInputComponentIcon,
+};
 
 const Sidebar = (props) => {
   const {
@@ -130,6 +144,7 @@ const Sidebar = (props) => {
 
   const menuItemsJSX = menuItems.map((item, index) => {
     const isItemSelected = selected === item.name;
+    const IconComponent = IconComponents[item.name];
 
     const hasSubmenus = !!item.subMenuItems.length;
     const isOpen = subMenusStates[index]?.isOpen;
@@ -145,6 +160,7 @@ const Sidebar = (props) => {
             style={{ textDecoration: "none" }}
             key={subMenuItemIndex}
           >
+
             <s.SubMenuItem
               onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
               selected={isSubmenuItemSelected}
@@ -168,6 +184,9 @@ const Sidebar = (props) => {
             isOpen={isOpen}
             colorPalette={colorPalette}
           >
+            <s.Icon>
+              <IconComponent style={{ color: "#9EA7B2" }} />
+            </s.Icon>
             <s.Icon isSidebarOpen={isSidebarOpen} src={item.icon} />
             <s.Text isSidebarOpen={isSidebarOpen}>{item.name}</s.Text>
             {hasSubmenus && isSidebarOpen && (
