@@ -14,6 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Statistics = () => {
+  const [newUser, setNewUser] = useState([]);
   const [allUser, setAllUser] = useState([]);
   const [openedEmail, setOpenedEmail] = useState([]);
   const [allGender, setAllGender] = useState([
@@ -30,9 +31,11 @@ const Statistics = () => {
   ]);
   // Fetch users data from the Database.
   useEffect(() => {
-    let isMounted = true;
     const getUserInfo = async () => {
       try {
+        const newUsers = await axios.get(
+          "https://backend.weeyapp-crm-on-a-boat.com/statistics/newUser"
+        );
         const users = await axios.get(
           "https://backend.weeyapp-crm-on-a-boat.com/statistics/allUser"
         );
@@ -46,44 +49,33 @@ const Statistics = () => {
           "https://backend.weeyapp-crm-on-a-boat.com/statistics/allAge"
         );
 
-        if (isMounted) {
-          setAllUser(users.data);
-          setOpenedEmail(openedEmail.data);
-          setAllGender(gender.data);
-          setAllAge(age.data);
-        }
+        setAllUser(users.data);
+        setOpenedEmail(openedEmail.data);
+        setAllGender(gender.data);
+        setAllAge(age.data);
+        setNewUser(newUsers.data);
+        console.log(newUsers.data);
       } catch (error) {
         console.error(error);
       }
     };
     getUserInfo();
-    return () => {
-      isMounted = false;
-    };
   }, []);
   return (
     <div>
       <h1>User Statistics </h1>
       <Box sx={{ width: 1 }}>
         <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+          <Box gridColumn="span 4">
+            <Item>
+              <h3>New Users</h3>
+              <h1>{JSON.stringify(newUser)}</h1>
+            </Item>
+          </Box>
           <Box gridColumn="span 8">
             <Item>
               <h3>Total Users</h3>
               <h1>{JSON.stringify(allUser[0])}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Emails Opened</h3>
-              {JSON.stringify(openedEmail[0])}
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Gender Distribution</h3>
-              <MyBar
-                data={[allGender[0].male_count, allGender[0].female_count]}
-              />
             </Item>
           </Box>
           <Box gridColumn="span 8">
@@ -99,6 +91,19 @@ const Statistics = () => {
                 ]}
               />
               {JSON.stringify(allAge[0])}
+            </Item>
+          </Box>
+          <Box gridColumn="span 4">
+            <Item>
+              <h3>Gender Distribution</h3>
+              <MyBar
+                data={[allGender[0].male_count, allGender[0].female_count]}
+              />
+            </Item>
+            <br />
+            <Item>
+              <h3>Emails Opened</h3>
+              <h1>{JSON.stringify(openedEmail[0])}</h1>
             </Item>
           </Box>
         </Box>
