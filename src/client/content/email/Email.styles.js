@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const CRMContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
+  width: 80%;
 `;
 
 // CRM table
