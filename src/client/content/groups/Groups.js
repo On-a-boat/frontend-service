@@ -18,6 +18,9 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 import * as s from "../crm/CRM.styles";
 
@@ -281,17 +284,29 @@ const Groups = () => {
             margin="normal"
             fullWidth
           />
-          <TextField
-            id="outlined-multiline-static"
-            rows={30}
-            margin="normal"
-            defaultValue="Default Value"
-          />
+          <form>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Add Voucher"
+              />
+            </FormGroup>
+            <TextField
+              id="outlined-multiline-static"
+              rows={10}
+              margin="normal"
+              label="Enter the field below"
+              multiline
+              fullWidth
+              required
+            />
+          </form>
           <Button
             onclick={handleClose}
             type="submit"
             color="secondary"
             variants="contained"
+            size="large"
           >
             Submit
           </Button>
