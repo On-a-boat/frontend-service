@@ -2,6 +2,11 @@ import styled from "@emotion/styled";
 
 export const GroupsContainer = styled.div``;
 
+export const centerStuffDiv = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 export const TableStyles = styled.div`
   padding: 1rem;
 
