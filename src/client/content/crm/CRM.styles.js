@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const CRMContainer = styled.div`
-  margin-left: auto;
+  margin-left: none;
   margin-right: auto;
   width: 80%;
 `;
