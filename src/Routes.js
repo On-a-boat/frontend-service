@@ -13,8 +13,8 @@ import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
 import Login from "./client/content/login/Login.js";
 import UserProfile from "./client/content/crm/UserProfile";
-import EmailStatistics from "./client/content/statistics/Email.js";
-import UserStatistics from "./client/content/statistics/Users.js";
+import EmailStatistics from "./client/content/statistics/EmailStatistics";
+import UserStatistics from "./client/content/statistics/UserStatistics";
 
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
@@ -62,7 +62,12 @@ const RootSPA = () => {
           <Route exact path="/email" component={Email} />
           {/* <Route exact path="/statistics" component={Statistics} /> */}
           <Route exact path="/statistics/users" component={UserStatistics} />
-          <Route exact path="/statistics/Email" component={EmailStatistics} />
+          <Route exact path="/statistics/email" component={Email} />
+          <Route
+            exact
+            path="/statistics/email/:a"
+            component={EmailStatistics}
+          />
           <Route
             exact
             path="/userprofile/:a([0-9]+)"
