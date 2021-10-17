@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import MyBar from "./diagrams/MyBar";
+import Age from "./diagrams/Age";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -18,7 +19,15 @@ const Statistics = () => {
   const [allGender, setAllGender] = useState([
     { male_count: 0, female_count: 0 },
   ]);
-  const [allAge, setAllAge] = useState([]);
+  const [allAge, setAllAge] = useState([
+    {
+      "Under 20": 0,
+      "20 - 29": 0,
+      "30 - 39": 0,
+      "40 - 49": 0,
+      "50 - 60": 0,
+    },
+  ]);
   // Fetch users data from the Database.
   useEffect(() => {
     let isMounted = true;
@@ -80,6 +89,15 @@ const Statistics = () => {
           <Box gridColumn="span 8">
             <Item>
               <h3>Age Distribution</h3>
+              <Age
+                data={[
+                  allAge[0]["Under 20"],
+                  allAge[0]["20 - 29"],
+                  allAge[0]["30 - 39"],
+                  allAge[0]["40 - 49"],
+                  allAge[0]["50 - 60"],
+                ]}
+              />
               {JSON.stringify(allAge[0])}
             </Item>
           </Box>
