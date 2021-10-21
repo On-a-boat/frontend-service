@@ -108,11 +108,15 @@ const Sidebar = (props) => {
       ]?.subMenuItems.findIndex(
         (subItem) => subItem.name.toLowerCase() === selectedSubItem
       );
+      try {
+        if (selectedItemIndex !== -1)
+          newSubmenus[selectedItemIndex]["isOpen"] = true;
+        if (selectedItemIndex !== -1 && selectedSubItemIndex !== -1)
+          newSubmenus[selectedItemIndex]["selected"] = selectedSubItemIndex;
+      }
+      catch (error) {
 
-      if (selectedItemIndex !== -1)
-        newSubmenus[selectedItemIndex]["isOpen"] = true;
-      if (selectedItemIndex !== -1 && selectedSubItemIndex !== -1)
-        newSubmenus[selectedItemIndex]["selected"] = selectedSubItemIndex;
+      }
     }
 
     Object.keys(subMenusStates).length === 0 && setSubmenus(newSubmenus);
