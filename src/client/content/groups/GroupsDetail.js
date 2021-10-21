@@ -112,31 +112,6 @@ const Table = function ({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-
-    // define functionalities for checkbox
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        //  make a column for selection
-        {
-          id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    }
   );
 
   return (
@@ -271,27 +246,32 @@ function GroupsDetail() {
     },
     {
       Header: "First Name",
-      accessor: "firstName",
+      accessor: "FirstName",
     },
     {
       Header: "Last Name",
-      accessor: "lastName",
+      accessor: "LastName",
     },
 
     {
       Header: "Age",
-      accessor: "age",
+      accessor: "Age",
       Filter: NumberRangeColumnFilter,
       filter: "between",
     },
     {
       Header: "Gender",
-      accessor: "gender",
+      accessor: "Gender",
     },
     {
       Header: "Email",
-      accessor: "email",
-    }
+      accessor: "Email",
+    },
+    // {
+    //   Header: "",
+    //   accessor: "Link",
+    //   Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
+    // },
   ];
 
   return (

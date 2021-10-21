@@ -9,7 +9,6 @@ import Sidebar from "./client/sidebar/Sidebar";
 import Settings from "./client/content/settings/Settings";
 import CRM from "./client/content/crm/CRM";
 import Groups from "./client/content/groups/Groups";
-import GroupsDetail from "./client/content/groups/GroupsDetail";
 import Statistics from "./client/content/statistics/Statistics";
 import Email from "./client/content/email/Email";
 import Login from "./client/content/login/Login.js";
@@ -59,10 +58,6 @@ const RootSPA = () => {
             }
           />
           <Route exact path="/groups" component={Groups} />
-          {/* <Route
-            exact
-            path="/groups/:a([0-9]+)"
-            component={GroupsDetail} /> */}
           <Route exact path="/settings" component={Settings} />
           <Route exact path="/email" component={Email} />
           {/* <Route exact path="/statistics" component={Statistics} /> */}
