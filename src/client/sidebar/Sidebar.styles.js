@@ -3,6 +3,7 @@ import styled from "../../../node_modules/@emotion/styled";
 
 export const SideBarContainer = styled.div`
   width: 15%;
+  flex: 0 0 15%;
   // responsive , max width and min width of the sidebar
   background-color: #24303f;
 `;

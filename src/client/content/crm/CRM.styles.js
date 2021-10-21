@@ -4,6 +4,7 @@ export const CRMContainer = styled.div`
   margin-left: none;
   margin-right: auto;
   width: 80%;
+  flex: 0 0 85%;
 `;
 
 // CRM table

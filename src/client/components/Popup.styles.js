@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const popup = styled.div`
   position: fixed;
@@ -6,12 +6,12 @@ export const popup = styled.div`
   left: 0;
   width: 50%;
   height: 50vh;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const popup_inside = styled.div`
   position: reletive;
@@ -19,4 +19,4 @@ export const popup_inside = styled.div`
   width: 100%;
   max-width: 320px;
   background-color: white;
-`
+`;

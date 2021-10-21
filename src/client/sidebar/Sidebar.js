@@ -10,7 +10,8 @@ import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponen
 import PersonIcon from "@material-ui/icons/Person";
 
 const IconComponents = {
-  CRM: HomeIcon,
+  Home: HomeIcon,
+  Users: PersonIcon,
   Groups: GroupIcon,
   Email: EmailIcon,
   Statistics: EqualizerIcon,
@@ -160,7 +161,6 @@ const Sidebar = (props) => {
             style={{ textDecoration: "none" }}
             key={subMenuItemIndex}
           >
-
             <s.SubMenuItem
               onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
               selected={isSubmenuItemSelected}
@@ -194,7 +194,9 @@ const Sidebar = (props) => {
                 selected={isItemSelected}
                 isOpen={isOpen}
                 colorPalette={colorPalette}
-              >^</s.DropdownIcon>
+              >
+                ^
+              </s.DropdownIcon>
             )}
           </s.MenuItem>
         </Link>

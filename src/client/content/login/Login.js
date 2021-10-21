@@ -18,7 +18,7 @@ export default function SignIn() {
   const auth = useContext(UserContext);
   // get the url's pathname
   const pathname = "https://backend.weeyapp-crm-on-a-boat.com/admin/login";
-  const redirectTo = "/";
+  const redirectTo = "/users";
 
   const [username, setUsername] = useState("");
   const [emailHelper, setEmailHelper] = useState("");
@@ -134,7 +134,7 @@ export default function SignIn() {
       </Snackbar>
       <LeftDiv />
       <RightDiv>
-        <Header>Login, username: abc123, password: abc123</Header>
+        <Header>Login</Header>
         <form noValidate>
           <TextField
             variant="outlined"

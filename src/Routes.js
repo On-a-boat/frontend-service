@@ -7,6 +7,7 @@ import { menuItems } from "./client/constants/pathname";
 import Sidebar from "./client/sidebar/Sidebar";
 // Components
 import Settings from "./client/content/settings/Settings";
+import Home from "./client/content/home/Home";
 import CRM from "./client/content/crm/CRM";
 import Groups from "./client/content/groups/Groups";
 import Statistics from "./client/content/statistics/Statistics";
@@ -48,15 +49,9 @@ const RootSPA = () => {
           <Sidebar ddd={bgImage} menuItems={menuItems} />
         )}
         <Switch>
-          <Route exact path="/crm" component={CRM} />
+          <Route exact path="/users" component={CRM} />
           <Route exact path="/login" component={Login} />
-          <Route
-            exact
-            path="/"
-            render={() =>
-              token ? <Redirect to="/crm" /> : <Redirect to="/login" />
-            }
-          />
+          <Route exact path="/" component={Home} />
           <Route exact path="/groups" component={Groups} />
           <Route exact path="/settings" component={Settings} />
           <Route exact path="/email" component={Email} />

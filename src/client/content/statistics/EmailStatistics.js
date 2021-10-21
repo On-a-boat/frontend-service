@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import MyBar from "./diagrams/MyBar";
 import Age from "./diagrams/Age";
+import * as s from "./Statistics.styles";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -74,7 +75,7 @@ const Email = () => {
     };
   }, []);
   return (
-    <div>
+    <s.RightContainer>
       <h1>User Statistics on User {a}</h1>
       <Box sx={{ width: 1 }}>
         <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
@@ -83,18 +84,11 @@ const Email = () => {
               <h3>Sent To Users</h3>
               <h1>{JSON.stringify(oneSent)}</h1>
             </Item>
-            <br />
-            <Item>
-              <h3>Opened Emails</h3>
-              <h1>{JSON.stringify(oneOpened)}</h1>
-            </Item>
           </Box>
           <Box gridColumn="span 4">
             <Item>
-              <h3>Gender Distribution</h3>
-              <MyBar
-                data={[oneGender[0].male_count, oneGender[0].female_count]}
-              />
+              <h3>Opened Emails</h3>
+              <h1>{JSON.stringify(oneOpened)}</h1>
             </Item>
           </Box>
           <Box gridColumn="span 4">
@@ -103,7 +97,7 @@ const Email = () => {
               {JSON.stringify(oneContent)}
             </Item>
           </Box>
-          <Box gridColumn="span 8">
+          <Box gridColumn="span 6">
             <Item>
               <h3>Age Distribution</h3>
               <Age
@@ -118,9 +112,17 @@ const Email = () => {
               {JSON.stringify(oneAge)}
             </Item>
           </Box>
+          <Box gridColumn="span 4">
+            <Item>
+              <h3>Gender Distribution</h3>
+              <MyBar
+                data={[oneGender[0].male_count, oneGender[0].female_count]}
+              />
+            </Item>
+          </Box>
         </Box>
       </Box>
-    </div>
+    </s.RightContainer>
   );
 };
 
