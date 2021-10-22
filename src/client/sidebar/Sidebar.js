@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import * as s from "./Sidebar.styles";
@@ -8,6 +8,7 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import ArrowLeft from "@material-ui/icons/ArrowBack";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import PersonIcon from "@material-ui/icons/Person";
+import { UserContext } from "../../Context.js";
 
 const IconComponents = {
   Home: HomeIcon,
@@ -38,6 +39,8 @@ const Sidebar = (props) => {
       selectedBackgroundCollapsedMode: "dark",
     },
   } = props;
+
+  const auth = useContext(UserContext);
 
   // State
   const [selected, setSelectedMenuItem] = useState(menuItems[0].name);
@@ -114,10 +117,7 @@ const Sidebar = (props) => {
           newSubmenus[selectedItemIndex]["isOpen"] = true;
         if (selectedItemIndex !== -1 && selectedSubItemIndex !== -1)
           newSubmenus[selectedItemIndex]["selected"] = selectedSubItemIndex;
-      }
-      catch (error) {
-
-      }
+      } catch (error) {}
     }
 
     Object.keys(subMenusStates).length === 0 && setSubmenus(newSubmenus);
@@ -125,8 +125,12 @@ const Sidebar = (props) => {
 
   const handleMenuItemClick = (name, index) => {
     setSelectedMenuItem(name);
-
     const subMenusCopy = JSON.parse(JSON.stringify(subMenusStates));
+
+    //logout
+    if (name === "Logout") {
+      auth.logout();
+    }
 
     if (subMenusStates.hasOwnProperty(index)) {
       subMenusCopy[index]["isOpen"] = !subMenusStates[index]["isOpen"];
@@ -142,8 +146,8 @@ const Sidebar = (props) => {
 
   const handleSubMenuItemClick = (menuItemIdx, subMenuItemIdx) => {
     const subMenusCopy = JSON.parse(JSON.stringify(subMenusStates));
-
     subMenusCopy[menuItemIdx]["selected"] = subMenuItemIdx;
+
     setSubmenus(subMenusCopy);
   };
 

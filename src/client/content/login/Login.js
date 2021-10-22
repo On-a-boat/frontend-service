@@ -18,7 +18,7 @@ export default function SignIn() {
   const auth = useContext(UserContext);
   // get the url's pathname
   const pathname = "https://backend.weeyapp-crm-on-a-boat.com/admin/login";
-  const redirectTo = "/users";
+  const redirectTo = "/";
 
   const [username, setUsername] = useState("");
   const [emailHelper, setEmailHelper] = useState("");

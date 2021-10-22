@@ -27,6 +27,8 @@ const RootSPA = () => {
 
   const login = useCallback((token) => {
     setToken(token);
+    console.log("its been stored");
+    console.log(token);
     localStorage.setItem("userData", JSON.stringify(token));
   }, []);
 
@@ -34,6 +36,35 @@ const RootSPA = () => {
     setToken(null);
     localStorage.clear();
   }, []);
+
+  let Routes;
+  if (token) {
+    Routes = (
+      <Switch>
+        <Route exact path="/users" component={CRM} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/groups" component={Groups} />
+        <Route exact path="/settings" component={Settings} />
+        {/* <Route exact path="/email" component={Email} /> */}
+        {/* <Route exact path="/statistics" component={Statistics} /> */}
+        <Route exact path="/statistics/users" component={UserStatistics} />
+        <Route exact path="/statistics/email" component={Email} />
+        <Route exact path="/statistics/email/:a" component={EmailStatistics} />
+        <Route exact path="/userprofile/:a([0-9]+)" component={UserProfile} />
+        <Route exact path="/groups/:a([0-9]+)" component={GroupDetail} />
+        {/* <Route component={<h1>error 404</h1>} /> */}
+      </Switch>
+    );
+  } else {
+    Routes = (
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        {/* <Route component={<h1>error 404</h1>} /> */}
+
+        <Redirect to="/login" />
+      </Switch>
+    );
+  }
 
   return (
     <>
@@ -48,32 +79,7 @@ const RootSPA = () => {
         {!location.pathname.includes("login") && (
           <Sidebar ddd={bgImage} menuItems={menuItems} />
         )}
-        <Switch>
-          <Route exact path="/users" component={CRM} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/groups" component={Groups} />
-          <Route exact path="/settings" component={Settings} />
-          {/* <Route exact path="/email" component={Email} /> */}
-          {/* <Route exact path="/statistics" component={Statistics} /> */}
-          <Route exact path="/statistics/users" component={UserStatistics} />
-          <Route exact path="/statistics/email" component={Email} />
-          <Route
-            exact
-            path="/statistics/email/:a"
-            component={EmailStatistics}
-          />
-          <Route
-            exact
-            path="/userprofile/:a([0-9]+)"
-            component={UserProfile}
-          ></Route>
-          <Route
-            exact
-            path="/groups/:a([0-9]+)"
-            component={GroupDetail}
-          ></Route>
-        </Switch>
+        {Routes}
       </UserContext.Provider>
     </>
   );
