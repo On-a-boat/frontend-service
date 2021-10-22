@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import logo from "./login-image2.jpg";
+import logo from "./login-image3.jpg";
 
 export const MyContainer = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ export const LeftDiv = styled.div`
   background-image: url(${logo});
   background-color: #cccccc;
   background-size: cover;
-  background-position: 50% 50%;
+  background-position: 20% 0%;
 `;
 
 export const RightDiv = styled.div`

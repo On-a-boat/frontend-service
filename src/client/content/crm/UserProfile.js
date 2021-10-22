@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import * as s from "./CRM.styles";
 
 const useStyles = makeStyles({
   table: {
@@ -203,5 +204,9 @@ export default function UserProfile() {
       isMounted = false;
     };
   }, []);
-  return <DetailTable data={data} />;
+  return (
+    <s.CRMContainer>
+      <DetailTable data={data} />
+    </s.CRMContainer>
+  );
 }

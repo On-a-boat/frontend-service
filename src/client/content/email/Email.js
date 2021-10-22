@@ -289,30 +289,18 @@ function CRM() {
       accessor: "date",
     },
     {
-      Header: "Total Sent",
-      accessor: "numberSent",
-      Filter: NumberRangeColumnFilter,
-      filter: "between",
-    },
-    {
-      Header: "Email Opened",
-      accessor: "numberOpened",
-      Filter: NumberRangeColumnFilter,
-      filter: "between",
-    },
-    {
       Header: "",
       accessor: "Link",
-      Cell: (e) => <a href={"statistics/email/" + e.value}>Link</a>,
+      Cell: (e) => <a href={"email/" + e.value}>Link</a>,
     },
   ];
 
   return (
     <s.CRMContainer>
-      {/* Table */}
-      {/* <s.TableStyles> */}
-      <Table columns={columns} data={data} />
-      {/* </s.TableStyles> */}
+      <s.MainContainer>
+        {/* Table */}
+        <Table columns={columns} data={data} />
+      </s.MainContainer>
     </s.CRMContainer>
   );
 }

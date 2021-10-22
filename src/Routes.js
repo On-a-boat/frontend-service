@@ -54,7 +54,7 @@ const RootSPA = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/groups" component={Groups} />
           <Route exact path="/settings" component={Settings} />
-          <Route exact path="/email" component={Email} />
+          {/* <Route exact path="/email" component={Email} /> */}
           {/* <Route exact path="/statistics" component={Statistics} /> */}
           <Route exact path="/statistics/users" component={UserStatistics} />
           <Route exact path="/statistics/email" component={Email} />

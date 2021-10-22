@@ -3,23 +3,30 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
 import MyBar from "./diagrams/MyBar";
 import Age from "./diagrams/Age";
 import * as s from "./Statistics.styles";
 
-const Item = styled(Paper)(({ theme }) => ({
+const Item = styled(Card)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
+const ContentItem = styled(Card)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  minHeight: 700,
+}));
 
 const Email = () => {
   const { a } = useParams();
-  const [oneOpened, setOneOpened] = useState([]);
-  const [oneContent, setOneContent] = useState([]);
-  const [oneSent, setOneSent] = useState([]);
+  const [oneOpened, setOneOpened] = useState([{ numberOpened: 0 }]);
+  const [oneContent, setOneContent] = useState([{ contents: "hello" }]);
+  const [oneSent, setOneSent] = useState([{ numberSent: 0 }]);
   const [oneGender, setOneGender] = useState([
     { male_count: 0, female_count: 0 },
   ]);
@@ -76,52 +83,54 @@ const Email = () => {
   }, []);
   return (
     <s.RightContainer>
-      <h1>User Statistics on User {a}</h1>
-      <Box sx={{ width: 1 }}>
-        <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Sent To Users</h3>
-              <h1>{JSON.stringify(oneSent)}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Opened Emails</h3>
-              <h1>{JSON.stringify(oneOpened)}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Email Content</h3>
-              {JSON.stringify(oneContent)}
-            </Item>
-          </Box>
-          <Box gridColumn="span 6">
-            <Item>
-              <h3>Age Distribution</h3>
-              <Age
-                data={[
-                  oneAge[0]["Under 20"],
-                  oneAge[0]["20 - 29"],
-                  oneAge[0]["30 - 39"],
-                  oneAge[0]["40 - 49"],
-                  oneAge[0]["50 - 60"],
-                ]}
-              />
-              {JSON.stringify(oneAge)}
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Gender Distribution</h3>
-              <MyBar
-                data={[oneGender[0].male_count, oneGender[0].female_count]}
-              />
-            </Item>
+      <s.MainContainer>
+        <h1>Group {a} Statstics</h1>
+        <br />
+
+        <Box sx={{ width: 1 }}>
+          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+            <Box gridColumn="span 4">
+              <Item>
+                <h3>Sent To Users</h3>
+                <h1>{JSON.stringify(oneSent[0]["numberSent"])}</h1>
+              </Item>
+              <br />
+              <Item>
+                <h3>Age Distribution</h3>
+                <Age
+                  data={[
+                    oneAge[0]["Under 20"],
+                    oneAge[0]["20 - 29"],
+                    oneAge[0]["30 - 39"],
+                    oneAge[0]["40 - 49"],
+                    oneAge[0]["50 - 60"],
+                  ]}
+                />
+                {JSON.stringify(oneAge)}
+              </Item>
+            </Box>
+            <Box gridColumn="span 4">
+              <Item>
+                <h3>Opened Emails</h3>
+                <h1>{JSON.stringify(oneOpened[0]["numberOpened"])}</h1>
+              </Item>
+              <br />
+              <Item>
+                <h3>Gender Distribution</h3>
+                <MyBar
+                  data={[oneGender[0].male_count, oneGender[0].female_count]}
+                />
+              </Item>
+            </Box>
+            <Box gridColumn="span 4">
+              <ContentItem>
+                <h3>Email Content</h3>
+                <h1>{JSON.stringify(oneContent[0]["contents"])}</h1>
+              </ContentItem>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </s.MainContainer>
     </s.RightContainer>
   );
 };

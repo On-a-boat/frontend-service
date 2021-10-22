@@ -1,12 +1,5 @@
 import styled from "@emotion/styled";
 
-export const GroupsContainer = styled.div``;
-
-export const centerStuffDiv = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-`;
-
 export const TableStyles = styled.div`
   padding: 1rem;
 
@@ -27,6 +20,7 @@ export const TableStyles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
+      background-color: white;
       border-bottom: 1px solid #ededed;
 
       :last-child {

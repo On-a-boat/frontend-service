@@ -16,9 +16,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Statistics = () => {
-  const [newUser, setNewUser] = useState([]);
-  const [allUser, setAllUser] = useState([]);
-  const [openedEmail, setOpenedEmail] = useState([]);
+  const [newUser, setNewUser] = useState({ newuser: "5" });
+  const [allUser, setAllUser] = useState([{ "count(userId)": 100 }]);
+  const [openedEmail, setOpenedEmail] = useState([{ "SUM(NumberOpened)": 0 }]);
   const [allGender, setAllGender] = useState([
     { male_count: 0, female_count: 0 },
   ]);
@@ -65,52 +65,55 @@ const Statistics = () => {
   }, []);
   return (
     <s.RightContainer>
-      <h1>User Statistics </h1>
-      <Box sx={{ width: 1 }}>
-        <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>New Users</h3>
-              <h1>{JSON.stringify(newUser)}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Total Users</h3>
-              <h1>{JSON.stringify(allUser[0])}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 4">
-            <Item>
-              <h3>Emails Opened</h3>
-              <h1>{JSON.stringify(openedEmail[0])}</h1>
-            </Item>
-          </Box>
-          <Box gridColumn="span 6">
-            <Item>
-              <h3>Age Distribution</h3>
-              <Age
-                data={[
-                  allAge[0]["Under 20"],
-                  allAge[0]["20 - 29"],
-                  allAge[0]["30 - 39"],
-                  allAge[0]["40 - 49"],
-                  allAge[0]["50 - 60"],
-                ]}
-              />
-              {JSON.stringify(allAge[0])}
-            </Item>
-          </Box>
-          <Box gridColumn="span 6">
-            <Item>
-              <h3>Gender Distribution</h3>
-              <MyBar
-                data={[allGender[0].male_count, allGender[0].female_count]}
-              />
-            </Item>
+      <s.MainContainer>
+        <h1>User Statistics </h1>
+        <br />
+        <Box sx={{ width: 1 }}>
+          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+            <Box gridColumn="span 4">
+              <Item>
+                <h3>New Users</h3>
+                <h1>{JSON.stringify(newUser["newuser"])}</h1>
+              </Item>
+            </Box>
+            <Box gridColumn="span 4">
+              <Item>
+                <h3>Total Users</h3>
+                <h1>{JSON.stringify(allUser[0]["count(userId)"])}</h1>
+              </Item>
+            </Box>
+            <Box gridColumn="span 4">
+              <Item>
+                <h3>Emails Opened</h3>
+                <h1>{JSON.stringify(openedEmail[0]["SUM(NumberOpened)"])}</h1>
+              </Item>
+            </Box>
+            <Box gridColumn="span 6">
+              <Item>
+                <h3>Age Distribution</h3>
+                <Age
+                  data={[
+                    allAge[0]["Under 20"],
+                    allAge[0]["20 - 29"],
+                    allAge[0]["30 - 39"],
+                    allAge[0]["40 - 49"],
+                    allAge[0]["50 - 60"],
+                  ]}
+                />
+                {JSON.stringify(allAge[0])}
+              </Item>
+            </Box>
+            <Box gridColumn="span 6">
+              <Item>
+                <h3>Gender Distribution</h3>
+                <MyBar
+                  data={[allGender[0].male_count, allGender[0].female_count]}
+                />
+              </Item>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </s.MainContainer>
     </s.RightContainer>
   );
 };

@@ -2,7 +2,6 @@ export const menuItems = [
   { name: "Home", to: "/", icon: "", subMenuItems: [] },
   { name: "Users", to: "/users", icon: "", subMenuItems: [] },
   { name: "Groups", to: "/groups", icon: "icons/groups.svg", subMenuItems: [] },
-  { name: "Email", to: "/email", icon: "icons/email.svg", subMenuItems: [] },
   {
     name: "Statistics",
     to: "#",
@@ -15,6 +14,12 @@ export const menuItems = [
   {
     name: "Settings",
     to: "/settings",
+    icon: "icons/settings.svg",
+    subMenuItems: [],
+  },
+  {
+    name: "Logout",
+    to: "/login",
     icon: "icons/settings.svg",
     subMenuItems: [],
   },
