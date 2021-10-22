@@ -359,7 +359,7 @@ function CRM() {
 
         {/* Table */}
         {/* <s.TableStyles> */}
-        <Table columns={columns} data={data} />
+        <Table data-testid="Table" columns={columns} data={data} />
         {/* </s.TableStyles> */}
 
         {/* Modal */}

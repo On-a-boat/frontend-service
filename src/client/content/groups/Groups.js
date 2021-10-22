@@ -333,7 +333,7 @@ const Groups = () => {
     <s.CRMContainer>
       <s.MainContainer>
         <s.TableStyles>
-          <Table columns={columns} data={data} />
+          <Table data-testid="Table" columns={columns} data={data} />
         </s.TableStyles>
         <Modal
           open={buttonPopup}
