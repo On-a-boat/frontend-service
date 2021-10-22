@@ -1,44 +1,18 @@
-import React from "react";
-import { useState, useEffect, Fragment } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   useTable,
   usePagination,
   useRowSelect,
   useSortBy,
   useFilters,
-  useGlobalFilter,
-  useAsyncDebounce,
 } from "react-table";
+import axios from "axios";
 import DefaultColumnFilter from "../crm/filters/DefaultColumnFilter";
-import Popup from "../../components/Popup";
 import NumberRangeColumnFilter from "../crm/filters/NumberRangeColumnFilter";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import Popup from "../../components/Popup";
+import * as s from "../crm/CRM.styles";
 
-import * as s from "./Groups.styles";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  height: 500,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-// Copied from CRM.js
-//------------------------------------------------------------------------------------------------------------
 //toggle dropdown menu open/close filter and sort
 var toClose = false;
 function toggle(e) {
@@ -138,37 +112,12 @@ const Table = function ({ columns, data }) {
     useSortBy,
     usePagination,
     useRowSelect,
-
-    // define functionalities for checkbox
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        //  make a column for selection
-        {
-          id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    }
   );
 
   return (
     <>
-      <s.Table {...getTableProps()}>
-        <s.TableHead>
+      <s.CRMTable {...getTableProps()}>
+        <s.CRMTableHead>
           {headerGroups.map((headerGroup) => (
             <tr style={{ position: "relative" }}>
               {headerGroup.headers.map((column) => (
@@ -180,7 +129,7 @@ const Table = function ({ columns, data }) {
                   <span>
                     {column.Header.length > 1 ? (
                       <span>
-                        <s.HeadFilter style={{ display: "block" }}>
+                        <s.CRMHeadFilter style={{ display: "block" }}>
                           {/* filter */}
                           <li style={{ backgroundColor: "white" }}>
                             {column.canFilter ? column.render("Filter") : null}
@@ -201,7 +150,7 @@ const Table = function ({ columns, data }) {
                                 : "Sort in Asc"
                               : null}
                           </li>
-                        </s.HeadFilter>
+                        </s.CRMHeadFilter>
                       </span>
                     ) : null}
                   </span>
@@ -209,9 +158,9 @@ const Table = function ({ columns, data }) {
               ))}
             </tr>
           ))}
-        </s.TableHead>
+        </s.CRMTableHead>
 
-        <s.TableBody {...getTableBodyProps()}>
+        <s.CRMTableBody {...getTableBodyProps()}>
           {page.map((row, i) => {
             prepareRow(row);
             return (
@@ -224,8 +173,8 @@ const Table = function ({ columns, data }) {
               </tr>
             );
           })}
-        </s.TableBody>
-      </s.Table>
+        </s.CRMTableBody>
+      </s.CRMTable>
 
       {/*  define pagination of the table,  */}
       <s.Pagination>
@@ -257,150 +206,84 @@ const Table = function ({ columns, data }) {
           Page {pageIndex + 1} of {pageOptions.length}{" "}
         </s.CurrPage>
       </s.Pagination>
-
-      {/* Create a JSON file for checked rows */}
-      <pre>
-        <code>
-          {localStorage.setItem(
-            "selectedRows",
-            JSON.stringify(selectedFlatRows.map((d) => d.original))
-          )}
-        </code>
-      </pre>
     </>
   );
 };
-//------------------------------------------------------------------------------------------------------------
 
-const Groups = () => {
+function GroupsDetail() {
   const [data, setData] = useState([]);
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [email, setEmail] = useState("");
-  const handleClose = () => setButtonPopup(false);
+  const { a } = useParams();
 
-  const columns = React.useMemo(() => [
-    {
-      Header: "No.",
-      accessor: "GroupId",
-    },
-    {
-      Header: "Group Name",
-      accessor: "groupName",
-    },
-    {
-      Header: "Users",
-      accessor: "userCount",
-    },
-    {
-      Header: "Date Created",
-      accessor: "dateCreated",
-    },
-    {
-      Header: "Emails Sent",
-      accessor: "emailSent",
-    },
-    {
-      Header: "",
-      accessor: "link",
-      Cell: (e) => <a href={"groups/" + e.value}>Details</a>,
-    },
-  ]);
-
-  // Fetch groups from the Database.
+  // Fetch users data from the Database.
   useEffect(() => {
     let isMounted = true;
-    const getGroup = async () => {
+    const getUser = async () => {
       try {
-        const groups = await axios.get(
-          "https://backend.weeyapp-crm-on-a-boat.com/group"
+        const users = await axios.get(
+          "https://backend.weeyapp-crm-on-a-boat.com/group/find?groupId=" + a
         );
 
         if (isMounted) {
-          setData(groups.data);
+          setData(users.data);
         }
-        console.log(groups);
+
+        console.log(users);
       } catch (error) {
         console.error(error);
       }
     };
-    getGroup();
+    getUser();
     return () => {
       isMounted = false;
     };
   }, []);
 
+  // Table columns
+  const columns = [
+    {
+      Header: "User ID",
+      accessor: "UserId",
+    },
+    {
+      Header: "First Name",
+      accessor: "FirstName",
+    },
+    {
+      Header: "Last Name",
+      accessor: "LastName",
+    },
+
+    {
+      Header: "Age",
+      accessor: "Age",
+      Filter: NumberRangeColumnFilter,
+      filter: "between",
+    },
+    {
+      Header: "Gender",
+      accessor: "Gender",
+    },
+    {
+      Header: "Email",
+      accessor: "Email",
+    },
+    // {
+    //   Header: "",
+    //   accessor: "Link",
+    //   Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
+    // },
+  ];
+
   return (
-    <s.GroupsContainer>
-      <s.TableStyles>
-        <Table columns={columns} data={data} />
-      </s.TableStyles>
-      <Modal
-        open={buttonPopup}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} justifyContent="center" alignItems="center">
-          <Typography variant="h5"> Send Email</Typography>
-          <TextField
-            id="outlined-multiline-flexible"
-            label="Subject"
-            multiline
-            maxRows={2}
-            margin="normal"
-            fullWidth
-          />
-          <form>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Add Voucher"
-              />
-            </FormGroup>
-            <TextField
-              id="outlined-multiline-static"
-              rows={10}
-              margin="normal"
-              label="Enter the field below"
-              multiline
-              fullWidth
-              required
-            />
-          </form>
-          <Button
-            onclick={handleClose}
-            type="submit"
-            color="secondary"
-            variants="contained"
-            size="large"
-          >
-            Submit
-          </Button>
-        </Box>
-      </Modal>
-      {/* <Popup trigger={buttonPopup}>
-        <input
-          value={email || ""}
-          onChange={(e) => {
-            setEmail(e.target.value || ""); // Set undefined to remove the filter entirely
-          }}
-          placeholder={"Enter email"}
-        />
-        <input
-          value={email || ""}
-          onChange={(e) => {
-            setEmail(e.target.value || ""); // Set undefined to remove the filter entirely
-          }}
-          placeholder={"Enter "}
-        />
+    <s.CRMContainer>
+      
+      {/* Table */}
+      {/* <s.TableStyles> */}
+      <Table columns={columns} data={data} />
+      {/* </s.TableStyles> */}
 
-        {/* onClick, send email and update emails sent of table*/}
-      {/* <button> Send </button>
-        <button onClick={() => setButtonPopup(false)}> Cancel </button>
-      </Popup> */}{" "}
-    </s.GroupsContainer>
+    </s.CRMContainer>
   );
+}
 
-};
-
-export default Groups;
+export default GroupsDetail;

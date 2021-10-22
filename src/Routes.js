@@ -16,7 +16,7 @@ import Login from "./client/content/login/Login.js";
 import UserProfile from "./client/content/crm/UserProfile";
 import EmailStatistics from "./client/content/statistics/EmailStatistics";
 import UserStatistics from "./client/content/statistics/UserStatistics";
-
+import GroupDetail from "./client/content/groups/GroupsDetail";
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
 // const menuItems = ['CRM', 'Groups', 'Statistics', 'Settings'];
@@ -67,6 +67,11 @@ const RootSPA = () => {
             exact
             path="/userprofile/:a([0-9]+)"
             component={UserProfile}
+          ></Route>
+          <Route
+            exact
+            path="/groups/:a([0-9]+)"
+            component={GroupDetail}
           ></Route>
         </Switch>
       </UserContext.Provider>
