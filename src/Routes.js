@@ -24,6 +24,7 @@ const bgImage = "images/mountain.jpg";
 const RootSPA = () => {
   const location = useLocation();
   const [token, setToken] = useState(null);
+  let Routes;
 
   const login = useCallback((token) => {
     setToken(token);
@@ -37,16 +38,8 @@ const RootSPA = () => {
     localStorage.clear();
   }, []);
 
-  // Authentication and if there is a token in localStorage, set the login status to be Logged in
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"));
-    if (storedData) {
-      login(storedData);
-    }
-  }, [login]);
-
-  let Routes;
-  if (token) {
+  console.log(token, "ASDF");
+  if (localStorage.getItem("userData")) {
     Routes = (
       <Switch>
         <Route exact path="/users" component={CRM} />
@@ -67,9 +60,7 @@ const RootSPA = () => {
     Routes = (
       <Switch>
         <Route exact path="/login" component={Login} />
-        {/* <Route component={<h1>error 404</h1>} /> */}
-
-        {/* <Redirect to="/login" /> */}
+        <Redirect to="/login" />
       </Switch>
     );
   }

@@ -134,7 +134,7 @@ export default function SignIn() {
       </Snackbar>
       <LeftDiv />
       <RightDiv>
-        <Header>Login</Header>
+        <Header>Login, id: abc123, pass: abc123</Header>
         <form noValidate>
           <TextField
             variant="outlined"
