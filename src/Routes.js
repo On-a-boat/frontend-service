@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import { UserContext } from "./Context";
 import { menuItems } from "./client/constants/pathname";
@@ -37,6 +37,14 @@ const RootSPA = () => {
     localStorage.clear();
   }, []);
 
+  // Authentication and if there is a token in localStorage, set the login status to be Logged in
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData) {
+      login(storedData);
+    }
+  }, [login]);
+
   let Routes;
   if (token) {
     Routes = (
@@ -61,7 +69,7 @@ const RootSPA = () => {
         <Route exact path="/login" component={Login} />
         {/* <Route component={<h1>error 404</h1>} /> */}
 
-        <Redirect to="/login" />
+        {/* <Redirect to="/login" /> */}
       </Switch>
     );
   }
