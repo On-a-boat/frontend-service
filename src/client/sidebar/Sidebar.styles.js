@@ -1,12 +1,6 @@
 import styled from "../../../node_modules/@emotion/styled";
 // require("typeface-nunito-sans");
 
-export const SideBarContainer = styled.div`
-  width: 15%;
-  // responsive , max width and min width of the sidebar
-  background-color: #24303f;
-`;
-
 export const SidebarHeader = styled.h3`
   padding: 24px 0; // top bottom 20, 0 left right
   text-align: center;
@@ -19,7 +13,7 @@ export const SidebarHeader = styled.h3`
 `;
 
 export const SidebarHeaderWrapper = styled.div`
-  background-color: #131a28;x 
+  background-color: #63c8f4;
   margin-bottom: 48px;
 `;
 
@@ -27,29 +21,10 @@ export const MenuItemContainer = styled.div`
   margin-top: 40px;
 `;
 
-export const SidebarFooterWrapper = styled.div`
-  background-color: #131a28;
-  /* width: 15%; */
-  position: fixed;
-  bottom: 0;
-  left: 0;
-`;
-export const SidebarFooter = styled.div`
-  display: flex;
-  padding: 24px; // top bottom 20, 0 left right
-  text-align: center;
-  /* letter-spacing: 6px; // spaces btw each letters  */
-  color: white;
-  font-family: "Nunito Sans", sans-serif;
-`;
-
 export const MenuItem = styled.div`
   display: flex;
   padding: 15px;
-  /* background-color: #fff; */
-  /* color: ${(p) => (p.selected ? "rgba(255,255,255)" : "white")}; */
   font-family: "Nunito Sans", sans-serif;
-  font-size: 30px;
   background-color: ${(props) => props.selected && "#161E2E"};
   box-shadow: ${(props) => props.selected && "inset 0px 3px 3px 2px #000"};
   border-radius: 7px;
@@ -67,13 +42,6 @@ export const MenuItem = styled.div`
 
 export const Icon = styled.div`
   padding-right: 20px;
-`;
-
-export const Name = styled.p`
-  font-size: 14px;
-  font-style: italic;
-  font-weight: lighter;
-  text-align: center;
 `;
 
 export const Text = styled.p`
@@ -110,7 +78,7 @@ export const SubMenuItemContainer = styled.div`
 `;
 
 export const SidebarContainer = styled.div`
-  width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
+  width: ${(p) => (p.isSidebarOpen ? "12%" : "5%")};
   max-width: 280px;
   min-width: 80px;
   background-image: linear-gradient(
@@ -128,11 +96,16 @@ export const SidebarContainer = styled.div`
 `;
 
 export const SubMenuItem = styled.p`
+  min-height: 40px;
+  margin-top: 3;
   color: ${(p) =>
     p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
   ${(p) => p.selected && "font-weight: bold; letter-spacing: 2px;"};
   transition: 0.2s;
   &:hover {
     color: ${(p) => p.colorPalette.fontColorSelected};
+    /* background-color: ${(props) => !props.selected && "#161E2E"}; */
+    /* box-shadow: ${(props) =>
+      !props.selected && "inset 0px 3px 3px 2px #000"}; */
   }
 `;

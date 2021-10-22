@@ -338,33 +338,35 @@ function CRM() {
 
   return (
     <s.CRMContainer>
-      <Popup trigger={buttonPopup}>
-        <s.GroupNameInput
-          value={groupName || ""}
-          onChange={(e) => {
-            setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
-          }}
-          placeholder={"Enter group name"}
-        />
-        <s.CreateGroupButton onClick={() => makeGroup()}>
-          {" "}
-          Create{" "}
-        </s.CreateGroupButton>
-        <s.CancelGroupButton onClick={() => setButtonPopup(false)}>
-          {" "}
-          Cancel{" "}
-        </s.CancelGroupButton>
-      </Popup>
+      <s.MainContainer>
+        <Popup trigger={buttonPopup}>
+          <s.GroupNameInput
+            value={groupName || ""}
+            onChange={(e) => {
+              setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
+            }}
+            placeholder={"Enter group name"}
+          />
+          <s.CreateGroupButton onClick={() => makeGroup()}>
+            {" "}
+            Create{" "}
+          </s.CreateGroupButton>
+          <s.CancelGroupButton onClick={() => setButtonPopup(false)}>
+            {" "}
+            Cancel{" "}
+          </s.CancelGroupButton>
+        </Popup>
 
-      {/* Table */}
-      {/* <s.TableStyles> */}
-      <Table columns={columns} data={data} />
-      {/* </s.TableStyles> */}
+        {/* Table */}
+        {/* <s.TableStyles> */}
+        <Table columns={columns} data={data} />
+        {/* </s.TableStyles> */}
 
-      {/* Modal */}
-      <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>
-        {"Create Group"}
-      </s.CreateGroupModalButton>
+        {/* Modal */}
+        <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>
+          {"Create Group"}
+        </s.CreateGroupModalButton>
+      </s.MainContainer>
     </s.CRMContainer>
   );
 }

@@ -1,9 +1,15 @@
 import styled from "@emotion/styled";
 
 export const CRMContainer = styled.div`
+  width: 88%;
+  background-color: #f7f9ff;
+  flex: 0 0 88%;
+`;
+
+export const MainContainer = styled.div`
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
 `;
 
 // CRM table
@@ -27,6 +33,7 @@ export const CRMTable = styled.table`
   td {
     margin: 0;
     padding: 0.5rem;
+    background-color: white;
     border-bottom: 1px solid #ededed;
 
     :last-child {
@@ -90,6 +97,7 @@ export const TableStyles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
+      background-color: white;
       border-bottom: 1px solid #ededed;
 
       :last-child {

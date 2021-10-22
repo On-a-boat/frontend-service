@@ -92,6 +92,7 @@ export const TableStyles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
+      background-color: white;
       border-bottom: 1px solid #ededed;
 
       :last-child {

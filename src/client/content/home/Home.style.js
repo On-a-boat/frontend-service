@@ -10,3 +10,8 @@ export const MainContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
+
+export const centerStuffDiv = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+`;
