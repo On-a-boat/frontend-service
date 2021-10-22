@@ -1,15 +1,17 @@
 import styled from "@emotion/styled";
 
-export const GroupsContainer = styled.div`
-  margin-left: none;
-  margin-right: auto;
-  width: 80%;`;
+export const CRMContainer = styled.div`
+  width: 88%;
+  flex: 0 0 88%;
+  background-color: #f7f9ff;
+`;
 
-export const centerStuffDiv = styled.div`
+export const MainContainer = styled.div`
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
 `;
-
+// CRM table
 export const Table = styled.table`
   border-spacing: 0;
 

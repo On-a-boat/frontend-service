@@ -330,55 +330,56 @@ const Groups = () => {
   }, []);
 
   return (
-    <s.GroupsContainer>
-      <s.TableStyles>
-        <Table columns={columns} data={data} />
-      </s.TableStyles>
-      <Modal
-        open={buttonPopup}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} justifyContent="center" alignItems="center">
-          <Typography variant="h5"> Send Email</Typography>
-          <TextField
-            id="outlined-multiline-flexible"
-            label="Subject"
-            multiline
-            maxRows={2}
-            margin="normal"
-            fullWidth
-          />
-          <form>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Add Voucher"
-              />
-            </FormGroup>
+    <s.CRMContainer>
+      <s.MainContainer>
+        <s.TableStyles>
+          <Table columns={columns} data={data} />
+        </s.TableStyles>
+        <Modal
+          open={buttonPopup}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} justifyContent="center" alignItems="center">
+            <Typography variant="h5"> Send Email</Typography>
             <TextField
-              id="outlined-multiline-static"
-              rows={10}
-              margin="normal"
-              label="Enter the field below"
+              id="outlined-multiline-flexible"
+              label="Subject"
               multiline
+              maxRows={2}
+              margin="normal"
               fullWidth
-              required
             />
-          </form>
-          <Button
-            onclick={handleClose}
-            type="submit"
-            color="secondary"
-            variants="contained"
-            size="large"
-          >
-            Submit
-          </Button>
-        </Box>
-      </Modal>
-      {/* <Popup trigger={buttonPopup}>
+            <form>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox defaultChecked />}
+                  label="Add Voucher"
+                />
+              </FormGroup>
+              <TextField
+                id="outlined-multiline-static"
+                rows={10}
+                margin="normal"
+                label="Enter the field below"
+                multiline
+                fullWidth
+                required
+              />
+            </form>
+            <Button
+              onclick={handleClose}
+              type="submit"
+              color="secondary"
+              variants="contained"
+              size="large"
+            >
+              Submit
+            </Button>
+          </Box>
+        </Modal>
+        {/* <Popup trigger={buttonPopup}>
         <input
           value={email || ""}
           onChange={(e) => {
@@ -395,12 +396,12 @@ const Groups = () => {
         />
 
         {/* onClick, send email and update emails sent of table*/}
-      {/* <button> Send </button>
+        {/* <button> Send </button>
         <button onClick={() => setButtonPopup(false)}> Cancel </button>
       </Popup> */}{" "}
-    </s.GroupsContainer>
+      </s.MainContainer>
+    </s.CRMContainer>
   );
-
 };
 
 export default Groups;

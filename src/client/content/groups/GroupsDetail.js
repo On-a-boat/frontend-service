@@ -111,7 +111,7 @@ const Table = function ({ columns, data }) {
     useFilters,
     useSortBy,
     usePagination,
-    useRowSelect,
+    useRowSelect
   );
 
   return (
@@ -276,12 +276,12 @@ function GroupsDetail() {
 
   return (
     <s.CRMContainer>
-      
-      {/* Table */}
-      {/* <s.TableStyles> */}
-      <Table columns={columns} data={data} />
-      {/* </s.TableStyles> */}
-
+      <s.MainContainer>
+        {/* Table */}
+        {/* <s.TableStyles> */}
+        <Table columns={columns} data={data} />
+        {/* </s.TableStyles> */}
+      </s.MainContainer>
     </s.CRMContainer>
   );
 }

@@ -61,7 +61,7 @@ export default function Statistics() {
               <Button
                 variant="contained"
                 onClick={() => {
-                  history.push("/statistics");
+                  history.push("/statistics/users");
                 }}
               >
                 Go to Statistics

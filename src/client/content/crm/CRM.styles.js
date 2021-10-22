@@ -15,9 +15,7 @@ export const MainContainer = styled.div`
 
 export const CRMTable = styled.table`
   border-spacing: 0;
-
-  border-spacing: 0;
-
+  padding-top: 1rem;
   tr {
     :last-child {
       td {
