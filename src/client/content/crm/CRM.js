@@ -136,7 +136,7 @@ const Table = function ({ columns, data }) {
                           <Button style={{ backgroundColor: 'transparent', color: "black" }} {...bindTrigger(popupState)}>
                             ...
                           </Button>
-                          <Menu{...bindMenu(popupState)}>
+                          <Menu {...bindMenu(popupState)}>
                             <MenuItem >
                               {column.canFilter ? column.render("Filter") : null}
                             </MenuItem>
@@ -145,9 +145,9 @@ const Table = function ({ columns, data }) {
                               {column.Header.length > 1
                                 ? column.isSorted
                                   ? column.isSortedDesc
-                                    ? "Default"
-                                    : "Sort in Desc"
-                                  : "Sort in Asc"
+                                    ? "⇵ Default"
+                                    : "↓ Sort in Desc"
+                                  : "↑ Sort in Asc"
                                 : null}
                             </MenuItem>
                           </Menu>
