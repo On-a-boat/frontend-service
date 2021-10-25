@@ -48,7 +48,3 @@ export const CurrPage = styled.span``;
 export const CreateGroupModalButton = styled.button``;
 
 
-export const CreateButton = styled.button``;
-export const CancelButton = styled.button``;
-export const GroupNameInput = styled.input``;
-
