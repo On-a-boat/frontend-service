@@ -9,35 +9,13 @@ import {
 import axios from "axios";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import Popup from "../../components/Popup";
+import Popup from "./Popup";
 import * as s from "./CRM.styles";
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
-//toggle dropdown menu open/close filter and sort
-var toClose = false;
-function toggle(e) {
-  e.stopPropagation();
-  var btn = this;
-  var menu = btn.nextSibling;
-
-  while (menu && menu.nodeType !== 1) {
-    menu = menu.nextSibling;
-  }
-  if (!menu) return;
-  if (menu.style.display !== "block") {
-    menu.style.display = "block";
-    if (toClose) toClose.style.display = "none";
-    toClose = menu;
-  } else {
-    menu.style.display = "none";
-    toClose = false;
-  }
-}
-
-window.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
-    btn.addEventListener("click", toggle, true);
-  });
-});
 
 //A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
@@ -57,8 +35,10 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-// CRM table
+// table
 const Table = function ({ columns, data }) {
+
+
   // Define filtering options; case insensitive
   const filterTypes = React.useMemo(
     () => ({
@@ -67,8 +47,8 @@ const Table = function ({ columns, data }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -139,65 +119,63 @@ const Table = function ({ columns, data }) {
   );
 
   return (
-    <>
+    <s.CRMTableContainer >
       <s.CRMTable {...getTableProps()}>
-        <s.CRMTableHead>
-          {headerGroups.map((headerGroup) => (
-            <tr style={{ position: "relative" }}>
-              {headerGroup.headers.map((column) => (
-                <th>
-                  {/* header */}
-                  <span>{column.render("Header")}</span>
+        {headerGroups.map((headerGroup) => (
+          <tr style={{ position: "relative" }}>
+            {headerGroup.headers.map((column) => (
+              <th>
+                {/* header */}
+                <span>{column.render("Header")}</span>
 
-                  {/* drop down bar, contians filter and sort */}
-                  <span>
-                    {column.Header.length > 1 ? (
-                      <span>
-                        <s.CRMHeadFilter style={{ display: "block" }}>
-                          {/* filter */}
-                          <li style={{ backgroundColor: "white" }}>
-                            {column.canFilter ? column.render("Filter") : null}
-                          </li>
+                <span>
+                  {column.Header.length > 1 ? (
+                    <PopupState>
+                      {(popupState) => (
+                        <>
+                          <Button style={{ backgroundColor: 'transparent', color: "black" }} {...bindTrigger(popupState)}>
+                            ...
+                          </Button>
+                          <Menu {...bindMenu(popupState)}>
+                            <MenuItem >
+                              {column.canFilter ? column.render("Filter") : null}
+                            </MenuItem>
 
-                          {/* sort */}
-                          <li
-                            {...column.getHeaderProps(
-                              column.getSortByToggleProps()
-                            )}
-                            style={{ backgroundColor: "white" }}
-                          >
-                            {column.Header.length > 1
-                              ? column.isSorted
-                                ? column.isSortedDesc
-                                  ? "Default"
-                                  : "Sort in Desc"
-                                : "Sort in Asc"
-                              : null}
-                          </li>
-                        </s.CRMHeadFilter>
-                      </span>
-                    ) : null}
-                  </span>
-                </th>
-              ))}
+                            <MenuItem {...column.getHeaderProps(column.getSortByToggleProps())}>
+                              {column.Header.length > 1
+                                ? column.isSorted
+                                  ? column.isSortedDesc
+                                    ? "⇵ Default"
+                                    : "↓ Sort in Desc"
+                                  : "↑ Sort in Asc"
+                                : null}
+                            </MenuItem>
+                          </Menu>
+                        </>
+                      )}
+                    </PopupState>
+                  ) : null}
+                </span>
+
+
+
+              </th>
+            ))}
+          </tr>
+        ))}
+
+        {page.map((row, i) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                );
+              })}
             </tr>
-          ))}
-        </s.CRMTableHead>
-
-        <s.CRMTableBody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </s.CRMTableBody>
+          );
+        })}
       </s.CRMTable>
 
       {/*  define pagination of the table,  */}
@@ -240,9 +218,12 @@ const Table = function ({ columns, data }) {
           )}
         </code>
       </pre>
-    </>
+    </s.CRMTableContainer>
   );
 };
+
+
+
 
 function CRM() {
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -337,37 +318,33 @@ function CRM() {
   };
 
   return (
-    <s.CRMContainer>
-      <s.MainContainer>
-        <Popup trigger={buttonPopup}>
-          <s.GroupNameInput
-            value={groupName || ""}
-            onChange={(e) => {
-              setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
-            }}
-            placeholder={"Enter group name"}
-          />
-          <s.CreateGroupButton onClick={() => makeGroup()}>
-            {" "}
+    <>
+      {/* modal */}
+      <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>
+        {"Create Group"}
+      </s.CreateGroupModalButton>
+
+
+      <Popup trigger={buttonPopup}>
+        <s.GroupNameInput
+          value={groupName || ""}
+          onChange={(e) => {
+            setGroupName(e.target.value || ""); // Set undefined to remove the filter entirely
+          }}
+          placeholder={"Enter group name"}
+        />
+        <s.CreateButton onClick={() => makeGroup()}>
+          {" "}
             Create{" "}
-          </s.CreateGroupButton>
-          <s.CancelGroupButton onClick={() => setButtonPopup(false)}>
-            {" "}
+        </s.CreateButton>
+        <s.CancelButton onClick={() => setButtonPopup(false)}>
+          {" "}
             Cancel{" "}
-          </s.CancelGroupButton>
-        </Popup>
+        </s.CancelButton>
+      </Popup>
 
-        {/* Table */}
-        {/* <s.TableStyles> */}
-        <Table columns={columns} data={data} />
-        {/* </s.TableStyles> */}
-
-        {/* Modal */}
-        <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>
-          {"Create Group"}
-        </s.CreateGroupModalButton>
-      </s.MainContainer>
-    </s.CRMContainer>
+      <Table  columns={columns} data={data} />
+    </>
   );
 }
 

@@ -11,7 +11,6 @@ import {
   useAsyncDebounce,
 } from "react-table";
 import DefaultColumnFilter from "../crm/filters/DefaultColumnFilter";
-import Popup from "../../components/Popup";
 import NumberRangeColumnFilter from "../crm/filters/NumberRangeColumnFilter";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";

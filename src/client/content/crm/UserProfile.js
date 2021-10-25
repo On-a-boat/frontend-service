@@ -205,8 +205,6 @@ export default function UserProfile() {
     };
   }, []);
   return (
-    <s.CRMContainer>
-      <DetailTable data={data} />
-    </s.CRMContainer>
+    <DetailTable data={data} />
   );
 }
