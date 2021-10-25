@@ -1,21 +1,12 @@
 import styled from "@emotion/styled";
 
-export const CRMContainer = styled.div`
-  width: 88%;
-  flex: 0 0 88%;
-  background-color: #f7f9ff;
-`;
 
-export const MainContainer = styled.div`
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+export const CRMTableContainer = styled.div`
+
 `;
-// CRM table
 
 export const CRMTable = styled.table`
   border-spacing: 0;
-  padding-top: 1rem;
   tr {
     :last-child {
       td {
@@ -25,7 +16,7 @@ export const CRMTable = styled.table`
   }
 
   th {
-    background: rgba(250, 241, 239);
+    background: rgba(255,127,80,0.3);
   }
   td {
     margin: 0;
@@ -42,67 +33,22 @@ export const CRMTable = styled.table`
   }
 `;
 
-export const CRMTableHead = styled.thead`
-  background: rgba(250, 241, 239);
-`;
-
-export const CRMHeadFilter = styled.ul`
-  list-style: none;
-  background-color: transparent;
-`;
-
-export const CRMTableBody = styled.tbody``;
-
-export const DropDownButton = styled.button``;
-
-export const DropDown = styled.div``;
 
 // pagination
 export const Pagination = styled.div`
   padding: 0.5rem;
-  background: rgba(250, 241, 239);
+  background: rgba(255,127,80,0.3);
 `;
-
 export const PaginationArrowButton = styled.button``;
 export const CurrPage = styled.span``;
 
-// groups
+
+
+// create new group modal
 export const CreateGroupModalButton = styled.button``;
 
-export const CreateGroupButton = styled.button``;
 
-export const CancelGroupButton = styled.button``;
+export const CreateButton = styled.button``;
+export const CancelButton = styled.button``;
 export const GroupNameInput = styled.input``;
 
-export const TableStyles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th {
-      background: rgba(250, 241, 239);
-    }
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid #ededed;
-      background-color: white;
-
-      :last-child {
-        border-right: 1px solid #ededed;
-      }
-      :first-child {
-        border-left: 1px solid #ededed;
-      }
-    }
-  }
-`;

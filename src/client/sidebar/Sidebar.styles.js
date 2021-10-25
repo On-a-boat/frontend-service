@@ -69,7 +69,10 @@ export const DropdownIcon = styled.span`
   transition: 0.4s;
 `;
 
-export const ItemContainer = styled.div``;
+export const ItemContainer = styled.div`
+
+`;
+
 
 export const SubMenuItemContainer = styled.div`
   font-size: 14px;
@@ -79,8 +82,8 @@ export const SubMenuItemContainer = styled.div`
 
 export const SidebarContainer = styled.div`
   width: ${(p) => (p.isSidebarOpen ? "12%" : "5%")};
-  max-width: 280px;
-  min-width: 80px;
+  width: 20%;
+
   background-image: linear-gradient(
       315deg,
       ${(p) => p.colorPalette.bgColor1} 0%,
@@ -106,6 +109,6 @@ export const SubMenuItem = styled.p`
     color: ${(p) => p.colorPalette.fontColorSelected};
     /* background-color: ${(props) => !props.selected && "#161E2E"}; */
     /* box-shadow: ${(props) =>
-      !props.selected && "inset 0px 3px 3px 2px #000"}; */
+    !props.selected && "inset 0px 3px 3px 2px #000"}; */
   }
 `;
