@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 
 
 export const CRMTableContainer = styled.div`
+
 `;
 
 export const CRMTable = styled.table`
   border-spacing: 0;
-  padding-top: 1rem;
   tr {
     :last-child {
       td {
@@ -32,12 +32,6 @@ export const CRMTable = styled.table`
     }
   }
 `;
-export const CRMHeadFilter = styled.div`
-  list-style: none;
-  background-color: transparent;
-  display: "block";
-`;
-
 
 
 // pagination

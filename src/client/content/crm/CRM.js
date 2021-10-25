@@ -119,7 +119,7 @@ const Table = function ({ columns, data }) {
   );
 
   return (
-    <s.CRMTableContainer>
+    <s.CRMTableContainer >
       <s.CRMTable {...getTableProps()}>
         {headerGroups.map((headerGroup) => (
           <tr style={{ position: "relative" }}>
@@ -343,7 +343,7 @@ function CRM() {
         </s.CancelButton>
       </Popup>
 
-      <Table columns={columns} data={data} />
+      <Table  columns={columns} data={data} />
     </>
   );
 }
