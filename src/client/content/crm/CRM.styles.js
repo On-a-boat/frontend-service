@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
 
-
 export const CRMTableContainer = styled.div`
 
 `;
-
 export const CRMTable = styled.table`
   border-spacing: 0;
   tr {
@@ -43,7 +41,8 @@ export const PaginationArrowButton = styled.button``;
 export const CurrPage = styled.span``;
 
 
-
 // create new group modal
-export const CreateGroupModalButton = styled.button``;
+export const CreateGroupModalButton = styled.button`
+height:5%;
 
+`;

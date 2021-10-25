@@ -81,7 +81,7 @@ export const SubMenuItemContainer = styled.div`
 `;
 
 export const SidebarContainer = styled.div`
-  width: ${(p) => (p.isSidebarOpen ? "12%" : "5%")};
+  width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
 
   background-image: linear-gradient(
       315deg,

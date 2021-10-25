@@ -9,12 +9,18 @@ import {
 import axios from "axios";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import Popup from "./Popup";
-import * as s from "./CRM.styles";
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import * as s from "./CRM.styles";
+
 
 //A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
@@ -225,8 +231,46 @@ const Table = function ({ columns, data }) {
 
 
 function CRM() {
-  const [buttonPopup, setButtonPopup] = useState(false);
   const [data, setData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [userId, setUserId] = useState([]);
+
+
+  // Create new group JSON and post to the Database.
+  const makeGroup = () => {
+    const Ymd = (date) => date.toISOString().slice(0, 10);
+    const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
+    var updateId = [];
+    selectedRows.forEach((row) => {
+      updateId.push(row.UserId);
+    });
+    setUserId(updateId);
+
+    if (userId.length > 0 && groupName != "") {
+      axios
+        .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
+          groupName: groupName,
+          users: userId,
+          users: "" + userId,
+          userCount: userId.length,
+          dateCreated: new Date().toLocaleDateString(),
+          dateCreated: Ymd(new Date()),
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    }
+  };
+
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   // Fetch users data from the Database.
   useEffect(() => {
@@ -288,18 +332,41 @@ function CRM() {
     },
   ];
 
- 
+
 
   return (
     <>
-      {/* modal */}
-      <s.CreateGroupModalButton onClick={() => setButtonPopup(true)}>
-        {"Create Group"}
+      {/* new group button */}
+      <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
+        + Create New Group
       </s.CreateGroupModalButton>
-      <Popup trigger={buttonPopup} />
 
-      <button onClick={() => setButtonPopup(false)}>sdasdsa</button>
-      <Table  columns={columns} data={data} />
+      {/* popup */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>CREATE A NEW GROUP</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah
+          </DialogContentText>
+          <TextField
+            value={groupName || ""}
+            onChange={(e) => {
+              setGroupName(e.target.value || "");
+            }}
+            autoFocus
+            margin="dense"
+            label="Enter group name"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => makeGroup()}>Create</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* crm table */}
+      <Table columns={columns} data={data} />
     </>
   );
 }
