@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as s from "./Popup.styles";
 import axios from "axios";
+import { parents } from "dom-helpers";
 
 
 function Popup(props) {
-  const [groupName, setGroupName] = useState("");
+
   const [buttonPopup, setButtonPopup] = useState(false);
+
+  const [groupName, setGroupName] = useState("");
   const [userId, setUserId] = useState([]);
 
    // Create new group JSON and post to the Database.
@@ -37,8 +40,7 @@ function Popup(props) {
 
 
   return props.trigger ? (
-    <s.popup>
-      <s.popup_inside className="popup_inside">
+    <s.Popup >
       <s.GroupNameInput
           value={groupName || ""}
           onChange={(e) => {
@@ -54,8 +56,7 @@ function Popup(props) {
           {" "}
             Cancel{" "}
         </s.CancelButton>
-      </s.popup_inside>
-    </s.popup>
+    </s.Popup>
   ) : (
     ""
   );

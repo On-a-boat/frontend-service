@@ -47,4 +47,3 @@ export const CurrPage = styled.span``;
 // create new group modal
 export const CreateGroupModalButton = styled.button``;
 
-

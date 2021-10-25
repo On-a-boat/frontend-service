@@ -16,7 +16,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
-
 //A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -299,6 +298,7 @@ function CRM() {
       </s.CreateGroupModalButton>
       <Popup trigger={buttonPopup} />
 
+      <button onClick={() => setButtonPopup(false)}>sdasdsa</button>
       <Table  columns={columns} data={data} />
     </>
   );
