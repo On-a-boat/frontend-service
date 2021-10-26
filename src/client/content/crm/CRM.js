@@ -127,7 +127,8 @@ const Table = function ({ columns, data }) {
     <s.CRMTableContainer >
       <s.CRMTable {...getTableProps()}>
         {headerGroups.map((headerGroup) => (
-          <tr style={{ position: "relative" }}>
+          <tr>
+          
             {headerGroup.headers.map((column) => (
               <th>
                 {/* header */}
@@ -138,9 +139,9 @@ const Table = function ({ columns, data }) {
                     <PopupState>
                       {(popupState) => (
                         <>
-                          <Button style={{ backgroundColor: 'transparent', color: "black" }} {...bindTrigger(popupState)}>
-                            ...
-                          </Button>
+                          <s.DropDownButton {...bindTrigger(popupState)}>
+                            •••
+                          </s.DropDownButton>
                           <Menu {...bindMenu(popupState)}>
                             <MenuItem >
                               {column.canFilter ? column.render("Filter") : null}
@@ -335,18 +336,18 @@ function CRM() {
 
 
   return (
-    <>
-      {/* new group button */}
-      <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
+    <div>
+          {/* new group button */}
+          <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
         + Create New Group
       </s.CreateGroupModalButton>
-
+  
       {/* popup */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>CREATE A NEW GROUP</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah Blah Blah blah blah
+            Select users that you wish to include in your group, name your group then click CREATE.               
           </DialogContentText>
           <TextField
             value={groupName || ""}
@@ -365,9 +366,12 @@ function CRM() {
         </DialogActions>
       </Dialog>
 
+    
       {/* crm table */}
       <Table columns={columns} data={data} />
-    </>
+
+
+    </div>
   );
 }
 

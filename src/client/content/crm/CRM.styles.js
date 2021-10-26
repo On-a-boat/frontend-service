@@ -4,8 +4,11 @@ export const CRMTableContainer = styled.div`
 
 `;
 export const CRMTable = styled.table`
+
   border-spacing: 0;
   tr {
+    
+    white-space: nowrap;
     :last-child {
       td {
         border-bottom: 0;
@@ -14,6 +17,7 @@ export const CRMTable = styled.table`
   }
 
   th {
+   
     background: rgba(255,127,80,0.3);
   }
   td {
@@ -31,6 +35,13 @@ export const CRMTable = styled.table`
   }
 `;
 
+// create new group modal
+export const DropDownButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: black;
+
+`;
 
 // pagination
 export const Pagination = styled.div`
@@ -43,6 +54,6 @@ export const CurrPage = styled.span``;
 
 // create new group modal
 export const CreateGroupModalButton = styled.button`
-height:5%;
+
 
 `;
