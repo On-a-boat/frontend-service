@@ -139,6 +139,8 @@ const Table = function ({ columns, data }) {
                     <PopupState>
                       {(popupState) => (
                         <>
+                          &emsp;
+                          &emsp;
                           <s.DropDownButton {...bindTrigger(popupState)}>
                             •••
                           </s.DropDownButton>
@@ -186,6 +188,7 @@ const Table = function ({ columns, data }) {
 
       {/*  define pagination of the table,  */}
       <s.Pagination>
+        <s.PaginationArrowContainer>
         <s.PaginationArrowButton
           onClick={() => gotoPage(0)}
           disabled={!canPreviousPage}
@@ -213,6 +216,7 @@ const Table = function ({ columns, data }) {
         <s.CurrPage>
           Page {pageIndex + 1} of {pageOptions.length}{" "}
         </s.CurrPage>
+        </s.PaginationArrowContainer>
       </s.Pagination>
 
       {/* Create a JSON file for checked rows */}
@@ -326,19 +330,19 @@ function CRM() {
       Header: "Email",
       accessor: "email",
     },
-    {
-      Header: "",
-      accessor: "Link",
-      Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
-    },
+    // {
+    //   Header: "",
+    //   accessor: "Link",
+    //   Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
+    // },
   ];
 
 
 
   return (
-    <div>
-          {/* new group button */}
-          <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
+    <div style={{width: "80%"}}>
+      {/* new group button */}
+      <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
         + Create New Group
       </s.CreateGroupModalButton>
   

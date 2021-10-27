@@ -197,7 +197,7 @@ const Sidebar = (props) => {
             </s.Icon>
             <s.Icon isSidebarOpen={isSidebarOpen} src={item.icon} />
             <s.Text isSidebarOpen={isSidebarOpen}>{item.name}</s.Text>
-            {hasSubmenus && isSidebarOpen && (
+            {/* {hasSubmenus && isSidebarOpen && (
               <s.DropdownIcon
                 selected={isItemSelected}
                 isOpen={isOpen}
@@ -205,7 +205,7 @@ const Sidebar = (props) => {
               >
                 ^
               </s.DropdownIcon>
-            )}
+            )} */}
           </s.MenuItem>
         </Link>
 

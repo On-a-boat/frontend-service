@@ -2,26 +2,29 @@ import styled from "@emotion/styled";
 
 export const CRMTableContainer = styled.div`
 
+
+
 `;
 export const CRMTable = styled.table`
-
+  margin-left: auto;
+  margin-right: auto;
+  table-layout: fixed;
+  width: 85%;
   border-spacing: 0;
+
   tr {
+    word-break: break-word;
     
-    white-space: nowrap;
-    :last-child {
-      td {
-        border-bottom: 0;
-      }
-    }
+    
   }
 
   th {
-   
+
     background: rgba(255,127,80,0.3);
   }
   td {
     margin: 0;
+    word-break: break-word;
     padding: 0.5rem;
     background-color: white;
     border-bottom: 1px solid #ededed;
@@ -43,12 +46,28 @@ export const DropDownButton = styled.button`
 
 `;
 
+
+
 // pagination
 export const Pagination = styled.div`
-  padding: 0.5rem;
+  width:85%;
+  padding-top : 0.5rem;
+  padding-bottom : 0.5rem;
   background: rgba(255,127,80,0.3);
+  margin-left: auto;
+  margin-right: auto;
+
 `;
-export const PaginationArrowButton = styled.button``;
+
+export const PaginationArrowContainer = styled.div`
+display: flex; 
+justify-content: flex-end;
+padding-right: 2.5rem;
+`;
+export const PaginationArrowButton = styled.button`
+    
+`;
+
 export const CurrPage = styled.span``;
 
 
