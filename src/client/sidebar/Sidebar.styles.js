@@ -6,7 +6,6 @@ export const SidebarHeader = styled.h3`
   text-align: center;
   margin-bottom: 10px;
   background-color: rgba(19, 26, 40);
-  /* letter-spacing: 6px; // spaces btw each letters  */
   color: white;
   font-family: "Nunito Sans", sans-serif;
   font-weight: "bolder";
@@ -82,17 +81,10 @@ export const SubMenuItemContainer = styled.div`
 
 export const SidebarContainer = styled.div`
   width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
-
-  background-image: linear-gradient(
-      315deg,
-      ${(p) => p.colorPalette.bgColor1} 0%,
-      ${(p) => p.colorPalette.bgColor2} 74%
-    ),
-    url(${(p) => p.backgroundImage});
+  background-color: rgba(36,48,63,1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  color: ${(p) => p.colorPalette.fontColorSelected};
   position: relative; // Toggler
   transition: 0.2s ease-in all;
 `;
@@ -100,14 +92,9 @@ export const SidebarContainer = styled.div`
 export const SubMenuItem = styled.p`
   min-height: 40px;
   margin-top: 3;
-  color: ${(p) =>
-    p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
-  ${(p) => p.selected && "font-weight: bold; letter-spacing: 2px;"};
+  color: rgba(158,167,178);
   transition: 0.2s;
   &:hover {
-    color: ${(p) => p.colorPalette.fontColorSelected};
-    /* background-color: ${(props) => !props.selected && "#161E2E"}; */
-    /* box-shadow: ${(props) =>
-    !props.selected && "inset 0px 3px 3px 2px #000"}; */
+    color: white;
   }
 `;

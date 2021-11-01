@@ -19,7 +19,6 @@ import UserStatistics from "./client/content/statistics/UserStatistics";
 import GroupDetail from "./client/content/groups/GroupsDetail";
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
-// const menuItems = ['CRM', 'Groups', 'Statistics', 'Settings'];
 
 const RootSPA = () => {
   const location = useLocation();
