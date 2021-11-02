@@ -6,21 +6,21 @@ import {
   useSortBy,
   useFilters,
 } from "react-table";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import DefaultColumnFilter from "./filters/DefaultColumnFilter";
 import NumberRangeColumnFilter from "./filters/NumberRangeColumnFilter";
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import * as s from "./CRM.styles";
-
 
 //A checkbox for each row in the table
 const IndeterminateCheckbox = React.forwardRef(
@@ -42,8 +42,6 @@ const IndeterminateCheckbox = React.forwardRef(
 
 // table
 const Table = function ({ columns, data }) {
-
-
   // Define filtering options; case insensitive
   const filterTypes = React.useMemo(
     () => ({
@@ -52,8 +50,8 @@ const Table = function ({ columns, data }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-              .toLowerCase()
-              .startsWith(String(filterValue).toLowerCase())
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -124,11 +122,10 @@ const Table = function ({ columns, data }) {
   );
 
   return (
-    <s.CRMTableContainer >
+    <s.CRMTableContainer>
       <s.CRMTable {...getTableProps()}>
         {headerGroups.map((headerGroup) => (
           <tr>
-          
             {headerGroup.headers.map((column) => (
               <th>
                 {/* header */}
@@ -139,17 +136,22 @@ const Table = function ({ columns, data }) {
                     <PopupState>
                       {(popupState) => (
                         <>
-                          &emsp;
-                          &emsp;
+                          &emsp; &emsp;
                           <s.DropDownButton {...bindTrigger(popupState)}>
                             •••
                           </s.DropDownButton>
                           <Menu {...bindMenu(popupState)}>
-                            <MenuItem >
-                              {column.canFilter ? column.render("Filter") : null}
+                            <MenuItem>
+                              {column.canFilter
+                                ? column.render("Filter")
+                                : null}
                             </MenuItem>
 
-                            <MenuItem {...column.getHeaderProps(column.getSortByToggleProps())}>
+                            <MenuItem
+                              {...column.getHeaderProps(
+                                column.getSortByToggleProps()
+                              )}
+                            >
                               {column.Header.length > 1
                                 ? column.isSorted
                                   ? column.isSortedDesc
@@ -164,9 +166,6 @@ const Table = function ({ columns, data }) {
                     </PopupState>
                   ) : null}
                 </span>
-
-
-
               </th>
             ))}
           </tr>
@@ -177,9 +176,7 @@ const Table = function ({ columns, data }) {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                );
+                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
               })}
             </tr>
           );
@@ -189,33 +186,33 @@ const Table = function ({ columns, data }) {
       {/*  define pagination of the table,  */}
       <s.Pagination>
         <s.PaginationArrowContainer>
-        <s.PaginationArrowButton
-          onClick={() => gotoPage(0)}
-          disabled={!canPreviousPage}
-        >
-          {"<<"}
-        </s.PaginationArrowButton>{" "}
-        <s.PaginationArrowButton
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-        >
-          {"<"}
-        </s.PaginationArrowButton>{" "}
-        <s.PaginationArrowButton
-          onClick={() => nextPage()}
-          disabled={!canNextPage}
-        >
-          {">"}
-        </s.PaginationArrowButton>{" "}
-        <s.PaginationArrowButton
-          onClick={() => gotoPage(pageCount - 1)}
-          disabled={!canNextPage}
-        >
-          {">>"}
-        </s.PaginationArrowButton>{" "}
-        <s.CurrPage>
-          Page {pageIndex + 1} of {pageOptions.length}{" "}
-        </s.CurrPage>
+          <s.PaginationArrowButton
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
+            {"<<"}
+          </s.PaginationArrowButton>{" "}
+          <s.PaginationArrowButton
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            {"<"}
+          </s.PaginationArrowButton>{" "}
+          <s.PaginationArrowButton
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            {">"}
+          </s.PaginationArrowButton>{" "}
+          <s.PaginationArrowButton
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {">>"}
+          </s.PaginationArrowButton>{" "}
+          <s.CurrPage>
+            Page {pageIndex + 1} of {pageOptions.length}{" "}
+          </s.CurrPage>
         </s.PaginationArrowContainer>
       </s.Pagination>
 
@@ -232,15 +229,13 @@ const Table = function ({ columns, data }) {
   );
 };
 
-
-
-
 function CRM() {
   const [data, setData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [groupName, setGroupName] = useState("");
   const [userId, setUserId] = useState([]);
 
+  const history = useHistory();
 
   // Create new group JSON and post to the Database.
   const makeGroup = () => {
@@ -268,9 +263,15 @@ function CRM() {
     }
   };
 
-
   const handleClickOpen = () => {
     setOpen(true);
+  };
+  const handleEmailSend = () => {
+    localStorage.setItem(
+      "to",
+      JSON.parse(localStorage.getItem("selectedRows")).map((a) => a.UserId)
+    );
+    history.push("/send");
   };
 
   const handleClose = () => {
@@ -337,21 +338,23 @@ function CRM() {
     // },
   ];
 
-
-
   return (
-    <div style={{width: "80%"}}>
+    <div style={{ width: "80%" }}>
       {/* new group button */}
       <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
         + Create New Group
       </s.CreateGroupModalButton>
-  
+      <s.CreateGroupModalButton variant="outlined" onClick={handleEmailSend}>
+        Send Email
+      </s.CreateGroupModalButton>
+
       {/* popup */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>CREATE A NEW GROUP</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Select users that you wish to include in your group, name your group then click CREATE.               
+            Select users that you wish to include in your group, name your group
+            then click CREATE.
           </DialogContentText>
           <TextField
             value={groupName || ""}
@@ -370,11 +373,8 @@ function CRM() {
         </DialogActions>
       </Dialog>
 
-    
       {/* crm table */}
       <Table columns={columns} data={data} />
-
-
     </div>
   );
 }
