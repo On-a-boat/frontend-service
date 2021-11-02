@@ -1,23 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useEffect, useContext } from "react";
+import { AnimatePresence} from "framer-motion";
 import { Link } from "react-router-dom";
-import * as s from "./Sidebar.styles";
-import HomeIcon from "@material-ui/icons/Home";
-import GroupIcon from "@material-ui/icons/Group";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
-import ArrowLeft from "@material-ui/icons/ArrowBack";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import PersonIcon from "@material-ui/icons/Person";
 import { UserContext } from "../../Context.js";
+import * as s from "./Sidebar.styles";
 
-const IconComponents = {
-  Home: HomeIcon,
-  Users: PersonIcon,
-  Groups: GroupIcon,
-  Statistics: EqualizerIcon,
-  Settings: SettingsInputComponentIcon,
-  Logout: ArrowLeft,
-};
 
 const Sidebar = (props) => {
   const {
@@ -99,7 +85,7 @@ const Sidebar = (props) => {
   };
 
   const menuItemsJSX = menuItems.map((item, index) => {
-    const IconComponent = IconComponents[item.name];
+    const IconComponent = item.icon;
     const hasSubmenus = !!item.subMenuItems.length;
     const isOpen = subMenusStates[index]?.isOpen;
 
@@ -109,11 +95,7 @@ const Sidebar = (props) => {
           subMenusStates[index]?.selected === subMenuItemIndex;
 
         return (
-          <Link
-            to={`${subMenuItem.to}`}
-            style={{ textDecoration: "none" }}
-            key={subMenuItemIndex}
-          >
+          <Link to={`${subMenuItem.to}`} key={subMenuItemIndex}>
             <s.SubMenuItem
               onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
               selected={isSubmenuItemSelected}
@@ -126,18 +108,17 @@ const Sidebar = (props) => {
     );
 
     return (
-      <s.ItemContainer key={index}>
-        <Link to={item.to} style={{ textDecoration: "none" }}>
+      <React.Fragment key={index}>
+        <Link to={item.to}>
           <s.MenuItem
             onClick={() => handleMenuItemClick(item.name, index)}
             isSidebarOpen={isSidebarOpen}
             isOpen={isOpen}
           >
-            <s.Icon>
-              <IconComponent style={{ color: "#9EA7B2" }} />
-            </s.Icon>
-            <s.Icon isSidebarOpen={isSidebarOpen} src={item.icon} />
-            <s.Text isSidebarOpen={isSidebarOpen}>{item.name}</s.Text>
+            <s.MenuIcon>
+              <IconComponent isSidebarOpen={isSidebarOpen}/>
+            </s.MenuIcon>
+            <s.MenuText isSidebarOpen={isSidebarOpen}>{item.name}</s.MenuText>
             {/* {hasSubmenus && isSidebarOpen && (
               <s.DropdownIcon
                 selected={isItemSelected}
@@ -150,31 +131,26 @@ const Sidebar = (props) => {
           </s.MenuItem>
         </Link>
 
-        {/* Display submenus if they exist  */}
         <AnimatePresence>
           {hasSubmenus && isOpen && (
-            <motion.nav
+            <s.SubMenuItemContainer
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
               exit={{ opacity: 0, x: -30 }}
+              isSidebarOpen={isSidebarOpen}
             >
-              <s.SubMenuItemContainer
-                isSidebarOpen={isSidebarOpen}
-              >
-                {subMenusJSX}
-              </s.SubMenuItemContainer>
-            </motion.nav>
+              {subMenusJSX}
+            </s.SubMenuItemContainer>
           )}
         </AnimatePresence>
-      </s.ItemContainer>
+      </React.Fragment>
     );
   });
 
+
   return (
-    <s.SidebarContainer
-      isSidebarOpen={isSidebarOpen}
-    >
+    <s.SidebarContainer isSidebarOpen={isSidebarOpen}>
       <s.SidebarHeader/>
       <s.MenuItemContainer>{menuItemsJSX}</s.MenuItemContainer>
     </s.SidebarContainer>

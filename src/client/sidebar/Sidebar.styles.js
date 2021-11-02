@@ -1,5 +1,17 @@
 import styled from "../../../node_modules/@emotion/styled";
-// require("typeface-nunito-sans");
+
+
+// sidebar
+export const SidebarContainer = styled.div`
+  // width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
+  width: 15%;
+  background-color: rgba(36,48,63,1);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative; // Toggler
+  transition: 0.2s ease-in all;
+`;
 
 export const SidebarHeader = styled.h3`
   padding: 24px 0; // top bottom 20, 0 left right
@@ -11,13 +23,18 @@ export const SidebarHeader = styled.h3`
   font-weight: "bolder";
 `;
 
+export const MenuItemContainer = styled.div`
+  margin-top: 40px;
+`;
+
+
+
+
+
+// menu
 export const SidebarHeaderWrapper = styled.div`
   background-color: #63c8f4;
   margin-bottom: 48px;
-`;
-
-export const MenuItemContainer = styled.div`
-  margin-top: 40px;
 `;
 
 export const MenuItem = styled.div`
@@ -39,54 +56,43 @@ export const MenuItem = styled.div`
   }
 `;
 
-export const Icon = styled.div`
+export const MenuIcon = styled.div`
   padding-right: 20px;
+  color: #9EA7B2;
 `;
 
-export const Text = styled.p`
-  display: inline; //put icon and the text on same line
+export const MenuText = styled.p`
+  display: inline;
   font-size: 16px;
   margin-top: 3px;
   color: rgba(158, 167, 178);
 `;
 
-///////////////////
+// export const DropdownIcon = styled.span`
+//   margin-left: 3vw;
+//   /* font-family: Arial, Helvetica, sans-serif; */
+//   /* top: ${(p) => (p.isOpen ? "16px" : "12px")}; */
+//   right: 24px;
+//   /* border: solid
+//     ${(p) =>
+//     p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
+//   border-width: 0 1px 1px 0; */
+//   padding: 3px;
+//   color: rgba(158, 167, 178);
 
-export const DropdownIcon = styled.span`
-  margin-left: 3vw;
-  /* font-family: Arial, Helvetica, sans-serif; */
-  /* top: ${(p) => (p.isOpen ? "16px" : "12px")}; */
-  right: 24px;
-  /* border: solid
-    ${(p) =>
-    p.selected ? p.colorPalette.fontColorSelected : p.colorPalette.fontColor};
-  border-width: 0 1px 1px 0; */
-  padding: 3px;
-  color: rgba(158, 167, 178);
-
-  transform: ${(p) => (p.isOpen ? "rotate(-180deg)" : "rotate(0deg)")};
-  transition: 0.4s;
-`;
-
-export const ItemContainer = styled.div`
-
-`;
+//   transform: ${(p) => (p.isOpen ? "rotate(-180deg)" : "rotate(0deg)")};
+//   transition: 0.4s;
+// `;
 
 
+
+
+
+// submenu
 export const SubMenuItemContainer = styled.div`
   font-size: 14px;
   ${(p) => p.isSidebarOpen && "padding-left: 15%"};
   ${(p) => !p.isSidebarOpen && "text-align: center"};
-`;
-
-export const SidebarContainer = styled.div`
-  width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
-  background-color: rgba(36,48,63,1);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  position: relative; // Toggler
-  transition: 0.2s ease-in all;
 `;
 
 export const SubMenuItem = styled.p`
@@ -98,3 +104,7 @@ export const SubMenuItem = styled.p`
     color: white;
   }
 `;
+
+
+
+
