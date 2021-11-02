@@ -92,7 +92,7 @@ const Sidebar = (props) => {
           subMenusStates[index]?.selected === subMenuItemIndex;
 
         return (
-          <Link to={`${subMenuItem.to}`} key={subMenuItemIndex}>
+          <Link to={`${subMenuItem.to}`} key={subMenuItemIndex} style={{textDecoration: "none"}}>
             <s.SubMenuItem
               onClick={() => handleSubMenuItemClick(index, subMenuItemIndex)}
               selected={isSubmenuItemSelected}
@@ -106,7 +106,7 @@ const Sidebar = (props) => {
 
     return (
       <React.Fragment key={index}>
-        <Link to={item.to}>
+        <Link to={item.to} style={{textDecoration: "none"}}>
           <s.MenuItem
             onClick={() => handleMenuItemClick(item.name, index)}
             isSidebarOpen={isSidebarOpen}

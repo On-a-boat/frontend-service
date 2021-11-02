@@ -4,11 +4,13 @@ import styled from "../../../node_modules/@emotion/styled";
 // sidebar
 export const SidebarContainer = styled.div`
   width: 12%;
-  background-color: rgba(36,48,63,1);
+  background-color: rgba(255,255,255,1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  position: relative; // Toggler
+  border-right : 1px solid;
+  border-color: rgba(229,232,241,0.8);
+  position: relative;
   transition: 0.2s ease-in all;
 `;
 // width: ${(p) => (p.isSidebarOpen ? "12%" : "5%")};
@@ -16,7 +18,7 @@ export const SidebarHeader = styled.h3`
   padding: 24px 0; // top bottom 20, 0 left right
   text-align: center;
   margin-bottom: 10px;
-  background-color: rgba(19, 26, 40);
+  background-color:rgba(255,255,255,1);
   color: white;
   font-family: "Nunito Sans", sans-serif;
   font-weight: "bolder";
@@ -57,14 +59,15 @@ export const MenuItem = styled.div`
 
 export const MenuIcon = styled.div`
   padding-right: 20px;
-  color: #9EA7B2;
+  color: rgba(158,167,178,1);
 `;
 
 export const MenuText = styled.p`
   display: inline;
   font-size: 16px;
   margin-top: 3px;
-  color: rgba(158, 167, 178);
+
+  color: rgba(0,0,0);
 `;
 
 // export const DropdownIcon = styled.span`
