@@ -353,7 +353,7 @@ function CRM() {
         <DialogTitle>CREATE A NEW GROUP</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Select users that you wish to include in your group, name your group
+            Select users that you wish to include in your group, give it a name
             then click CREATE.
           </DialogContentText>
           <TextField
