@@ -5,8 +5,6 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import ArrowLeft from "@material-ui/icons/ArrowBack";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 
-
-
 export const menuItems = [
   { name: "Home", to: "/", icon: HomeIcon, subMenuItems: [] },
   { name: "Users", to: "/users", icon: PersonIcon, subMenuItems: [] },
@@ -32,7 +30,6 @@ export const menuItems = [
     icon: ArrowLeft,
     subMenuItems: [],
   },
- 
 ];
 
 export const pathToName = {
