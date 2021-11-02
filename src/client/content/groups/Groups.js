@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect, Fragment } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import {
   useTable,
@@ -277,6 +278,16 @@ const Groups = () => {
   const [email, setEmail] = useState("");
   const handleClose = () => setButtonPopup(false);
 
+  const history = useHistory();
+  const handleEmailSend = () => {
+    localStorage.setItem("toId", [
+      ...new Set(
+        JSON.parse(localStorage.getItem("selectedRows")).map((a) => a.users)
+      ),
+    ]);
+    history.push("/send");
+  };
+
   const columns = React.useMemo(() => [
     {
       Header: "No.",
@@ -331,6 +342,9 @@ const Groups = () => {
   return (
     <s.CRMContainer>
       <s.MainContainer>
+        <button variant="outlined" onClick={handleEmailSend}>
+          Send Email
+        </button>
         <s.TableStyles>
           <Table columns={columns} data={data} />
         </s.TableStyles>

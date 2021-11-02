@@ -17,6 +17,7 @@ import UserProfile from "./client/content/crm/UserProfile";
 import EmailStatistics from "./client/content/statistics/EmailStatistics";
 import UserStatistics from "./client/content/statistics/UserStatistics";
 import GroupDetail from "./client/content/groups/GroupsDetail";
+import SendEmail from "./client/content/sendEmail/SendEmail";
 //Sidebar Details
 const bgImage = "images/mountain.jpg";
 
@@ -52,6 +53,7 @@ const RootSPA = () => {
         <Route exact path="/statistics/email/:a" component={EmailStatistics} />
         <Route exact path="/userprofile/:a([0-9]+)" component={UserProfile} />
         <Route exact path="/groups/:a([0-9]+)" component={GroupDetail} />
+        <Route exact path="/send" component={SendEmail} />
         {/* <Route component={<h1>error 404</h1>} /> */}
       </Switch>
     );
