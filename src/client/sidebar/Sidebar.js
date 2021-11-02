@@ -6,10 +6,7 @@ import * as s from "./Sidebar.styles";
 
 
 const Sidebar = (props) => {
-  const {
-    menuItems = [],
-  
-  } = props;
+  const { menuItems } = props;
 
   const auth = useContext(UserContext);
 
