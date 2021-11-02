@@ -3,8 +3,7 @@ import styled from "../../../node_modules/@emotion/styled";
 
 // sidebar
 export const SidebarContainer = styled.div`
-  // width: ${(p) => (p.isSidebarOpen ? "15%" : "5%")};
-  width: 15%;
+  width: 12%;
   background-color: rgba(36,48,63,1);
   background-size: cover;
   background-repeat: no-repeat;
@@ -12,7 +11,7 @@ export const SidebarContainer = styled.div`
   position: relative; // Toggler
   transition: 0.2s ease-in all;
 `;
-
+// width: ${(p) => (p.isSidebarOpen ? "12%" : "5%")};
 export const SidebarHeader = styled.h3`
   padding: 24px 0; // top bottom 20, 0 left right
   text-align: center;

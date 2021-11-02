@@ -2,8 +2,6 @@ import styled from "@emotion/styled";
 
 export const CRMTableContainer = styled.div`
 
-
-
 `;
 export const CRMTable = styled.table`
   margin-left: auto;

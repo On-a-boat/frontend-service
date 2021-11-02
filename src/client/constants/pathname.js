@@ -32,13 +32,4 @@ export const menuItems = [
     icon: ArrowLeft,
     subMenuItems: [],
   },
- 
 ];
-
-export const pathToName = {
-  "/": "User Details",
-  "/groups": "Groups",
-  "/email": "Email",
-  "/statistics": "Statisitics",
-  "/settings": "Settings",
-};
