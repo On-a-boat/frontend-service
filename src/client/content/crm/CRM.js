@@ -122,8 +122,8 @@ const Table = function ({ columns, data }) {
   );
 
   return (
-    <s.CRMTableContainer>
-      <s.CRMTable {...getTableProps()}>
+    <s.TableContainer>
+      <s.Table {...getTableProps()}>
         {headerGroups.map((headerGroup) => (
           <tr>
             {headerGroup.headers.map((column) => (
@@ -181,7 +181,7 @@ const Table = function ({ columns, data }) {
             </tr>
           );
         })}
-      </s.CRMTable>
+      </s.Table>
 
       {/*  define pagination of the table,  */}
       <s.Pagination>
@@ -225,7 +225,7 @@ const Table = function ({ columns, data }) {
           )}
         </code>
       </pre>
-    </s.CRMTableContainer>
+    </s.TableContainer>
   );
 };
 
@@ -339,13 +339,13 @@ function CRM() {
   ];
 
   return (
-    <div style={{ width: "80%" }}>
+    <s.CRMContainer>
       {/* new group button */}
       <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
-        + Create New Group
+        + &ensp; Create New Group
       </s.CreateGroupModalButton>
       <s.CreateGroupModalButton variant="outlined" onClick={handleEmailSend}>
-        Send Email
+        @ &ensp; Send Email
       </s.CreateGroupModalButton>
 
       {/* popup */}
@@ -375,7 +375,7 @@ function CRM() {
 
       {/* crm table */}
       <Table columns={columns} data={data} />
-    </div>
+    </s.CRMContainer>
   );
 }
 
