@@ -10,6 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import * as s from "./CRM.styles";
+import Link from "@material-ui/core/Link";
 
 
 export default function DataTable() {
@@ -22,12 +23,16 @@ export default function DataTable() {
 
   // Table columns
   const columns = [
-    { field: "id", headerName: "User ID", width: 140 },
+    { field: "id", headerName: "User ID", resizable: true, width: 130 },
     { field: "firstName", headerName: "First Name", width: 190 },
     { field: "lastName", headerName: "Last Name", width: 190 },
     { field: "age", headerName: "Age", width: 130 },
     { field: "gender", headerName: "Gender", width: 130 },
     { field: "email", headerName: "Email", width: 360 },
+    {
+      field: "Link", headerName: "link", width: 190,
+      renderCell: (params) => (<Link href={`/userprofile/${params.value}`}>Link</Link>)
+    },
     // {
     //   Header: "",
     //   accessor: "Link",
@@ -87,7 +92,7 @@ export default function DataTable() {
 
   const makeGroup = () => {
     const Ymd = (date) => date.toISOString().slice(0, 10);
-    const selectedRows = JSON.parse(localStorage.getItem("selected"));
+    const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
     var updateId = [];
     console.log("button pressed");
 
@@ -97,6 +102,8 @@ export default function DataTable() {
     setUserId(updateId);
 
     if (userId.length > 0 && groupName != "") {
+      console.log("Work");
+
       axios
         .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
           groupName: groupName,
@@ -113,7 +120,7 @@ export default function DataTable() {
   };
 
   return (
-    <div style={{ height: 630, width: "80%" }}>
+    <div style={{ height: "80%", width: "1190px" }}>
       <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
         + &ensp; Create New Group
       </s.CreateGroupModalButton>
@@ -159,16 +166,10 @@ export default function DataTable() {
 
         }}
         {...rows}
-
-
-
       />
-      <pre style={{ fontSize: 10 }}>
+      {/* <pre style={{ fontSize: 10 }}>
         {JSON.stringify(selectedRows, null, 4)}
-      </pre>
-
-
-
+      </pre> */}
     </div>
   );
 }
