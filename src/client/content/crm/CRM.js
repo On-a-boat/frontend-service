@@ -80,7 +80,7 @@ export default function DataTable() {
     if (selectedRows) {
       axios
         .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
-          groupName: "random name fix this later",
+          groupName: groupName,
           users: selectedRows,
           userCount: JSON.parse(selectedRows).length,
           dateCreated: Ymd(new Date()),
