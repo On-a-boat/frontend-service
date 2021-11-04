@@ -12,14 +12,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import * as s from "./CRM.styles";
 import Link from "@material-ui/core/Link";
 
-
 export default function DataTable() {
   const [rows, setRows] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [open, setOpen] = React.useState(false);
   const [userId, setUserId] = useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
-
 
   // Table columns
   const columns = [
@@ -30,8 +28,12 @@ export default function DataTable() {
     { field: "gender", headerName: "Gender", width: 130 },
     { field: "email", headerName: "Email", width: 300 },
     {
-      field: "Link", headerName: "link", width: 10,
-      renderCell: (params) => (<Link href={`/userprofile/${params.value}`}>Link</Link>)
+      field: "Link",
+      headerName: "link",
+      width: 10,
+      renderCell: (params) => (
+        <Link href={`/userprofile/${params.value}`}>Link</Link>
+      ),
     },
     // {
     //   Header: "",
@@ -119,8 +121,6 @@ export default function DataTable() {
     };
   }, []);
 
-
-
   return (
     <div style={{ height: "80%", width: "1180px" }}>
       <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
@@ -160,13 +160,13 @@ export default function DataTable() {
         rowsPerPageOptions={[5]}
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
-          const selectedRows = rows.filter((row) =>
-            selectedIDs.has(row.id)
-          );
+          const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
           console.log(selectedRows);
           setSelectedRows(selectedRows);
-          localStorage.setItem("selected", JSON.stringify(selectedRows));
-
+          localStorage.setItem(
+            "selected",
+            JSON.stringify(selectedRows.map((e) => e.id))
+          );
         }}
         {...rows}
       />
@@ -177,7 +177,6 @@ export default function DataTable() {
   );
 }
 
-
 // <form onSubmit={handleAddGroups}>
 //         <input
 //           type="text"
@@ -187,4 +186,3 @@ export default function DataTable() {
 //         />
 //         <button>Add Groups</button>
 //       </form>
-
