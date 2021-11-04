@@ -1,3 +1,4 @@
+//create a new style sheet for the settings page and add it to the document
 import styled from "@emotion/styled";
 
 export const Settings = styled.div`
