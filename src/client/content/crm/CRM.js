@@ -82,7 +82,7 @@ export default function DataTable() {
         .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
           groupName: "random name fix this later",
           users: selectedRows,
-          userCount: selectedRows.length,
+          userCount: JSON.parse(selectedRows).length,
           dateCreated: Ymd(new Date()),
         })
         .then((response) => {
