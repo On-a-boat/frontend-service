@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,8 +8,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import * as s from "./CRM.styles";
 import Link from "@material-ui/core/Link";
+import * as s from "./CRM.styles";
+
 
 export default function DataTable() {
   const [rows, setRows] = useState([]);
@@ -35,48 +35,13 @@ export default function DataTable() {
         <Link href={`/userprofile/${params.value}`}>Link</Link>
       ),
     },
-    // {
-    //   Header: "",
-    //   accessor: "Link",
-    //   Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
-    // },
   ];
-
-  const makeGroup = () => {
-    const Ymd = (date) => date.toISOString().slice(0, 10);
-    const selectedRows = JSON.parse(localStorage.getItem("selectedRows"));
-    var updateId = [];
-    console.log("button pressed");
-
-    selectedRows.forEach((row) => {
-      updateId.push(row.UserId);
-    });
-    setUserId(updateId);
-
-    if (userId.length > 0 && groupName != "") {
-      console.log("Work");
-
-      axios
-        .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
-          groupName: groupName,
-          users: userId,
-          users: "" + userId,
-          userCount: userId.length,
-          dateCreated: new Date().toLocaleDateString(),
-          dateCreated: Ymd(new Date()),
-        })
-        .then((response) => {
-          console.log(response);
-        });
-    }
-  };
 
   // handle adding groups
   const handleAddGroups = () => {
     const Ymd = (date) => date.toISOString().slice(0, 10);
     const selectedRows = localStorage.getItem("selected");
 
-    console.log("button pressed");
     if (selectedRows) {
       axios
         .post("https://backend.weeyapp-crm-on-a-boat.com/group", {
@@ -86,7 +51,6 @@ export default function DataTable() {
           dateCreated: Ymd(new Date()),
         })
         .then((response) => {
-          console.log(response);
         });
     }
   };
@@ -109,8 +73,6 @@ export default function DataTable() {
         if (isMounted) {
           setRows(users.data);
         }
-
-        console.log(users);
       } catch (error) {
         console.error(error);
       }
@@ -122,7 +84,7 @@ export default function DataTable() {
   }, []);
 
   return (
-    <div style={{ height: "80%", width: "1180px" }}>
+    <s.MainContainer>
       <s.CreateGroupModalButton variant="outlined" onClick={handleClickOpen}>
         + &ensp; Create New Group
       </s.CreateGroupModalButton>
@@ -153,6 +115,7 @@ export default function DataTable() {
       </Dialog>
 
       <DataGrid
+        style={{ backgroundColor: "white" }}
         rows={rows}
         columns={columns}
         pageSize={10}
@@ -161,7 +124,6 @@ export default function DataTable() {
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
           const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
-          console.log(selectedRows);
           setSelectedRows(selectedRows);
           localStorage.setItem(
             "selected",
@@ -170,19 +132,6 @@ export default function DataTable() {
         }}
         {...rows}
       />
-      <pre style={{ fontSize: 10 }}>
-        {JSON.stringify(selectedRows, null, 4)}
-      </pre>
-    </div>
+    </s.MainContainer>
   );
 }
-
-// <form onSubmit={handleAddGroups}>
-//         <input
-//           type="text"
-//           placeholder="Enter Group Name"
-//           name="gname"
-//           required
-//         />
-//         <button>Add Groups</button>
-//       </form>
