@@ -18,6 +18,8 @@ export const menuItems = [
       { name: "Email", to: "/statistics/email" },
     ],
   },
+  //add a new menu item here that will be used to display the profile page of the user
+  { name: "Profile", to: "/profile", icon: PersonIcon, subMenuItems: [] },
   {
     name: "Settings",
     to: "/settings",
