@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 // sidebar
 export const SidebarContainer = styled.div`
-  width: 12%;
-  background-color: rgba(255,255,255,1);
+  width: 14%;
   background-size: cover;
   background-repeat: no-repeat;
+  background-color: white;
   background-position: center center;
   border-right : 1px solid;
   border-color: rgba(229,232,241,0.8);
@@ -42,13 +42,10 @@ export const MenuItem = styled.div`
   display: flex;
   padding: 15px;
   font-family: "Nunito Sans", sans-serif;
-  background-color: ${(props) => props.selected && "#161E2E"};
-  box-shadow: ${(props) => props.selected && "inset 0px 3px 3px 2px #000"};
-  border-radius: 7px;
+  background-color: ${(props) => props.selected && "red"};
   //pseudo element
   &:hover {
-    background-color: ${(props) => !props.selected && "#161E2E"};
-    box-shadow: ${(props) => !props.selected && "inset 0px 3px 3px 2px #000"};
+    background-color: ${(props) => !props.selected && "rgba(245,248,253,1)"};
   }
   &:after {
     content: "";

@@ -26,13 +26,13 @@ export default function DataTable() {
     { field: "lastName", headerName: "Last Name", width: 190 },
     { field: "age", headerName: "Age", width: 130 },
     { field: "gender", headerName: "Gender", width: 130 },
-    { field: "email", headerName: "Email", width: 300 },
+    { field: "email", headerName: "Email", width: 280 },
     {
       field: "Link",
       headerName: "link",
       width: 10,
       renderCell: (params) => (
-        <Link href={`/userprofile/${params.value}`}>Link</Link>
+        <Link style={{ fontSize: "27px", marginLeft: "8px", color: "#F79489" }} href={`/userprofile/${params.value}`}>⋮</Link>
       ),
     },
   ];
@@ -115,7 +115,7 @@ export default function DataTable() {
       </Dialog>
 
       <DataGrid
-        style={{ backgroundColor: "white" }}
+        style={{ backgroundColor: "white", marginTop: "30px" }}
         rows={rows}
         columns={columns}
         pageSize={10}
