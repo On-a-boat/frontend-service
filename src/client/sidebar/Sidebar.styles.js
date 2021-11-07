@@ -40,12 +40,12 @@ export const SidebarHeaderWrapper = styled.div`
 
 export const MenuItem = styled.div`
   display: flex;
-  padding: 15px;
+  padding: 12px;
   font-family: "Nunito Sans", sans-serif;
   background-color: ${(props) => props.selected && "red"};
   //pseudo element
   &:hover {
-    background-color: ${(props) => !props.selected && "rgba(245,248,253,1)"};
+    background-color: ${(props) => !props.selected && "rgba(248,175,166,0.2)"};
   }
   &:after {
     content: "";
