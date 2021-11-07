@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# WEEY CRM (Frontend)
+A customer relationship management system, (Project_name) supports an environment-friendly mobile carpool app - ”WEEY”. To help the primary objective of the business, the reduction of greenhouse emission and delivery of their green tips, (Project_name) allows the personalization of the promotion to distinct customizable groups of users with different interests. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
+(Copy from the table of contents generator)
+## Requirements
 
-## Available Scripts
+- User sorting, the admin will sort the customers/users of the app by age, gender, how environmentalist, time since joined, etc. This will help the admin to see which users are safe and how environmental-friendly are they.
+- User grouping, it will allow the administrator to send green tips to users who are environmentalists to foster customer loyalty, this will also allow admins to send coupons to prompt them.
+- Marketing analysis, we will be able to see the effectiveness of the coupons and emails by seeing how many emails were sent, opened and how many coupons are clicked, and used.
 
-In the project directory, you can run:
+# Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### `yarn start`
+## Prerequisites
+Make sure you have installed all of the following prerequisites on your development machine:
+* Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
+* Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+* MySQL- [Download & Install MySQL](https://www.mysql.com/downloads/), and make sure it's running on the default port.
+* Yarn Package Installer - ```npm install --global yarn```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Configuration
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## How to install/run the application
+Once you have downloaded the prerequisites, you are just a few steps away from starting your application.
+### Quick Install
 
-### `yarn test`
+The Weey CRM comes pre-bundled with a `package.json` file that contain the list of libraries you need to start your application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To install these dependencies, open up the terminal and do the followings:
 
-### `yarn build`
+```bash
+$ yarn
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+//if not working it means you have not downloaded yarn
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+$ npm install --global yarn
+$ yarn
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+//if not working, you can also use npm
 
-### `yarn eject`
+$ npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This command does a few things:
+* First it will install the dependencies needed for the application to run.
+* If you're running in a development environment, it will then also install development dependencies needed for testing and running your application.
+* When the npm packages install process is over, npm will initiate a bower install command to install all the front-end modules needed for the application
+* To update these packages later on, just run `npm update`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Running your application locally
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+You can run your application locally by doing the following command
+(make sure you are in a root directory of your application cd /frontend-service)
+```bash
+$ yarn start
+```
+our application should run on port 3000 with the development environment configuration, so in your browser just go to http://localhost:3000
 
-## Learn More
+## Tests
+You can run the full tests done in JEST by the following command
+```bash
+$ npm test
+```
+This will run the existing test cases done for the frontend application to ensure all of our componetns are working fine.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment Method
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Deploy using AWS Amplify
+(Check a link in a c)
+### Deploy using AWS S3 Bucket + 
 
-### Code Splitting
+### Deploy using heroku
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Authentication
 
-### Analyzing the Bundle Size
+## Built With
+- React.JS
+- MySQL
+## Used Libraries
+- axios
+- chart.js
+- react libraries
+- styled-components
+- jest
+- mui
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Authors
+- John Minseok Kim - 
+- Sooyoung Jung - 
+- Yifeng - 
+- Jun hee - 
+## License
+This project is licensed under the Team 90, On-a-boat of the IT Project in University of Melbourne (2021)
 
-### Making a Progressive Web App
+## Version Control
+Version 1 - User Table
+Version 2 - Statistics, Grouping, Emailing, bug fixes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
