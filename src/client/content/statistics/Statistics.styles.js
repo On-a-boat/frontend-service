@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const RightContainer = styled.div`
   flex: 0 0 88%;
-  background-color: #f7f9ff;
+  background-color: #fbfcfd;
 `;
 
 export const MainContainer = styled.div`

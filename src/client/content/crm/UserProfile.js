@@ -50,7 +50,7 @@ const DetailTable = function ({ data }) {
           <TableCell>User ID</TableCell>
           <TableCell>
             {data.map((d) => (
-              <span>{d.userId}</span>
+              <span>{d.id}</span>
             ))}
           </TableCell>
         </TableRow>
@@ -186,7 +186,7 @@ export default function UserProfile() {
     const getUser = async () => {
       try {
         const users = await axios.get(
-          "https://backend.weeyapp-crm-on-a-boat.com/filter/user?userId=" + a
+          "https://backend.weeyapp-crm-on-a-boat.com/filter/user?id=" + a
         );
 
         if (isMounted) {
@@ -203,7 +203,5 @@ export default function UserProfile() {
       isMounted = false;
     };
   }, []);
-  return (
-    <DetailTable data={data} />
-  );
+  return <DetailTable data={data} />;
 }
