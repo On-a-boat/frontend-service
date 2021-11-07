@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Statistics = () => {
   const [newUser, setNewUser] = useState({ newuser: "5" });
-  const [allUser, setAllUser] = useState([{ "count(userId)": 100 }]);
+  const [allUser, setAllUser] = useState([{ "count(id)": 100 }]);
   const [openedEmail, setOpenedEmail] = useState([{ "SUM(NumberOpened)": 0 }]);
   const [allGender, setAllGender] = useState([
     { male_count: 0, female_count: 0 },
@@ -79,7 +79,7 @@ const Statistics = () => {
             <Box gridColumn="span 4">
               <Item>
                 <h3>Total Users</h3>
-                <h1>{JSON.stringify(allUser[0]["count(userId)"])}</h1>
+                <h1>{JSON.stringify(allUser[0]["count(id)"])}</h1>
               </Item>
             </Box>
             <Box gridColumn="span 4">
