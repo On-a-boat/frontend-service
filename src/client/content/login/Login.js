@@ -134,7 +134,7 @@ export default function SignIn() {
       </Snackbar>
       <LeftDiv />
       <RightDiv>
-        <Header>Login, id: abc123, pass: abc123</Header>
+        <Header>Login</Header>
         <form noValidate>
           <TextField
             variant="outlined"
@@ -174,7 +174,11 @@ export default function SignIn() {
               variant="contained"
               color="primary"
               fullWidth
-              style={{ fontSize: "16px" }}
+              style={{
+                fontSize: "16px",
+                backgroundColor: "rgba(255, 127, 80, 0.2)",
+                color: "rgba(238,61,13,1)",
+              }}
               onClick={() => {
                 sendData();
               }}

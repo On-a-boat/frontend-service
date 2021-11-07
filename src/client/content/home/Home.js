@@ -34,6 +34,10 @@ export default function Statistics() {
               <h1>Users</h1> <img src={PersonIcon} alt="Person" />
               <Button
                 variant="contained"
+                style={{
+                  backgroundColor: "rgba(255, 127, 80, 0.2)",
+                  color: "rgba(238,61,13,1)",
+                }}
                 onClick={() => {
                   history.push("/users");
                 }}
@@ -46,6 +50,10 @@ export default function Statistics() {
             <Item>
               <h1>Groups</h1> <img src={GroupIcon} alt="GroupIcon" />
               <Button
+                style={{
+                  backgroundColor: "rgba(255, 127, 80, 0.2)",
+                  color: "rgba(238,61,13,1)",
+                }}
                 variant="contained"
                 onClick={() => {
                   history.push("/groups");
@@ -60,6 +68,10 @@ export default function Statistics() {
               <h1>Statistics</h1> <img src={StatIcon} alt="StatIcon" />
               <Button
                 variant="contained"
+                style={{
+                  backgroundColor: "rgba(255, 127, 80, 0.2)",
+                  color: "rgba(238,61,13,1)",
+                }}
                 onClick={() => {
                   history.push("/statistics/users");
                 }}
