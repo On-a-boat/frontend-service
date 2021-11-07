@@ -6,16 +6,12 @@ const Settings = () => {
   return (
     <s.Settings>
       <s.SettingsHeader>
-        <s.SettingsHeaderTitle>Settings</s.SettingsHeaderTitle>
+        <s.SettingsHeaderTitle>
+          Settings (Planned in next release)
+        </s.SettingsHeaderTitle>
       </s.SettingsHeader>
-      <s.SettingsBody>
-        <s.SettingsBodyTitle>
-          <s.SettingsBodyTitleText>Change Email</s.SettingsBodyTitleText>
-        </s.SettingsBodyTitle>
-        <s.SettingsBodyTitle>
-          <s.SettingsBodyTitleText>Change Password</s.SettingsBodyTitleText>
-        </s.SettingsBodyTitle>
-      </s.SettingsBody>
+
+      <h3>Under Construction</h3>
     </s.Settings>
   );
 };

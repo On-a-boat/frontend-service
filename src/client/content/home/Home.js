@@ -31,7 +31,12 @@ export default function Statistics() {
           </Box>
           <Box gridColumn="span 4">
             <Item>
-              <h1>Users</h1> <img src={PersonIcon} alt="Person" />
+              <h1>Users</h1>{" "}
+              <img
+                style={{ position: "relative", maxWidth: "100%" }}
+                src={PersonIcon}
+                alt="Person"
+              />
               <Button
                 variant="contained"
                 style={{
@@ -48,7 +53,12 @@ export default function Statistics() {
           </Box>
           <Box gridColumn="span 4">
             <Item>
-              <h1>Groups</h1> <img src={GroupIcon} alt="GroupIcon" />
+              <h1>Groups</h1>{" "}
+              <img
+                style={{ position: "relative", maxWidth: "100%" }}
+                src={GroupIcon}
+                alt="GroupIcon"
+              />
               <Button
                 style={{
                   backgroundColor: "rgba(255, 127, 80, 0.2)",
@@ -65,7 +75,12 @@ export default function Statistics() {
           </Box>
           <Box gridColumn="span 4">
             <Item>
-              <h1>Statistics</h1> <img src={StatIcon} alt="StatIcon" />
+              <h1>Statistics</h1>{" "}
+              <img
+                style={{ position: "relative", maxWidth: "100%" }}
+                src={StatIcon}
+                alt="StatIcon"
+              />
               <Button
                 variant="contained"
                 style={{

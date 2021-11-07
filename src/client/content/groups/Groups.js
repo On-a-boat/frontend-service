@@ -22,7 +22,8 @@ export default function DataTable() {
   const columns = [
     { field: "id", headerName: "Group ID", resizable: true, width: 130 },
     { field: "groupName", headerName: "Group Name", width: 190 },
-    { field: "userCount", headerName: "User No.", width: 190 },
+    { field: "userCount", headerName: "User Counting.", width: 190 },
+    { field: "users", headerName: "Users", width: 250 },
     { field: "dateCreated", headerName: "Created Date", width: 190 },
     { field: "emailSent", headerName: "Emails Sent", width: 190 },
     {
@@ -30,7 +31,12 @@ export default function DataTable() {
       headerName: "Details",
       width: 150,
       renderCell: (params) => (
-        <Link href={`/groups/${params.value}`}>Link</Link>
+        <Link
+          style={{ fontSize: "27px", marginLeft: "8px", color: "#F79489" }}
+          href={`/groups/${params.value}`}
+        >
+          ⋮
+        </Link>
       ),
     },
   ];
@@ -38,11 +44,6 @@ export default function DataTable() {
   // send email to selected users
   const history = useHistory();
   const handleEmailSend = () => {
-    localStorage.setItem("toId", [
-      ...new Set(
-        JSON.parse(localStorage.getItem("selectedRows")).map((a) => a.users)
-      ),
-    ]);
     history.push("/send");
   };
 
@@ -71,25 +72,23 @@ export default function DataTable() {
   return (
     <s.MainContainer>
       <s.CreateGroupModalButton variant="outlined" onClick={handleEmailSend}>
-        Send Email
+        + &ensp; Send Email
       </s.CreateGroupModalButton>
 
       <DataGrid
-        style={{ backgroundColor: "white" }}
+        style={{ backgroundColor: "white", marginTop: "30px" }}
         rows={rows}
         columns={columns}
         pageSize={10}
         checkboxSelection
         rowsPerPageOptions={[5]}
-        // onSelectionModelChange={(ids) => {
-        //   const selectedIDs = new Set(ids);
-        //   const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
-        //   setSelectedRows(selectedRows);
-        //   localStorage.setItem(
-        //     "selected",
-        //     JSON.stringify(selectedRows.map((e) => e.id))
-        //   );
-        // }}
+        onSelectionModelChange={(ids) => {
+          const selectedIDs = new Set(ids);
+          const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
+          setSelectedRows(selectedRows);
+          var selectedUsers = selectedRows.map((row) => row.users);
+          localStorage.setItem("selected", selectedUsers);
+        }}
         {...rows}
       />
     </s.MainContainer>

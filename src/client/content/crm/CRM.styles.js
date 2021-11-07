@@ -8,12 +8,12 @@ export const MainContainer = styled.div`
   margin-right: auto;
 `;
 
-
 // create new group modal
 export const CreateGroupModalButton = styled.button`
-  background: rgba(255,127,80,0.2);
+  cursor: pointer;
+  background: rgba(255, 127, 80, 0.2);
   border-radius: 3px;
-  border:none;
+  border: none;
   padding: 12px;
   margin: 10px;
   margin-left: -0.5px;
@@ -21,5 +21,5 @@ export const CreateGroupModalButton = styled.button`
   margin-bottom: -3px;
   font-size: 13px;
   font-weight: bold;
-  color: rgba(238,61,13,1);
+  color: rgba(238, 61, 13, 1);
 `;

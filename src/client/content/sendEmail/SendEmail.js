@@ -10,25 +10,25 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
 const defaultValues = {
-  to: localStorage.getItem("toId"),
+  to: localStorage.getItem("selected"),
   subject: "",
   dropdown: "",
   description: "",
 };
 
-const SendEmail = () => {
-  console.log(defaultValues);
+export default function SendEmail() {
   const [formValues, setFormValues] = useState(defaultValues);
+
   const handleInputChange = (e) => {
-    setFormValues({
-      ...formValues,
-    });
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    console.log(formValues);
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formValues);
+    console.log("hello");
     try {
-      const res = await axios.post("/email");
+      const res = await axios.post("/email", formValues);
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -74,16 +74,16 @@ const SendEmail = () => {
                   value={formValues.dropdown}
                   onChange={handleInputChange}
                 >
-                  <MenuItem key="Voucher" value="Voucher">
+                  <MenuItem key="dropdown" value="Voucher">
                     Voucher
                   </MenuItem>
-                  <MenuItem key="Environmentalist" value="Environmentalist">
+                  <MenuItem key="dropdown" value="Environmentalist">
                     Environmentalist
                   </MenuItem>
-                  <MenuItem key="Something1" value="Something1">
+                  <MenuItem key="dropdown" value="Best User">
                     Something1
                   </MenuItem>
-                  <MenuItem key="Something2 " value="Something2">
+                  <MenuItem key="dropdown " value="Ads">
                     Something2
                   </MenuItem>
                 </Select>
@@ -113,6 +113,4 @@ const SendEmail = () => {
       </s.MainContainer>
     </s.Container>
   );
-};
-
-export default SendEmail;
+}
