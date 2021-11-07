@@ -11,7 +11,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@material-ui/core/Link";
 import * as s from "./CRM.styles";
 
-
 export default function DataTable() {
   const [rows, setRows] = useState([]);
   const [groupName, setGroupName] = useState("");
@@ -29,8 +28,8 @@ export default function DataTable() {
     { field: "email", headerName: "Email", width: 280 },
     {
       field: "Link",
-      headerName: "link",
-      width: 10,
+      headerName: "Details",
+      width: 150,
       renderCell: (params) => (
         <Link style={{ fontSize: "27px", marginLeft: "8px", color: "#F79489" }} href={`/userprofile/${params.value}`}>⋮</Link>
       ),
@@ -50,8 +49,7 @@ export default function DataTable() {
           userCount: JSON.parse(selectedRows).length,
           dateCreated: Ymd(new Date()),
         })
-        .then((response) => {
-        });
+        .then((response) => {});
     }
   };
   const handleClickOpen = () => {

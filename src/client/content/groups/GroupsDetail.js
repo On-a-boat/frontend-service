@@ -1,214 +1,103 @@
-// import React, { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom";
-// import {
-//   useTable,
-//   usePagination,
-//   useRowSelect,
-//   useSortBy,
-//   useFilters,
-// } from "react-table";
-// import axios from "axios";
-// import DefaultColumnFilter from "../crm/filters/DefaultColumnFilter";
-// import NumberRangeColumnFilter from "../crm/filters/NumberRangeColumnFilter";
-// import Popup from "../../components/Popup";
-// import * as s from "../crm/CRM.styles";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Link from "@material-ui/core/Link";
+import * as s from "./Groups.styles";
+import { useHistory, useParams } from "react-router-dom";
+export default function DataTable() {
+  const { a } = useParams();
+  const [rows, setRows] = useState([]);
+  const [groupName, setGroupName] = useState("");
+  const [userId, setUserId] = useState([]);
+  const [selectedRows, setSelectedRows] = React.useState([]);
 
-// //toggle dropdown menu open/close filter and sort
-// var toClose = false;
-// function toggle(e) {
-//   e.stopPropagation();
-//   var btn = this;
-//   var menu = btn.nextSibling;
+  // Table columns
+  const columns = [
+    { field: "id", headerName: "User ID", width: 130 },
+    { field: "FirstName", headerName: "First Name", width: 190 },
+    { field: "LastName", headerName: "Last Name", width: 190 },
+    { field: "Age", headerName: "Age", width: 130 },
+    { field: "Gender", headerName: "Gender", width: 130 },
+    { field: "Keywords", headerName: "Keywords", width: 320 },
+    {
+      field: "Link",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Link
+          style={{ fontSize: "27px", marginLeft: "8px", color: "#F79489" }}
+          href={`/userprofile/${params.value}`}
+        >
+          ⋮
+        </Link>
+      ),
+    },
+  ];
 
-//   while (menu && menu.nodeType !== 1) {
-//     menu = menu.nextSibling;
-//   }
-//   if (!menu) return;
-//   if (menu.style.display !== "block") {
-//     menu.style.display = "block";
-//     if (toClose) toClose.style.display = "none";
-//     toClose = menu;
-//   } else {
-//     menu.style.display = "none";
-//     toClose = false;
-//   }
-// }
+  // send email to selected users
+  const history = useHistory();
+  const handleEmailSend = () => {
+    localStorage.setItem("toId", [
+      ...new Set(
+        JSON.parse(localStorage.getItem("selectedRows")).map((a) => a.users)
+      ),
+    ]);
+    history.push("/send");
+  };
 
-// window.addEventListener("DOMContentLoaded", function () {
-//   document.querySelectorAll(".btn-buy-list").forEach(function (btn) {
-//     btn.addEventListener("click", toggle, true);
-//   });
-// });
+  // Fetch users data from the Database.
+  useEffect(() => {
+    let isMounted = true;
+    const getUser = async () => {
+      try {
+        const users = await axios.get(
+          "https://backend.weeyapp-crm-on-a-boat.com/group/find?groupId=" + a
+        );
+        console.log(users.data);
 
-// //A checkbox for each row in the table
-// const IndeterminateCheckbox = React.forwardRef(
-//   ({ indeterminate, ...rest }, ref) => {
-//     const defaultRef = React.useRef();
-//     const resolvedRef = ref || defaultRef;
+        if (isMounted) {
+          setRows(users.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUser();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-//     React.useEffect(() => {
-//       resolvedRef.current.indeterminate = indeterminate;
-//     }, [resolvedRef, indeterminate]);
-
-//     return (
-//       <>
-//         <input type="checkbox" ref={resolvedRef} {...rest} />
-//       </>
-//     );
-//   }
-// );
-
-// // CRM table
-// const Table = function ({ columns, data }) {
-//   // Define filtering options; case insensitive
-//   const filterTypes = React.useMemo(
-//     () => ({
-//       text: (rows, id, filterValue) => {
-//         return rows.filter((row) => {
-//           const rowValue = row.values[id];
-//           return rowValue !== undefined
-//             ? String(rowValue)
-//                 .toLowerCase()
-//                 .startsWith(String(filterValue).toLowerCase())
-//             : true;
-//         });
-//       },
-//     }),
-//     []
-//   );
-
-//   // default filter for each column
-//   const defaultColumn = React.useMemo(
-//     () => ({
-//       Filter: DefaultColumnFilter,
-//     }),
-//     []
-//   );
-
-//   // States and functions returned from useTable
-//   const {
-//     getTableProps,
-//     getTableBodyProps,
-//     headerGroups,
-//     prepareRow,
-//     page,
-//     canPreviousPage,
-//     canNextPage,
-//     pageOptions,
-//     pageCount,
-//     gotoPage,
-//     nextPage,
-//     previousPage,
-//     selectedFlatRows,
-//     state: { pageIndex },
-//   } = useTable(
-//     {
-//       columns,
-//       data,
-//       defaultColumn,
-//       filterTypes,
-//     },
-//     useFilters,
-//     useSortBy,
-//     usePagination,
-//     useRowSelect
-//   );
-
-//   return (
-//     <>
-//       <s.CRMTable {...getTableProps()}>
-//         <s.CRMTableHead>
-//           {headerGroups.map((headerGroup) => (
-//             <tr style={{ position: "relative" }}>
-//               {headerGroup.headers.map((column) => (
-//                 <th>
-//                   {/* header */}
-//                   <span>{column.render("Header")}</span>
-
-//                   {/* drop down bar, contians filter and sort */}
-//                   <span>
-//                     {column.Header.length > 1 ? (
-//                       <span>
-//                         <s.CRMHeadFilter style={{ display: "block" }}>
-//                           {/* filter */}
-//                           <li style={{ backgroundColor: "white" }}>
-//                             {column.canFilter ? column.render("Filter") : null}
-//                           </li>
-
-//                           {/* sort */}
-//                           <li
-//                             {...column.getHeaderProps(
-//                               column.getSortByToggleProps()
-//                             )}
-//                             style={{ backgroundColor: "white" }}
-//                           >
-//                             {column.Header.length > 1
-//                               ? column.isSorted
-//                                 ? column.isSortedDesc
-//                                   ? "Default"
-//                                   : "Sort in Desc"
-//                                 : "Sort in Asc"
-//                               : null}
-//                           </li>
-//                         </s.CRMHeadFilter>
-//                       </span>
-//                     ) : null}
-//                   </span>
-//                 </th>
-//               ))}
-//             </tr>
-//           ))}
-//         </s.CRMTableHead>
-
-//         <s.CRMTableBody {...getTableBodyProps()}>
-//           {page.map((row, i) => {
-//             prepareRow(row);
-//             return (
-//               <tr {...row.getRowProps()}>
-//                 {row.cells.map((cell) => {
-//                   return (
-//                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-//                   );
-//                 })}
-//               </tr>
-//             );
-//           })}
-//         </s.CRMTableBody>
-//       </s.CRMTable>
-
-//       {/*  define pagination of the table,  */}
-//       <s.Pagination>
-//         <s.PaginationArrowButton
-//           onClick={() => gotoPage(0)}
-//           disabled={!canPreviousPage}
-//         >
-//           {"<<"}
-//         </s.PaginationArrowButton>{" "}
-//         <s.PaginationArrowButton
-//           onClick={() => previousPage()}
-//           disabled={!canPreviousPage}
-//         >
-//           {"<"}
-//         </s.PaginationArrowButton>{" "}
-//         <s.PaginationArrowButton
-//           onClick={() => nextPage()}
-//           disabled={!canNextPage}
-//         >
-//           {">"}
-//         </s.PaginationArrowButton>{" "}
-//         <s.PaginationArrowButton
-//           onClick={() => gotoPage(pageCount - 1)}
-//           disabled={!canNextPage}
-//         >
-//           {">>"}
-//         </s.PaginationArrowButton>{" "}
-//         <s.CurrPage>
-//           Page {pageIndex + 1} of {pageOptions.length}{" "}
-//         </s.CurrPage>
-//       </s.Pagination>
-//     </>
-//   );
-// };
+  return (
+    <s.MainContainer>
+      <DataGrid
+        style={{ backgroundColor: "white" }}
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        checkboxSelection
+        rowsPerPageOptions={[5]}
+        // onSelectionModelChange={(ids) => {
+        //   const selectedIDs = new Set(ids);
+        //   const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
+        //   setSelectedRows(selectedRows);
+        //   localStorage.setItem(
+        //     "selected",
+        //     JSON.stringify(selectedRows.map((e) => e.id))
+        //   );
+        // }}
+        {...rows}
+      />
+    </s.MainContainer>
+  );
+}
 
 // function GroupsDetail() {
 //   const [data, setData] = useState([]);
@@ -273,17 +162,3 @@
 //     //   Cell: (e) => <a href={"userprofile/" + e.value}>Link</a>,
 //     // },
 //   ];
-
-//   return (
-//     <s.CRMContainer>
-//       <s.MainContainer>
-//         {/* Table */}
-//         {/* <s.TableStyles> */}
-//         <Table columns={columns} data={data} />
-//         {/* </s.TableStyles> */}
-//       </s.MainContainer>
-//     </s.CRMContainer>
-//   );
-// }
-
-// export default GroupsDetail;

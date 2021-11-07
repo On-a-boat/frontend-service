@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const CRMContainer = styled.div`
   width: 88%;
-  background-color: #f7f9ff;
+  background-color: #fbfcfd;
   flex: 0 0 88%;
 `;
 

@@ -3,11 +3,13 @@ import styled from "@emotion/styled";
 export const CRMContainer = styled.div`
   width: 88%;
   flex: 0 0 88%;
-  background-color: #f7f9ff;
+  background-color: #fbfcfd;
 `;
 
 export const MainContainer = styled.div`
-  width: 90%;
+  height: 80%;
+  width: 83%;
+  flex: 0 0 83%;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -67,7 +69,17 @@ export const PaginationArrowButton = styled.button``;
 export const CurrPage = styled.span``;
 
 // groups
-export const CreateGroupModalButton = styled.button``;
+export const CreateGroupModalButton = styled.button`
+  background: rgba(255, 127, 80, 0.2);
+  border: none;
+  border-radius: 2px;
+  padding: 10px;
+  margin: 10px;
+
+  font-size: 13px;
+  font-weight: bold;
+  color: rgba(238, 61, 13, 1);
+`;
 
 export const CreateGroupButton = styled.button``;
 
