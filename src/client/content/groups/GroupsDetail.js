@@ -21,13 +21,14 @@ export default function DataTable() {
   // Table columns
   const columns = [
     { field: "id", headerName: "User ID", width: 130 },
-    { field: "FirstName", headerName: "First Name", width: 190 },
-    { field: "LastName", headerName: "Last Name", width: 190 },
-    { field: "Age", headerName: "Age", width: 130 },
-    { field: "Gender", headerName: "Gender", width: 130 },
-    { field: "Keywords", headerName: "Keywords", width: 320 },
+    { field: "firstName", headerName: "First Name", width: 190 },
+    { field: "lastName", headerName: "Last Name", width: 190 },
+    { field: "age", headerName: "Age", width: 150 },
+    { field: "gender", headerName: "Gender", width: 150 },
+    { field: "email", headerName: "Email", width: 320 },
+    { field: "keyword", headerName: "Keywords", width: 320 },
     {
-      field: "Link",
+      field: "link",
       headerName: "Details",
       width: 150,
       renderCell: (params) => (
