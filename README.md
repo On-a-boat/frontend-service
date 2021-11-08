@@ -4,8 +4,36 @@ A customer relationship management system, (Project_name) supports an environmen
 
 ## Table of Contents
 
-(Copy from the table of contents generator)
-
+- [WEEY CRM (Frontend)](#weey-crm--frontend-)
+  * [Table of Contents](#table-of-contents)
+  * [Requirements](#requirements)
+- [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Configuration](#configuration)
+  * [How to install/run the application](#how-to-install-run-the-application)
+    + [Quick Install](#quick-install)
+    + [Running your application locally](#running-your-application-locally)
+  * [Tests](#tests)
+  * [Deployment Method](#deployment-method)
+    + [Deploy using AWS Amplify](#deploy-using-aws-amplify)
+      - [Access to GitHub Repository from AWS](#access-to-github-repository-from-aws)
+      - [Connecting to your frontend repository](#connecting-to-your-frontend-repository)
+      - [Customize cli from AWS (Make Amplify run the command from cloud machine)](#customize-cli-from-aws--make-amplify-run-the-command-from-cloud-machine-)
+      - [Launch](#launch)
+      - [Get a Domain from Route53](#get-a-domain-from-route53)
+      - [Configure DNS](#configure-dns)
+      - [Route settings](#route-settings)
+      - [Configure Domain from Amplify](#configure-domain-from-amplify)
+    + [Deploy using AWS S3 Bucket +](#deploy-using-aws-s3-bucket--)
+      - [Description](#description)
+      - [Pre-Implementation](#pre-implementation)
+      - [AWS S3 Bucket](#aws-s3-bucket)
+      - [Setup Cloudfront to get it secured](#setup-cloudfront-to-get-it-secured)
+  * [Built With](#built-with)
+  * [Used Libraries](#used-libraries)
+  * [Authors](#authors)
+  * [License](#license)
+  * [Version Control](#version-control)
 ## Requirements
 
 - User sorting, the admin will sort the customers/users of the app by age, gender, how environmentalist, time since joined, etc. This will help the admin to see which users are safe and how environmental-friendly are they.
