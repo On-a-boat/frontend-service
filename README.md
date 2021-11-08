@@ -68,7 +68,13 @@ This will run the existing test cases done for the frontend application to ensur
 ## Deployment Method
 
 ### Deploy using AWS Amplify
-(Check a link in a c)
+
+#### Connecting to your frontend repository
+In order to host your web app to AWS Ampliy, you need to connect your repoisitory containing your source code.
+To do this, you can navigate to 
+
+
+
 ### Deploy using AWS S3 Bucket + 
 
 ### Deploy using heroku
