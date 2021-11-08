@@ -98,13 +98,13 @@ And once you select deploy your frontend application, the following will be give
 
 Ensure you have forked our repository or to be in our repository.
 
-![readme\2-select-repo-2.PNG](readme\2-select-repo-2.PNG)
+![readme/2-select-repo-2.PNG](readme/2-select-repo-2.PNG)
 
 If you don't see the following repository, make sure your AWS is connected to your GitHub account properly.
 
 #### Customize cli from AWS (Make Amplify run the command from cloud machine)
 
-![readme\3-deployment-cli.PNG](readme\3-deployment-cli.PNG)
+![readme/3-deployment-cli.PNG](readme/3-deployment-cli.PNG)
 
 After that, click Next and AWS will ask you to configure your build and test settings. The base template that AWS provides is shown below.
 
@@ -112,7 +112,7 @@ Make sure to use "Yarn" package manger than NPM sinec this application is runnin
 
 #### Launch
 
-![readme\4-launch.PNG](readme\4-launch.PNG)
+![readme/4-launch.PNG](readme/4-launch.PNG)
 
 Finally, after reviewing the settings for your application, click Save and Deploy and AWS will begin configuring and deploying your application. When AWS is done deploying, you can navigate to the Amplify home page and see your newly-deployed application.
 
@@ -120,7 +120,7 @@ Now you will get an ip address that you can connect to and if you access the ip 
 
 #### Get a Domain from Route53
 
-![readme\5-dns-home.PNG](readme\5-dns-home.PNG)
+![readme/5-dns-home.PNG](readme/5-dns-home.PNG)
 
 If you don't like to have an ip address as your web page domain, you can add a custom domain to have your own customized web page link.
 
@@ -130,20 +130,20 @@ Once you bought the domain it will take between 2-3 days for AWS people to hand 
 
 #### Configure DNS
 
-![readme\6-configure-dns.PNG](readme\6-configure-dns.PNG)
+![readme/6-configure-dns.PNG](readme/6-configure-dns.PNG)
 
 Once you have bought the domain now you will be able to configure CNAME to link it with your ip address.
 
 #### Route settings
 
-![readme\7-route-traffic.PNG](readme\7-route-traffic.PNG)
+![readme/7-route-traffic.PNG](readme/7-route-traffic.PNG)
 
 See how the domain has multiple records that are being connected to.
 You will need to set up your webpage ip address with route53 by pressing create record.
 
 #### Configure Domain from Amplify
 
-![readme\8-configure-domain.PNG](readme\8-configure-domain.PNG)
+![readme/8-configure-domain.PNG](readme/8-configure-domain.PNG)
 
 If you do not like this method, you can go to AWS amplify and go to domain management tab and allow it to automatically do it for you.
 
@@ -151,7 +151,7 @@ Once everything is complete now your web page is successfully deployed!
 
 ### Deploy using AWS S3 Bucket +
 
-![0](readme\s3\0.png)
+![0](readme/s3/0.png)
 
 #### Description
 
@@ -187,10 +187,10 @@ Default output format [None]: json
 
 #### AWS S3 Bucket
 
-![1](readme\s3\1.png)
+![1](readme/s3/1.png)
 In the AWS console, search S3, then click on Create Bucket.
 
-![2](readme\s3\2.png)
+![2](readme/s3/2.png)
 Then write a unique bucket name(it will complain if the name is already taken), and uncheck as per the image below.
 
 - “Block all public access”
@@ -201,7 +201,7 @@ Then write a unique bucket name(it will complain if the name is already taken), 
 
 Accept the warning for public access. and go to the bottom and create the bucket.
 
-Click on the bucket, navigate to the permissions tab, edit bucket policy and paste the following. Ensure you fill in your bucket resource as per previous creation. Also note the /\* ending. This policy will allow us to access S3 publicly.
+Click on the bucket, navigate to the permissions tab, edit bucket policy and paste the following. Ensure you fill in your bucket resource as per previous creation. Also note the //\* ending. This policy will allow us to access S3 publicly.
 
 ```
 {
@@ -217,7 +217,7 @@ Click on the bucket, navigate to the permissions tab, edit bucket policy and pas
 }
 ```
 
-![3](readme\s3\3.png)
+![3](readme/s3/3.png)
 
 Under the Properties tab, at the bottom of the page find “Static Website Hosting”. Click edit, edit the following, and save changes:
 
@@ -244,7 +244,7 @@ yarn build
 yarn deploy
 ```
 
-![4](readme\s3\4.png)
+![4](readme/s3/4.png)
 
 Going back to the “static website hosting " section as per above, You should see a bucket URL endpoint there. Click on that and you should see your website now!
 
@@ -256,12 +256,12 @@ You may have noticed that the S3 link is unsecure using http:// . We will remedy
 - Under “Origin Domain” find and choose your S3 bucket. You should see a lot of things populated.
 - Under “Default cache behaviour”, find “viewer protocol policy” and tick “Redirect HTTP to HTTPS”
 
-![5](readme\s3\5.png)
+![5](readme/s3/5.png)
 
 Now create the Cloudfront and once deployed, copy the domain name of your CloudFront distribution and navigate there.
 
 Again, click on the Cloudfront distribution and navigate to the ‘Origins’ tab. Find the origin we had and click edit.
-![6](readme\s3\6.png)
+![6](readme/s3/6.png)
 
 Go back to S3 and copy the S3 static website URL we were hitting and paste that in “origin domain” and save changes.
 
