@@ -26,7 +26,7 @@ export default function DataTable() {
     { field: "age", headerName: "Age", width: 130 },
     { field: "gender", headerName: "Gender", width: 130 },
     { field: "email", headerName: "Email", width: 280 },
-    { field: "keywords", headerName: "Email", width: 250 },
+    { field: "keyword", headerName: "keywords", width: 250 },
     {
       field: "Link",
       headerName: " ",
