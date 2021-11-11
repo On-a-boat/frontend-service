@@ -100,6 +100,15 @@ const DetailTable = function ({ data }) {
           </TableCell>
         </TableRow>
         <TableRow>
+          <TableCell>Keywords</TableCell>
+          <TableCell>
+            {data.map((d) => (
+              <span>{d.keyword}</span>
+            ))}
+          </TableCell>
+        </TableRow>
+
+        <TableRow>
           <TableCell>Phone Number</TableCell>
           <TableCell>
             {data.map((d) => (

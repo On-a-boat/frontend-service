@@ -26,10 +26,11 @@ export default function DataTable() {
     { field: "age", headerName: "Age", width: 130 },
     { field: "gender", headerName: "Gender", width: 130 },
     { field: "email", headerName: "Email", width: 280 },
+    { field: "keywords", headerName: "Email", width: 250 },
     {
       field: "Link",
       headerName: " ",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <Link
           style={{ fontSize: "27px", marginLeft: "8px", color: "#F79489" }}
