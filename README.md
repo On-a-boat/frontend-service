@@ -2,6 +2,11 @@
 
 A customer relationship management system, (Project_name) supports an environment-friendly mobile carpool app - ”WEEY”. To help the primary objective of the business, the reduction of greenhouse emission and delivery of their green tips, (Project_name) allows the personalization of the promotion to distinct customizable groups of users with different interests.
 
+
+## Authentication (Login username password) - Ask our team to create a new account
+- Username : abc123
+- Password : abc123
+
 ## Table of Contents
 
 - [WEEY CRM (Frontend)](#weey-crm--frontend-)
@@ -42,9 +47,6 @@ A customer relationship management system, (Project_name) supports an environmen
 
 # Getting Started
 
-## Authentication (Login username password) - Ask our team to create a new account
-- Username : abc123
-- Password : abc123
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
